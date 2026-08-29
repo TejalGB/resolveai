@@ -9,16 +9,11 @@ The project demonstrates how modern AI techniques can be combined with informati
 
 ## 🧠 Planned Architecture
 
-User Query
-    ↓
-Query Processing
-    ↓
-Document Retrieval
-    ↓
-Relevant Knowledge
-    ↓
-LLM
-    ↓
+User Query ->
+Query Processing ->
+Document Retrieval ->
+Relevant Knowledge ->
+LLM ->
 Generated Response
 
 ## 🚀 Planned Features
