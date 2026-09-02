@@ -13,8 +13,26 @@ print(f"Loaded {len(chunks)} chunks.")
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
-# Extract text from each chunk
-texts = [chunk["content"] for chunk in chunks]
+# Create enriched text for embeddings
+texts = []
+
+for chunk in chunks:
+    embedding_text = f"""
+Category: {chunk['category']}
+
+Incident:
+{chunk['incident']}
+
+Problem Understanding:
+{chunk['problem_understanding']}
+
+Scenario: {chunk['scenario']}
+
+Content:
+{chunk['content']}
+"""
+
+    texts.append(embedding_text)
 
 
 # Generate embeddings
@@ -28,7 +46,7 @@ for chunk, embedding in zip(chunks, embeddings):
 
 # Save chunks with embeddings
 with open("data/processed/embedded_chunks.json", "w", encoding="utf-8") as file:
-    json.dump(chunks, file, indent=2)
+    json.dump(chunks, file, indent=2, ensure_ascii=False)
 
 
 print(f"Created {len(embeddings)} embeddings.")

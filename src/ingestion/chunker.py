@@ -4,35 +4,63 @@ from pathlib import Path
 from loader import load_playbooks
 
 
-def extract_category(content):
+def extract_section(content, section_name):
+    """
+    Extract text under a ## section until the next ## section.
+    """
+
     lines = content.splitlines()
+    collected_lines = []
+    collecting = False
 
-    category = ""
+    for line in lines:
+        stripped_line = line.strip()
 
-    for i, line in enumerate(lines):
-        line = line.strip()
+        if stripped_line.lower() == f"## {section_name}".lower():
+            collecting = True
+            continue
 
-        if line.lower() == "## category":
-            if i + 1 < len(lines):
-                category = lines[i + 1].strip()
+        if collecting:
+            # Stop when the next level-2 heading starts
+            if stripped_line.startswith("## "):
+                break
 
-    return category
+            if stripped_line:
+                collected_lines.append(stripped_line.replace("**", ""))
+
+    return "\n".join(collected_lines).strip()
+
+
+def extract_category(content):
+    return extract_section(content, "Category")
+
+
+def extract_incident(content):
+    return extract_section(content, "Incident")
+
+
+def extract_problem_understanding(content):
+    return extract_section(content, "Problem Understanding")
 
 
 def chunk_document(document):
     content = document["content"]
 
     category = extract_category(content)
+    incident = extract_incident(content)
+    problem_understanding = extract_problem_understanding(content)
 
     sections = content.split("### ")
 
     chunks = []
 
     for section in sections[1:]:
+
         lines = section.strip().split("\n", 1)
 
         title = lines[0].strip()
 
+        # Skip the parent heading
         if title.lower() == "troubleshooting steps":
             continue
 
@@ -46,6 +74,8 @@ def chunk_document(document):
         chunks.append({
             "source": document["source"],
             "category": category,
+            "incident": incident,
+            "problem_understanding": problem_understanding,
             "scenario": title,
             "content": body
         })
@@ -76,14 +106,3 @@ with open(output_file, "w", encoding="utf-8") as file:
 
 
 print(f"Saved chunks to: {output_file}")
-
-
-# Display first 5 chunks
-print("\nFirst 5 chunks:")
-
-for chunk in all_chunks[:5]:
-    print("\n---")
-    print(f"Source: {chunk['source']}")
-    print(f"Category: {chunk['category']}")
-    print(f"Scenario: {chunk['scenario']}")
-    print(chunk["content"])
