@@ -2,17 +2,17 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 
 
-# Connect to our existing Chroma database
+# Connect to the existing Chroma database
 client = chromadb.PersistentClient(path="data/chroma")
 
 
-# Get our existing collection
+# Get the ResolveAI knowledge collection
 collection = client.get_collection(
     name="resolveai_knowledge"
 )
 
 
-# Load the same embedding model
+# Load the embedding model
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
@@ -46,27 +46,3 @@ def retrieve_context(query, n_results=3):
         retrieved_chunks.append(chunk)
 
     return retrieved_chunks
-
-
-# Run this section only when search.py is executed directly
-if __name__ == "__main__":
-
-    # User's question
-    query = input("Enter your question: ")
-
-    # Retrieve relevant chunks
-    retrieved_chunks = retrieve_context(query)
-
-    # Display results
-    print("\nSearch results:")
-
-    for i, chunk in enumerate(retrieved_chunks):
-
-        print("\n---")
-        print(f"Result {i + 1}")
-        print(f"Distance: {chunk['distance']}")
-        print(f"Source: {chunk['source']}")
-        print(f"Category: {chunk['category']}")
-        print(f"Scenario: {chunk['scenario']}")
-        print(f"Content: {chunk['content']}")
-        
