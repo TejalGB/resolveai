@@ -16,20 +16,88 @@ collection = client.get_collection(
 model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
+def detect_source(query):
+    """
+    Detect the most likely knowledge base domain
+    based on the user's issue.
+    """
+
+    query = query.lower()
+
+    # USER CONNECTOR / SYNCHRONIZATION
+    if any(keyword in query for keyword in [
+        "user connector",
+        "synchronization",
+        "sync",
+        "not synced",
+        "missing from lms",
+        "missing in lms",
+        "not in lms",
+        "inactive in lms",
+        "active in pd",
+        "pd but",
+        "user missing",
+        "profile missing",
+        "user not updated",
+        "not updated"
+    ]):
+        return "user_connector_issues.md"
+
+    # LOGIN ISSUES
+    if any(keyword in query for keyword in [
+        "login",
+        "log in",
+        "sign in",
+        "signin",
+        "cannot login",
+        "can't login",
+        "validation error",
+        "authentication"
+    ]):
+        return "login_issues.md"
+
+    # MYLEARNING ACCESS
+    if any(keyword in query for keyword in [
+        "cannot access mylearning",
+        "can't access mylearning",
+        "mylearning not available",
+        "mylearning unavailable",
+        "access to mylearning"
+    ]):
+        return "mylearning_access.md"
+
+    # No strong domain detected
+    return None
+
+
 def retrieve_context(query, n_results=3):
     """
-    Retrieve relevant knowledge chunks from ChromaDB
-    based on the user's question.
+    Retrieve the most relevant knowledge chunks from ChromaDB.
     """
+
+    # Detect likely source/domain
+    detected_source = detect_source(query)
 
     # Convert user question into embedding
     query_embedding = model.encode(query).tolist()
 
-    # Search ChromaDB
-    results = collection.query(
-        query_embeddings=[query_embedding],
-        n_results=n_results
-    )
+    # Apply metadata filter if a source is detected
+    if detected_source:
+
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=n_results,
+            where={
+                "source": detected_source
+            }
+        )
+
+    else:
+
+        results = collection.query(
+            query_embeddings=[query_embedding],
+            n_results=n_results
+        )
 
     retrieved_chunks = []
 
@@ -51,22 +119,26 @@ def retrieve_context(query, n_results=3):
 # Run this section only when search.py is executed directly
 if __name__ == "__main__":
 
-    # User's question
-    query = input("Enter your question: ")
+    while True:
 
-    # Retrieve relevant chunks
-    retrieved_chunks = retrieve_context(query)
+        query = input(
+            "\nEnter your question (or type 'exit' to quit): "
+        )
 
-    # Display results
-    print("\nSearch results:")
+        if query.lower() in ["exit", "quit"]:
+            print("\nExiting search.")
+            break
 
-    for i, chunk in enumerate(retrieved_chunks):
+        retrieved_chunks = retrieve_context(query)
 
-        print("\n---")
-        print(f"Result {i + 1}")
-        print(f"Distance: {chunk['distance']}")
-        print(f"Source: {chunk['source']}")
-        print(f"Category: {chunk['category']}")
-        print(f"Scenario: {chunk['scenario']}")
-        print(f"Content: {chunk['content']}")
-        
+        print("\nSearch results:")
+
+        for i, chunk in enumerate(retrieved_chunks):
+
+            print("\n---")
+            print(f"Result {i + 1}")
+            print(f"Distance: {chunk['distance']}")
+            print(f"Source: {chunk['source']}")
+            print(f"Category: {chunk['category']}")
+            print(f"Scenario: {chunk['scenario']}")
+            print(f"Content: {chunk['content']}")

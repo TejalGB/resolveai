@@ -60,6 +60,9 @@ if __name__ == "__main__":
     print("       ResolveAI Assistant")
     print("==============================")
 
+    print("\nHello! I'm ResolveAI, your SAP SuccessFactors LMS support assistant.")
+    print("How can I help you today?")
+
     while True:
 
         question = input(
