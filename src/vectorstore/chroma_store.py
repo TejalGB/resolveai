@@ -35,7 +35,9 @@ documents = []
 metadatas = []
 embeddings = []
 
+
 for index, chunk in enumerate(chunks):
+
     ids.append(f"chunk_{index}")
 
     documents.append(chunk["content"])
@@ -60,3 +62,17 @@ collection.add(
 
 print(f"Added {len(chunks)} chunks to Chroma.")
 print(f"Collection count: {collection.count()}")
+
+# Display stored chunks for verification
+print("\nStored chunks:")
+
+stored_data = collection.get()
+
+for i in range(min(10, len(stored_data["ids"]))):
+    print(
+        stored_data["ids"][i],
+        "|",
+        stored_data["metadatas"][i]["source"],
+        "|",
+        stored_data["metadatas"][i]["scenario"]
+    )

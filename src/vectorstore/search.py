@@ -20,11 +20,17 @@ def detect_source(query):
     """
     Detect the most likely knowledge base domain
     based on the user's issue.
+
+    Strong domain signals are used to improve retrieval accuracy
+    for known SAP SuccessFactors LMS issue categories.
     """
 
     query = query.lower()
 
+    # -----------------------------------
     # USER CONNECTOR / SYNCHRONIZATION
+    # -----------------------------------
+
     if any(keyword in query for keyword in [
         "user connector",
         "synchronization",
@@ -39,11 +45,35 @@ def detect_source(query):
         "user missing",
         "profile missing",
         "user not updated",
-        "not updated"
+        "not updated",
+        "new user missing",
+        "user missing after joining",
+        "new joiner"
     ]):
         return "user_connector_issues.md"
 
+
+    # -----------------------------------
+    # MYLEARNING ACCESS
+    # -----------------------------------
+
+    if any(keyword in query for keyword in [
+        "cannot access mylearning",
+        "can't access mylearning",
+        "cannot open mylearning",
+        "can't open mylearning",
+        "mylearning not available",
+        "mylearning unavailable",
+        "access to mylearning",
+        "mylearning access"
+    ]):
+        return "mylearning_access.md"
+
+
+    # -----------------------------------
     # LOGIN ISSUES
+    # -----------------------------------
+
     if any(keyword in query for keyword in [
         "login",
         "log in",
@@ -56,15 +86,76 @@ def detect_source(query):
     ]):
         return "login_issues.md"
 
-    # MYLEARNING ACCESS
+
+    # -----------------------------------
+    # ASSIGNMENT PROFILE ISSUES
+    # -----------------------------------
+
     if any(keyword in query for keyword in [
-        "cannot access mylearning",
-        "can't access mylearning",
-        "mylearning not available",
-        "mylearning unavailable",
-        "access to mylearning"
+        "assigned unexpectedly",
+        "course assigned unexpectedly",
+        "item assigned unexpectedly",
+        "course not assigned",
+        "item not assigned",
+        "unexpected assignment",
+        "wrong course assigned",
+        "wrong item assigned",
+        "assignment profile",
+        "assignment criteria",
+        "multiple assignment profiles",
+        "why was this course assigned"
     ]):
-        return "mylearning_access.md"
+
+        # Important:
+        # Queries specifically mentioning completion/retraining
+        # should be handled by curriculum retraining instead.
+        if not any(keyword in query for keyword in [
+            "after completion",
+            "completed",
+            "retraining",
+            "assigned again",
+            "recurring"
+        ]):
+            return "assignment_profiles.md"
+
+
+    # -----------------------------------
+    # CURRICULUM RETRAINING
+    # -----------------------------------
+
+    if any(keyword in query for keyword in [
+        "assigned again after completion",
+        "course assigned again",
+        "course assigned after completion",
+        "completed but assigned again",
+        "retraining",
+        "retraining requirement",
+        "retraining period",
+        "course keeps coming back",
+        "course keeps getting assigned again",
+        "recurring training",
+        "repeat training requirement"
+    ]):
+        return "curriculum_retraining.md"
+
+
+    # -----------------------------------
+    # SCORM / ONLINE CONTENT
+    # -----------------------------------
+
+    if any(keyword in query for keyword in [
+        "scorm",
+        "content not launching",
+        "course not launching",
+        "online content not launching",
+        "content won't launch",
+        "content does not launch",
+        "scorm error",
+        "scorm completion",
+        "content stuck loading"
+    ]):
+        return "scorm_online_content_issues.md"
+
 
     # No strong domain detected
     return None
@@ -73,6 +164,10 @@ def detect_source(query):
 def retrieve_context(query, n_results=3):
     """
     Retrieve the most relevant knowledge chunks from ChromaDB.
+
+    If a strong issue domain is detected, retrieval is restricted
+    to the relevant knowledge source. Otherwise, semantic search
+    is performed across the full knowledge base.
     """
 
     # Detect likely source/domain
@@ -126,6 +221,7 @@ if __name__ == "__main__":
         )
 
         if query.lower() in ["exit", "quit"]:
+
             print("\nExiting search.")
             break
 

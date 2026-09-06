@@ -1,28 +1,40 @@
 import json
+import re
 from pathlib import Path
+from collections import defaultdict
 
-from loader import load_playbooks
+from .loader import load_documents
 
+
+# ============================================================
+# HELPER FUNCTIONS
+# ============================================================
 
 def extract_section(content, section_name):
     """
-    Extract text under a ## section until the next ## section.
+    Extract text under an exact ## section heading
+    until the next ## section heading.
     """
 
     lines = content.splitlines()
+
     collected_lines = []
     collecting = False
+
+    target_heading = f"## {section_name}".lower()
 
     for line in lines:
 
         stripped_line = line.strip()
 
-        if stripped_line.lower() == f"## {section_name}".lower():
+        # Start collecting after requested section
+        if stripped_line.lower() == target_heading:
             collecting = True
             continue
 
         if collecting:
 
+            # Stop at next major section
             if stripped_line.startswith("## "):
                 break
 
@@ -34,67 +46,74 @@ def extract_section(content, section_name):
     return "\n".join(collected_lines).strip()
 
 
-def extract_troubleshooting_steps(content):
+def combine_sections(content, section_names):
     """
-    Extract the complete Troubleshooting Steps section.
-
-    Instead of creating one tiny chunk for every ### heading,
-    we keep the troubleshooting flow together as one meaningful
-    retrieval unit.
+    Combine multiple related sections into one logical chunk.
     """
 
-    lines = content.splitlines()
+    combined_content = []
 
-    collected_lines = []
-    collecting = False
+    for section_name in section_names:
 
-    for line in lines:
+        section_content = extract_section(
+            content,
+            section_name
+        )
 
-        stripped_line = line.strip()
+        if section_content:
 
-        # Start collecting after Troubleshooting Steps heading
-        if stripped_line.lower() == "## troubleshooting steps":
-            collecting = True
-            continue
+            combined_content.append(
+                f"{section_name.upper()}:\n{section_content}"
+            )
 
-        if collecting:
-
-            # Stop at the next major ## heading
-            if stripped_line.startswith("## "):
-                break
-
-            if stripped_line:
-                collected_lines.append(
-                    stripped_line.replace("**", "")
-                )
-
-    return "\n".join(collected_lines).strip()
+    return "\n\n".join(combined_content).strip()
 
 
-def extract_section_content(content, section_name):
+def create_chunk(
+    document,
+    category,
+    incident,
+    problem_understanding,
+    scenario,
+    content
+):
     """
-    Generic extraction for sections such as:
-    Decision Flow
-    Common Causes
-    Resolution Logic
-    Important Considerations
+    Create a standardized knowledge chunk.
     """
 
-    return extract_section(content, section_name)
+    return {
+        "source": document["source"],
+        "source_type": document["source_type"],
+        "category": category,
+        "incident": incident,
+        "problem_understanding": problem_understanding,
+        "scenario": scenario,
+        "content": content
+    }
 
 
-def chunk_document(document):
+# ============================================================
+# EXPERT PLAYBOOK CHUNKING
+# ============================================================
+
+def chunk_expert_playbook(document):
     """
-    Create meaningful knowledge chunks.
-
-    Each document is divided into larger logical sections
-    instead of tiny individual troubleshooting steps.
+    Chunk Expert Resolution Playbooks based on
+    logical troubleshooting sections.
     """
 
     content = document["content"]
 
-    category = extract_section(content, "Category")
-    incident = extract_section(content, "Incident")
+    category = extract_section(
+        content,
+        "Category"
+    )
+
+    incident = extract_section(
+        content,
+        "Incident"
+    )
+
     problem_understanding = extract_section(
         content,
         "Problem Understanding"
@@ -102,169 +121,363 @@ def chunk_document(document):
 
     chunks = []
 
-    # -----------------------------------
-    # CHUNK 1: Problem + Troubleshooting
-    # -----------------------------------
+    # --------------------------------------------------------
+    # CHUNK 1: Troubleshooting Steps
+    # --------------------------------------------------------
 
-    troubleshooting = extract_troubleshooting_steps(content)
+    troubleshooting = extract_section(
+        content,
+        "Troubleshooting Steps"
+    )
 
     if troubleshooting:
 
-        chunks.append({
-            "source": document["source"],
-            "category": category,
-            "incident": incident,
-            "problem_understanding": problem_understanding,
-            "scenario": "Troubleshooting Steps",
-            "content": troubleshooting
-        })
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Troubleshooting Steps",
+                troubleshooting
+            )
+        )
 
-    # -----------------------------------
+    # --------------------------------------------------------
     # CHUNK 2: Decision Flow
-    # -----------------------------------
+    # --------------------------------------------------------
 
-    decision_flow = extract_section_content(
+    decision_flow = extract_section(
         content,
         "Decision Flow"
     )
 
     if decision_flow:
 
-        chunks.append({
-            "source": document["source"],
-            "category": category,
-            "incident": incident,
-            "problem_understanding": problem_understanding,
-            "scenario": "Decision Flow",
-            "content": decision_flow
-        })
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Decision Flow",
+                decision_flow
+            )
+        )
 
-    # -----------------------------------
+    # --------------------------------------------------------
     # CHUNK 3: Common Causes + Resolution
-    # -----------------------------------
+    # --------------------------------------------------------
 
-    common_causes = extract_section_content(
+    resolution_content = combine_sections(
         content,
-        "Common Causes"
+        [
+            "Common Causes",
+            "Resolution Logic",
+            "Common Resolution"
+        ]
     )
 
-    resolution_logic = extract_section_content(
-        content,
-        "Resolution Logic"
-    )
+    if resolution_content:
 
-    combined_resolution = ""
-
-    if common_causes:
-        combined_resolution += (
-            "COMMON CAUSES:\n"
-            + common_causes
-            + "\n\n"
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Common Causes and Resolution",
+                resolution_content
+            )
         )
 
-    if resolution_logic:
-        combined_resolution += (
-            "RESOLUTION LOGIC:\n"
-            + resolution_logic
-        )
-
-    if combined_resolution.strip():
-
-        chunks.append({
-            "source": document["source"],
-            "category": category,
-            "incident": incident,
-            "problem_understanding": problem_understanding,
-            "scenario": "Common Causes and Resolution Logic",
-            "content": combined_resolution.strip()
-        })
-
-    # -----------------------------------
+    # --------------------------------------------------------
     # CHUNK 4: Important Considerations
-    # -----------------------------------
+    # --------------------------------------------------------
 
-    considerations = extract_section_content(
+    considerations = extract_section(
         content,
         "Important Considerations"
     )
 
     if considerations:
 
-        chunks.append({
-            "source": document["source"],
-            "category": category,
-            "incident": incident,
-            "problem_understanding": problem_understanding,
-            "scenario": "Important Considerations",
-            "content": considerations
-        })
-
-    # -----------------------------------
-    # CHUNK 5: Escalation / Evidence
-    # -----------------------------------
-
-    escalation = extract_section_content(
-        content,
-        "Escalation"
-    )
-
-    evidence = extract_section_content(
-        content,
-        "Evidence for Escalation"
-    )
-
-    escalation_content = ""
-
-    if escalation:
-        escalation_content += (
-            "ESCALATION:\n"
-            + escalation
-            + "\n\n"
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Important Considerations",
+                considerations
+            )
         )
 
-    if evidence:
-        escalation_content += (
-            "EVIDENCE FOR ESCALATION:\n"
-            + evidence
+    # --------------------------------------------------------
+    # CHUNK 5: Escalation + Evidence
+    # --------------------------------------------------------
+
+    escalation_content = combine_sections(
+        content,
+        [
+            "Escalation",
+            "Evidence for Escalation",
+            "Escalation Information"
+        ]
+    )
+
+    if escalation_content:
+
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Escalation and Evidence",
+                escalation_content
+            )
         )
-
-    if escalation_content.strip():
-
-        chunks.append({
-            "source": document["source"],
-            "category": category,
-            "incident": incident,
-            "problem_understanding": problem_understanding,
-            "scenario": "Escalation and Evidence",
-            "content": escalation_content.strip()
-        })
 
     return chunks
 
 
-# -----------------------------------
-# Load all playbooks
-# -----------------------------------
+# ============================================================
+# SAP KBA / OFFICIAL KNOWLEDGE CHUNKING
+# ============================================================
 
-documents = load_playbooks()
+def chunk_sap_knowledge(document):
+    """
+    Chunk SAP Official Documentation / KBA files.
+
+    SAP knowledge documents are structured around
+    'Knowledge Area:' sections rather than incident
+    troubleshooting sections.
+    """
+
+    content = document["content"]
+
+    category = extract_section(
+        content,
+        "Category"
+    )
+
+    product = extract_section(
+        content,
+        "Product"
+    )
+
+    # Use product as incident context if no incident exists
+    incident = product
+
+    problem_understanding = (
+        "Official SAP documentation and knowledge base information."
+    )
+
+    chunks = []
+
+    # --------------------------------------------------------
+    # FIND ALL KNOWLEDGE AREA SECTIONS
+    # --------------------------------------------------------
+
+    pattern = r"^## Knowledge Area:\s*(.+?)\s*$"
+
+    matches = list(
+        re.finditer(
+            pattern,
+            content,
+            re.MULTILINE
+        )
+    )
+
+    # Extract each Knowledge Area
+    for index, match in enumerate(matches):
+
+        knowledge_area = match.group(1).strip()
+
+        start_position = match.end()
+
+        # End at next Knowledge Area or next major section
+        if index + 1 < len(matches):
+
+            end_position = matches[index + 1].start()
+
+        else:
+
+            # Look for remaining major sections
+            remaining_content = content[start_position:]
+
+            next_section = re.search(
+                r"^## (?!Knowledge Area:)",
+                remaining_content,
+                re.MULTILINE
+            )
+
+            if next_section:
+
+                end_position = (
+                    start_position
+                    + next_section.start()
+                )
+
+            else:
+
+                end_position = len(content)
+
+        section_content = content[
+            start_position:end_position
+        ].strip()
+
+        if section_content:
+
+            chunks.append(
+                create_chunk(
+                    document,
+                    category,
+                    incident,
+                    problem_understanding,
+                    knowledge_area,
+                    section_content
+                )
+            )
+
+    # --------------------------------------------------------
+    # RESOLUTION LOGIC
+    # --------------------------------------------------------
+
+    resolution_logic = extract_section(
+        content,
+        "Resolution Logic"
+    )
+
+    if resolution_logic:
+
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Resolution Logic",
+                resolution_logic
+            )
+        )
+
+    # --------------------------------------------------------
+    # IMPORTANT CONSIDERATIONS
+    # --------------------------------------------------------
+
+    considerations = extract_section(
+        content,
+        "Important Considerations"
+    )
+
+    if considerations:
+
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Important Considerations",
+                considerations
+            )
+        )
+
+    # --------------------------------------------------------
+    # COMMON TECHNICAL INVESTIGATION POINTS
+    # --------------------------------------------------------
+
+    investigation_points = extract_section(
+        content,
+        "Common Technical Investigation Points"
+    )
+
+    if investigation_points:
+
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Common Technical Investigation Points",
+                investigation_points
+            )
+        )
+
+    return chunks
+
+
+# ============================================================
+# MAIN DOCUMENT ROUTER
+# ============================================================
+
+def chunk_document(document):
+    """
+    Route documents to the appropriate chunking strategy
+    based on source type.
+    """
+
+    source_type = document.get(
+        "source_type",
+        ""
+    )
+
+    if source_type == "Expert Resolution Playbook":
+
+        return chunk_expert_playbook(
+            document
+        )
+
+    elif source_type == "SAP Official Documentation / KBA":
+
+        return chunk_sap_knowledge(
+            document
+        )
+
+    else:
+
+        print(
+            f"Warning: Unknown source type "
+            f"for {document['source']}"
+        )
+
+        return []
+
+
+# ============================================================
+# LOAD DOCUMENTS
+# ============================================================
+
+documents = load_documents()
 
 all_chunks = []
 
 for document in documents:
 
-    chunks = chunk_document(document)
+    chunks = chunk_document(
+        document
+    )
 
-    all_chunks.extend(chunks)
+    all_chunks.extend(
+        chunks
+    )
 
 
-print(f"Created {len(all_chunks)} chunks.")
+print(
+    f"\nCreated {len(all_chunks)} chunks."
+)
 
 
-# -----------------------------------
-# Save processed chunks
-# -----------------------------------
+# ============================================================
+# SAVE PROCESSED CHUNKS
+# ============================================================
 
-output_dir = Path("data/processed")
+output_dir = Path(
+    "data/processed"
+)
 
 output_dir.mkdir(
     parents=True,
@@ -288,4 +501,43 @@ with open(
     )
 
 
-print(f"Saved chunks to: {output_file}")
+print(
+    f"Saved chunks to: {output_file}"
+)
+
+
+# ============================================================
+# VALIDATION: CHUNK DISTRIBUTION
+# ============================================================
+
+print(
+    "\nChunk distribution by document:\n"
+)
+
+chunk_summary = defaultdict(list)
+
+
+for chunk in all_chunks:
+
+    chunk_summary[
+        chunk["source"]
+    ].append(
+        chunk["scenario"]
+    )
+
+
+for source, scenarios in chunk_summary.items():
+
+    print(source)
+
+    print(
+        f"  Chunks: {len(scenarios)}"
+    )
+
+    for scenario in scenarios:
+
+        print(
+            f"   - {scenario}"
+        )
+
+    print()

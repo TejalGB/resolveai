@@ -5,12 +5,19 @@ from google.genai import types
 from dotenv import load_dotenv
 
 
-# Load environment variables from .env file
+# Load environment variables
 load_dotenv()
 
 
 # Get Gemini API key
 api_key = os.getenv("GEMINI_API_KEY")
+
+
+if not api_key:
+    raise ValueError(
+        "GEMINI_API_KEY is not set. "
+        "Please check your .env file."
+    )
 
 
 # Create Gemini client
@@ -21,71 +28,109 @@ client = genai.Client(
 
 def generate_response(question, context):
     """
-    Generate an SAP SuccessFactors LMS troubleshooting response
-    using retrieved knowledge base context.
+    Generate a grounded SAP SuccessFactors LMS troubleshooting
+    response using dynamically retrieved knowledge context.
     """
 
     prompt = f"""
 You are ResolveAI, an expert SAP SuccessFactors Learning Management System (LMS) support assistant.
 
-Your role is to help troubleshoot SAP SuccessFactors Learning issues using the provided knowledge base.
+Your role is to help support engineers troubleshoot SAP SuccessFactors LMS issues using the provided context.
+
+Your answer must be grounded only in the information provided below.
 
 IMPORTANT RULES:
 
-1. Use the provided knowledge base context as your primary source.
-2. Do not invent SAP configuration details that are not supported by the context.
-3. If the context does not contain enough information, clearly state what additional information should be checked.
-4. Provide practical, structured troubleshooting steps.
-5. Do not mention "vector database", "chunks", "retrieval", or internal system architecture.
-6. Do not claim certainty when multiple possible causes exist.
-7. Be concise but helpful.
-8. Structure the response clearly using headings and bullet points where appropriate.
-9. Do not greet or introduce yourself. Start directly with the troubleshooting response.
+1. Use only information supported by the provided context.
 
-KNOWLEDGE BASE CONTEXT:
+2. Do not invent SAP configuration details, navigation paths,
+permissions, settings, or technical behavior not mentioned in the context.
+
+3. Do not mix unrelated issue domains.
+
+4. If multiple possible causes exist, clearly present them as
+possible causes rather than confirmed causes.
+
+5. Follow the troubleshooting logic provided in the context.
+
+6. Do not recommend unnecessary configuration changes.
+
+7. Do not suggest manually modifying users, assignments, or
+configurations unless supported by the context and approved process.
+
+8. If the context is insufficient, clearly state what additional
+information should be checked.
+
+9. Never mention:
+- knowledge base
+- vector database
+- chunks
+- embeddings
+- retrieval
+- RAG
+- internal system architecture
+
+10. Do not greet or introduce yourself.
+
+11. Start directly with the troubleshooting response.
+
+12. Be concise, practical, and professional.
+
+
+RESPONSE STYLE:
+
+When appropriate, structure the response using:
+
+### Possible Causes
+
+### Troubleshooting Steps
+
+### Resolution / Next Action
+
+### Information Needed
+
+Do not force every heading if it does not fit the issue.
+
+
+CONTEXT:
 
 {context}
+
 
 USER QUESTION:
 
 {question}
 
-Provide a clear troubleshooting response.
+
+Generate a clear and practical SAP SuccessFactors LMS support response.
 """
 
     try:
+
         response = client.models.generate_content(
+
             model="gemini-3.6-flash",
+
             contents=prompt,
+
             config=types.GenerateContentConfig(
+
                 automatic_function_calling=types.AutomaticFunctionCallingConfig(
                     disable=True
                 )
+
             )
+
         )
 
         return response.text
 
-    except Exception as e:
+
+    except Exception as error:
+
+        print(f"\nGenerator error: {error}")
+
         return (
             "I'm sorry, but the AI service is temporarily unavailable. "
             "Please try again in a few moments."
         )
-
-
-# Test generator independently
-if __name__ == "__main__":
-
-    test_question = input("Enter your question: ")
-
-    test_context = """
-No external context provided.
-"""
-
-    answer = generate_response(
-        question=test_question,
-        context=test_context
-    )
-
-    print("\nResolveAI Response:\n")
-    print(answer)

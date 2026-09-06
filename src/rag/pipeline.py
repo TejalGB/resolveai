@@ -8,21 +8,21 @@ def build_context(retrieved_chunks):
     that can be provided to the LLM.
     """
 
-    context = ""
+    context_parts = []
 
-    for i, chunk in enumerate(retrieved_chunks):
+    for i, chunk in enumerate(retrieved_chunks, start=1):
 
-        context += f"""
-SOURCE {i + 1}
+        context_parts.append(
+            f"""
+SOURCE {i}
 Category: {chunk['category']}
 Scenario: {chunk['scenario']}
 
 {chunk['content']}
-
----
 """
+        )
 
-    return context
+    return "\n---\n".join(context_parts)
 
 
 def answer_question(question):
@@ -42,6 +42,12 @@ def answer_question(question):
 
     retrieved_chunks = retrieve_context(question)
 
+    if not retrieved_chunks:
+        return (
+            "I could not find sufficient information to provide "
+            "a reliable troubleshooting response for this issue."
+        )
+
     context = build_context(retrieved_chunks)
 
     print("Generating response...\n")
@@ -60,29 +66,47 @@ if __name__ == "__main__":
     print("       ResolveAI Assistant")
     print("==============================")
 
-    print("\nHello! I'm ResolveAI, your SAP SuccessFactors LMS support assistant.")
+    print(
+        "\nHello! I'm ResolveAI, your SAP SuccessFactors "
+        "LMS support assistant."
+    )
+
     print("How can I help you today?")
 
     while True:
 
         question = input(
-            "\nDescribe your SAP LMS issue (or type 'exit' to quit): "
+            "\nDescribe your SAP LMS issue "
+            "(or type 'exit' to quit): "
         )
 
         # Exit condition
         if question.lower() in ["exit", "quit", "no"]:
-            print("\nThank you for using ResolveAI. Goodbye! 👋")
+
+            print(
+                "\nThank you for using ResolveAI. Goodbye! 👋"
+            )
+
             break
+
 
         # Skip empty questions
         if not question.strip():
-            print("\nPlease enter a question or describe your issue.")
+
+            print(
+                "\nPlease enter a question or describe your issue."
+            )
+
             continue
 
+
+        # Generate answer
         answer = answer_question(question)
+
 
         print("\nResolveAI Response:\n")
         print(answer)
+
 
         # Ask whether user has another question
         another_question = input(
@@ -90,5 +114,9 @@ if __name__ == "__main__":
         )
 
         if another_question.lower() not in ["yes", "y"]:
-            print("\nThank you for using ResolveAI. Goodbye! 👋")
+
+            print(
+                "\nThank you for using ResolveAI. Goodbye! 👋"
+            )
+
             break
