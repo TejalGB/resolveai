@@ -1,4 +1,4 @@
-from retriever import retrieve_context
+from src.rag.retriever import retrieve_context
 
 
 query = input("Enter your question: ")

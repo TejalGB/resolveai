@@ -1,78 +1,91 @@
 import json
 import chromadb
 
-
-# Create a persistent Chroma client
-client = chromadb.PersistentClient(path="data/chroma")
+from src.config import settings
 
 
-# Delete the old collection if it exists
-try:
-    client.delete_collection(name="resolveai_knowledge")
-    print("Deleted existing collection.")
-except Exception:
-    pass
+def create_vector_store(recreate: bool = True):
+    """
+    Create or update the ChromaDB vector store.
 
+    Parameters:
+    recreate (bool):
+        If True, delete the existing collection and rebuild it.
+    """
 
-# Create a fresh collection
-collection = client.create_collection(
-    name="resolveai_knowledge"
-)
+    # Create persistent Chroma client
+    client = chromadb.PersistentClient(
+        path=str(settings.CHROMA_DIR)
+    )
 
+    # Recreate collection when explicitly requested
+    if recreate:
+        try:
+            client.delete_collection(
+                name=settings.CHROMA_COLLECTION_NAME
+            )
+            print("Deleted existing collection.")
+        except Exception:
+            pass
 
-# Load embedded chunks
-with open(
-    "data/processed/embedded_chunks.json",
-    "r",
-    encoding="utf-8"
-) as file:
-    chunks = json.load(file)
+    # Create or retrieve collection
+    collection = client.get_or_create_collection(
+        name=settings.CHROMA_COLLECTION_NAME
+    )
 
+    # Load embedded chunks
+    with open(
+        settings.EMBEDDED_CHUNKS_FILE,
+        "r",
+        encoding="utf-8"
+    ) as file:
+        chunks = json.load(file)
 
-# Prepare data for Chroma
-ids = []
-documents = []
-metadatas = []
-embeddings = []
+    # Prepare Chroma data
+    ids = []
+    documents = []
+    metadatas = []
+    embeddings = []
 
+    for index, chunk in enumerate(chunks):
 
-for index, chunk in enumerate(chunks):
+        ids.append(f"chunk_{index}")
 
-    ids.append(f"chunk_{index}")
+        documents.append(
+            chunk["content"]
+        )
 
-    documents.append(chunk["content"])
+        metadatas.append({
+            "source": chunk["source"],
+            "category": chunk["category"],
+            "scenario": chunk["scenario"]
+        })
 
-    metadatas.append({
-        "source": chunk["source"],
-        "category": chunk["category"],
-        "scenario": chunk["scenario"]
-    })
+        embeddings.append(
+            chunk["embedding"]
+        )
 
-    embeddings.append(chunk["embedding"])
+    # Add data to Chroma
+    collection.add(
+        ids=ids,
+        documents=documents,
+        metadatas=metadatas,
+        embeddings=embeddings
+    )
 
-
-# Add data to Chroma
-collection.add(
-    ids=ids,
-    documents=documents,
-    metadatas=metadatas,
-    embeddings=embeddings
-)
-
-
-print(f"Added {len(chunks)} chunks to Chroma.")
-print(f"Collection count: {collection.count()}")
-
-# Display stored chunks for verification
-print("\nStored chunks:")
-
-stored_data = collection.get()
-
-for i in range(min(10, len(stored_data["ids"]))):
     print(
-        stored_data["ids"][i],
-        "|",
-        stored_data["metadatas"][i]["source"],
-        "|",
-        stored_data["metadatas"][i]["scenario"]
+        f"Added {len(chunks)} chunks to Chroma."
+    )
+
+    print(
+        f"Collection count: {collection.count()}"
+    )
+
+    return collection
+
+
+if __name__ == "__main__":
+
+    create_vector_store(
+        recreate=True
     )

@@ -9,21 +9,25 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
-# Get Gemini API key
-api_key = os.getenv("GEMINI_API_KEY")
+# Module-level client holder for lazy initialization
+_client = None
 
 
-if not api_key:
-    raise ValueError(
-        "GEMINI_API_KEY is not set. "
-        "Please check your .env file."
-    )
-
-
-# Create Gemini client
-client = genai.Client(
-    api_key=api_key
-)
+def get_gemini_client():
+    """
+    Lazily initialize and return the Gemini API client.
+    Prevents unhandled crashes on import if GEMINI_API_KEY is missing.
+    """
+    global _client
+    if _client is None:
+        api_key = os.getenv("GEMINI_API_KEY")
+        if not api_key:
+            raise ValueError(
+                "GEMINI_API_KEY is not set. "
+                "Please check your .env file."
+            )
+        _client = genai.Client(api_key=api_key)
+    return _client
 
 
 def generate_response(question, context):
@@ -106,30 +110,23 @@ Generate a clear and practical SAP SuccessFactors LMS support response.
 """
 
     try:
+        model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        client = get_gemini_client()
 
         response = client.models.generate_content(
-
-            model="gemini-3.6-flash",
-
+            model=model_name,
             contents=prompt,
-
             config=types.GenerateContentConfig(
-
                 automatic_function_calling=types.AutomaticFunctionCallingConfig(
                     disable=True
                 )
-
             )
-
         )
 
         return response.text
 
-
     except Exception as error:
-
         print(f"\nGenerator error: {error}")
-
         return (
             "I'm sorry, but the AI service is temporarily unavailable. "
             "Please try again in a few moments."

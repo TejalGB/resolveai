@@ -448,96 +448,47 @@ def chunk_document(document):
 
 
 # ============================================================
-# LOAD DOCUMENTS
+# PROCESS AND SAVE CHUNKS
 # ============================================================
 
-documents = load_documents()
+def process_and_save_chunks():
+    """
+    Load raw documents, process them into chunks according to their source type,
+    and save the output to data/processed/chunks.json.
+    """
+    documents = load_documents()
+    all_chunks = []
 
-all_chunks = []
+    for document in documents:
+        chunks = chunk_document(document)
+        all_chunks.extend(chunks)
 
-for document in documents:
+    print(f"\nCreated {len(all_chunks)} chunks.")
 
-    chunks = chunk_document(
-        document
-    )
+    output_dir = Path("data/processed")
+    output_dir.mkdir(parents=True, exist_ok=True)
+    output_file = output_dir / "chunks.json"
 
-    all_chunks.extend(
-        chunks
-    )
+    with open(output_file, "w", encoding="utf-8") as file:
+        json.dump(all_chunks, file, indent=2, ensure_ascii=False)
 
+    print(f"Saved chunks to: {output_file}")
 
-print(
-    f"\nCreated {len(all_chunks)} chunks."
-)
+    print("\nChunk distribution by document:\n")
+    chunk_summary = defaultdict(list)
 
+    for chunk in all_chunks:
+        chunk_summary[chunk["source"]].append(chunk["scenario"])
 
-# ============================================================
-# SAVE PROCESSED CHUNKS
-# ============================================================
+    for source, scenarios in chunk_summary.items():
+        print(source)
+        print(f"  Chunks: {len(scenarios)}")
+        for scenario in scenarios:
+            print(f"   - {scenario}")
+        print()
 
-output_dir = Path(
-    "data/processed"
-)
-
-output_dir.mkdir(
-    parents=True,
-    exist_ok=True
-)
-
-output_file = output_dir / "chunks.json"
-
-
-with open(
-    output_file,
-    "w",
-    encoding="utf-8"
-) as file:
-
-    json.dump(
-        all_chunks,
-        file,
-        indent=2,
-        ensure_ascii=False
-    )
+    return all_chunks
 
 
-print(
-    f"Saved chunks to: {output_file}"
-)
-
-
-# ============================================================
-# VALIDATION: CHUNK DISTRIBUTION
-# ============================================================
-
-print(
-    "\nChunk distribution by document:\n"
-)
-
-chunk_summary = defaultdict(list)
-
-
-for chunk in all_chunks:
-
-    chunk_summary[
-        chunk["source"]
-    ].append(
-        chunk["scenario"]
-    )
-
-
-for source, scenarios in chunk_summary.items():
-
-    print(source)
-
-    print(
-        f"  Chunks: {len(scenarios)}"
-    )
-
-    for scenario in scenarios:
-
-        print(
-            f"   - {scenario}"
-        )
-
-    print()
+if __name__ == "__main__":
+    process_and_save_chunks()
