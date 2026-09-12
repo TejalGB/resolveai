@@ -6,12 +6,45 @@ import os
 import streamlit as st
 import requests
 
+# Synchronize Streamlit Community Cloud secrets to os.environ
+try:
+    for key, val in st.secrets.items():
+        if isinstance(val, str) and key not in os.environ:
+            os.environ[key] = val
+except Exception:
+    pass
+
 
 # ============================================================
-# CONFIGURATION
+# RESOLVEAI INFERENCE ENGINE (HYBRID / STANDALONE)
 # ============================================================
 
-API_URL = os.getenv("RESOLVEAI_API_URL", "http://127.0.0.1:8000")
+def query_resolveai(question: str) -> dict:
+    """
+    Query ResolveAI via configured REST API, or seamlessly execute
+    direct in-process RAG pipeline (ideal for Hugging Face Spaces & standalone operation).
+    """
+    api_url = os.getenv("RESOLVEAI_API_URL", "").strip()
+
+    # Try external/local API if configured
+    if api_url:
+        try:
+            response = requests.post(
+                f"{api_url.rstrip('/')}/ask",
+                json={"question": question},
+                timeout=120
+            )
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.ConnectionError:
+            # Fall back to direct in-process RAG execution if API is offline
+            pass
+        except Exception:
+            pass
+
+    # Direct in-process execution (Hugging Face Spaces & standalone mode)
+    from src.rag.pipeline import answer_question
+    return answer_question(question)
 
 
 # ============================================================
@@ -110,6 +143,13 @@ with st.sidebar:
             prompt_to_submit = q
 
     st.divider()
+
+    st.markdown("##### ⚙️ **Engine Status**")
+    active_api = os.getenv("RESOLVEAI_API_URL", "").strip()
+    if active_api:
+        st.caption(f"Status: `Connected ({active_api})` 🟢")
+    else:
+        st.caption("Status: `Self-Contained RAG Pipeline` 🟢")
 
     if st.button("🗑 Clear Conversation", use_container_width=True):
         st.session_state.messages = []
@@ -222,13 +262,7 @@ if question:
     with st.chat_message("assistant"):
         with st.spinner("Analyzing verified playbooks..."):
             try:
-                response = requests.post(
-                    f"{API_URL.rstrip('/')}/ask",
-                    json={"question": question},
-                    timeout=120
-                )
-                response.raise_for_status()
-                data = response.json()
+                data = query_resolveai(question)
 
                 answer = data.get("answer", "No answer returned.")
                 sources = data.get("sources", [])
@@ -266,11 +300,6 @@ if question:
                     "sources": sources
                 })
 
-            except requests.exceptions.ConnectionError:
-                st.error(
-                    f"⚠️ Unable to reach the ResolveAI backend at `{API_URL}`. "
-                    "Please make sure the FastAPI server is running (`uvicorn src.api.main:app --port 8000`)."
-                )
             except requests.exceptions.Timeout:
                 st.error("⚠️ The request timed out. Please try again.")
             except Exception as e:

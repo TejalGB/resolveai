@@ -29,9 +29,24 @@ class KnowledgeRetriever:
     @property
     def collection(self):
         if self._collection is None:
-            self._collection = self.client.get_collection(
-                name=settings.CHROMA_COLLECTION_NAME
-            )
+            try:
+                self._collection = self.client.get_collection(
+                    name=settings.CHROMA_COLLECTION_NAME
+                )
+                if self._collection.count() == 0:
+                    print("Chroma collection is empty. Auto-indexing knowledge base...")
+                    from src.ingestion.pipeline import run_pipeline
+                    run_pipeline()
+                    self._collection = self.client.get_collection(
+                        name=settings.CHROMA_COLLECTION_NAME
+                    )
+            except Exception as error:
+                print(f"Collection not found ({error}). Initializing knowledge base...")
+                from src.ingestion.pipeline import run_pipeline
+                run_pipeline()
+                self._collection = self.client.get_collection(
+                    name=settings.CHROMA_COLLECTION_NAME
+                )
         return self._collection
 
     @property
