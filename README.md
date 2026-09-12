@@ -110,5 +110,17 @@ Visit `http://localhost:8501` to access ResolveAI.
 
 ---
 
+## 🎯 Key Capabilities Demonstrated
+
+* **End-to-End RAG Architecture:** Designed and built a complete Retrieval-Augmented Generation pipeline connecting domain documents to an LLM.
+* **Vector Search & Embeddings:** Implemented semantic search using ChromaDB and SentenceTransformers (`all-MiniLM-L6-v2`) with custom similarity scoring.
+* **Data Ingestion & Chunking:** Created an automated pipeline to clean, deduplicate, and chunk technical documents into structured knowledge vectors.
+* **Prompt Engineering & Grounding:** Engineered prompts with strict guardrails to prevent hallucinations and enforce factual, step-by-step troubleshooting.
+* **REST API Development:** Built asynchronous backend endpoints using FastAPI and Pydantic for clean data validation and structured responses.
+* **Full-Stack AI Prototyping:** Developed an interactive Streamlit user interface featuring source attribution, match confidence, and 1-click ticket copying.
+* **Performance & Optimization:** Implemented SHA-256 fingerprinting for incremental data updates, preventing expensive database rebuilds.
+
+---
+
 ## 📄 License
 Internal & Proprietary — Developed for SAP SuccessFactors Support Automation.
