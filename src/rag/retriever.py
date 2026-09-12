@@ -8,8 +8,9 @@ class KnowledgeRetriever:
     """
     Unified knowledge retriever for ResolveAI.
 
-    Supports multiple knowledge-base source files for the same domain
-    and combines targeted retrieval with semantic vector search.
+    Uses expert resolution playbooks as the primary retrieval source.
+    SAP KBAs that have been merged into those playbooks are not retrieved
+    separately.
     """
 
     def __init__(self):
@@ -19,7 +20,6 @@ class KnowledgeRetriever:
 
     @property
     def client(self):
-        """Lazily initialize the persistent Chroma client."""
         if self._client is None:
             self._client = chromadb.PersistentClient(
                 path=str(settings.CHROMA_DIR)
@@ -28,7 +28,6 @@ class KnowledgeRetriever:
 
     @property
     def collection(self):
-        """Lazily load the ResolveAI knowledge collection."""
         if self._collection is None:
             self._collection = self.client.get_collection(
                 name=settings.CHROMA_COLLECTION_NAME
@@ -37,7 +36,6 @@ class KnowledgeRetriever:
 
     @property
     def model(self):
-        """Lazily load the embedding model."""
         if self._model is None:
             self._model = SentenceTransformer(
                 settings.EMBEDDING_MODEL_NAME
@@ -46,10 +44,11 @@ class KnowledgeRetriever:
 
     def detect_sources(self, query: str) -> list[str]:
         """
-        Detect relevant knowledge-base sources from the user query.
+        Detect the relevant expert playbook(s) for the query.
 
-        Multiple source files can belong to the same domain, so this
-        method returns all relevant variants rather than a single file.
+        Important:
+        SAP KBAs that have been merged into expert playbooks are NOT
+        returned here. This prevents duplicate retrieval.
         """
 
         query_lower = query.lower()
@@ -61,6 +60,7 @@ class KnowledgeRetriever:
         if any(k in query_lower for k in [
             "user connector",
             "synchronization",
+            "synchronize",
             "sync",
             "not synced",
             "missing from lms",
@@ -77,10 +77,7 @@ class KnowledgeRetriever:
             "user missing after joining",
             "new joiner"
         ]):
-            sources.extend([
-                "user_connector_sap_knowledge.md",
-                "user_connector_issues.md"
-            ])
+            sources.append("user_connector_issues.md")
 
         # ---------------------------------------------------------
         # MYLEARNING ACCESS
@@ -95,10 +92,7 @@ class KnowledgeRetriever:
             "access to mylearning",
             "mylearning access"
         ]):
-            sources.extend([
-                "mylearning_access_sap.md",
-                "mylearning_access.md"
-            ])
+            sources.append("mylearning_access.md")
 
         # ---------------------------------------------------------
         # LOGIN / AUTHENTICATION
@@ -113,10 +107,7 @@ class KnowledgeRetriever:
             "validation error",
             "authentication"
         ]):
-            sources.extend([
-                "login_authentication_sap.md",
-                "login_issues.md"
-            ])
+            sources.append("login_issues.md")
 
         # ---------------------------------------------------------
         # CURRICULUM / RETRAINING
@@ -134,10 +125,7 @@ class KnowledgeRetriever:
             "recurring training",
             "repeat training requirement"
         ]):
-            sources.extend([
-                "curriculum_retraining_sap.md",
-                "curriculum_retraining.md"
-            ])
+            sources.append("curriculum_retraining.md")
 
         # ---------------------------------------------------------
         # ASSIGNMENT PROFILES
@@ -156,10 +144,7 @@ class KnowledgeRetriever:
             "multiple assignment profiles",
             "why was this course assigned"
         ]):
-            sources.extend([
-                "assignment_profiles_sap.md",
-                "assignment_profiles.md"
-            ])
+            sources.append("assignment_profiles.md")
 
         # ---------------------------------------------------------
         # SCORM / ONLINE CONTENT
@@ -175,19 +160,87 @@ class KnowledgeRetriever:
             "scorm completion",
             "content stuck loading"
         ]):
-            sources.extend([
-                "scorm_online_content_sap.md",
-                "scorm_online_content_issues.md"
-            ])
+            sources.append("scorm_online_content_issues.md")
+
+        # ---------------------------------------------------------
+        # LEARNING HISTORY / COMPLETION
+        # ---------------------------------------------------------
+        if any(k in query_lower for k in [
+            "learning history",
+            "completion history",
+            "course completion",
+            "completed course",
+            "completion record",
+            "completion status",
+            "training history",
+            "course history"
+        ]):
+            sources.append("learning_history.md")
+
+        # ---------------------------------------------------------
+        # OTHER EXISTING EXPERT PLAYBOOKS
+        # ---------------------------------------------------------
+
+        if any(k in query_lower for k in [
+            "class enrollment",
+            "enroll in class",
+            "class registration",
+            "scheduled offering",
+            "instructor led",
+            "ilt"
+        ]):
+            sources.append("class_enrollment_issues.md")
+
+        if any(k in query_lower for k in [
+            "content issue",
+            "learning content",
+            "content configuration",
+            "content object"
+        ]):
+            sources.append("content_issues.md")
+
+        if any(k in query_lower for k in [
+            "curriculum configuration",
+            "curriculum setup",
+            "curriculum settings"
+        ]):
+            sources.append("curriculum_configuration.md")
+
+        if any(k in query_lower for k in [
+            "item configuration",
+            "learning item configuration",
+            "item settings"
+        ]):
+            sources.append("item_configuration.md")
+
+        if any(k in query_lower for k in [
+            "scheduled offering",
+            "offering configuration",
+            "offering setup"
+        ]):
+            sources.append("scheduled_offering_configuration.md")
+
+        if any(k in query_lower for k in [
+            "security",
+            "admin access",
+            "administrator access",
+            "permission",
+            "permissions",
+            "role access"
+        ]):
+            sources.append("security_and_admin_access.md")
 
         # Remove duplicates while preserving order
         return list(dict.fromkeys(sources))
 
     def _calculate_match_score(self, distance: float) -> float:
         """
-        Convert Chroma distance into a simple 0-100 relevance score.
+        Convert Chroma distance into a 0-100 match score.
 
-        This preserves the scoring approach currently used by ResolveAI.
+        Current calibration:
+            similarity = 1 - (distance / 2)
+
+        The result is bounded between 0 and 100.
         """
 
         similarity = max(
@@ -196,113 +249,6 @@ class KnowledgeRetriever:
         )
 
         return round(similarity * 100.0, 1)
-
-    def _query_source(
-        self,
-        query_embedding: list[float],
-        source: str,
-        n_results: int
-    ):
-        """Run a targeted Chroma search for one source file."""
-
-        try:
-            return self.collection.query(
-                query_embeddings=[query_embedding],
-                n_results=n_results,
-                where={"source": source}
-            )
-        except Exception:
-            return None
-
-    def _query_all(
-        self,
-        query_embedding: list[float],
-        n_results: int
-    ):
-        """Run semantic search across the complete knowledge base."""
-
-        try:
-            return self.collection.query(
-                query_embeddings=[query_embedding],
-                n_results=n_results
-            )
-        except Exception:
-            return None
-
-    def _process_results(
-        self,
-        results,
-        retrieved_chunks: list[dict],
-        seen_ids: set
-    ):
-        """Convert Chroma results into ResolveAI chunk objects."""
-
-        if not results:
-            return
-
-        if not results.get("documents"):
-            return
-
-        documents = results["documents"][0]
-
-        if not documents:
-            return
-
-        ids = results.get("ids", [[]])[0]
-        distances = results.get("distances", [[]])[0]
-        metadatas = results.get("metadatas", [[]])[0]
-
-        for i, document in enumerate(documents):
-
-            chunk_id = (
-                ids[i]
-                if i < len(ids)
-                else f"chunk_{len(retrieved_chunks)}"
-            )
-
-            # Avoid duplicate chunks when the same knowledge appears
-            # through multiple retrieval paths.
-            if chunk_id in seen_ids:
-                continue
-
-            seen_ids.add(chunk_id)
-
-            distance = (
-                distances[i]
-                if i < len(distances)
-                else 1.0
-            )
-
-            metadata = (
-                metadatas[i]
-                if i < len(metadatas) and metadatas[i]
-                else {}
-            )
-
-            match_score = self._calculate_match_score(distance)
-
-            retrieved_chunks.append({
-                "id": chunk_id,
-                "content": document,
-                "source": metadata.get(
-                    "source",
-                    "Unknown"
-                ),
-                "source_type": metadata.get(
-                    "source_type",
-                    "Knowledge Base"
-                ),
-                "category": metadata.get(
-                    "category",
-                    "General"
-                ),
-                "scenario": metadata.get(
-                    "scenario",
-                    "Standard Resolution"
-                ),
-                "distance": round(distance, 4),
-                "match_score": match_score
-            })
 
     def retrieve(
         self,
@@ -313,13 +259,11 @@ class KnowledgeRetriever:
         """
         Retrieve relevant knowledge chunks.
 
-        Process:
-        1. Detect relevant domain sources.
-        2. Search all matching source variants.
-        3. If targeted retrieval fails, use global semantic search.
-        4. Remove duplicate chunks.
-        5. Sort by relevance.
-        6. Apply relevance threshold.
+        If a domain is detected, retrieval is first restricted to the
+        corresponding expert playbook.
+
+        If no domain is detected, semantic search is performed across
+        the complete knowledge base.
         """
 
         if threshold is None:
@@ -327,69 +271,157 @@ class KnowledgeRetriever:
 
         detected_sources = self.detect_sources(query)
 
-        # Generate query embedding once.
+        if detected_sources:
+            print("\nDetected knowledge sources:")
+            for source in detected_sources:
+                print(f" - {source}")
+        else:
+            print("\nNo specific knowledge source detected.")
+            print("Searching across the complete knowledge base.")
+
+        # Generate query embedding
         query_embedding = self.model.encode(query).tolist()
 
+        results = None
+
+        # ---------------------------------------------------------
+        # TARGETED RETRIEVAL
+        # ---------------------------------------------------------
+        if detected_sources:
+
+            # If multiple expert playbooks are relevant, query each
+            # one separately and combine the results.
+            combined_results = []
+
+            for source in detected_sources:
+                try:
+                    source_results = self.collection.query(
+                        query_embeddings=[query_embedding],
+                        n_results=n_results,
+                        where={"source": source}
+                    )
+
+                    if (
+                        source_results
+                        and source_results.get("documents")
+                        and source_results["documents"][0]
+                    ):
+                        for i in range(
+                            len(source_results["documents"][0])
+                        ):
+                            combined_results.append({
+                                "id": source_results["ids"][0][i],
+                                "content": source_results["documents"][0][i],
+                                "metadata": source_results["metadatas"][0][i],
+                                "distance": source_results["distances"][0][i]
+                            })
+
+                except Exception as error:
+                    print(
+                        f"Warning: Could not search {source}: {error}"
+                    )
+
+            # Sort all targeted results by distance
+            combined_results.sort(
+                key=lambda x: x["distance"]
+            )
+
+            # Keep the best n_results
+            combined_results = combined_results[:n_results]
+
+            # Convert into the same structure used below
+            if combined_results:
+                results = {
+                    "ids": [[item["id"] for item in combined_results]],
+                    "documents": [[
+                        item["content"]
+                        for item in combined_results
+                    ]],
+                    "metadatas": [[
+                        item["metadata"]
+                        for item in combined_results
+                    ]],
+                    "distances": [[
+                        item["distance"]
+                        for item in combined_results
+                    ]]
+                }
+
+        # ---------------------------------------------------------
+        # GLOBAL SEMANTIC FALLBACK
+        # ---------------------------------------------------------
+        if (
+            not results
+            or not results.get("documents")
+            or len(results["documents"][0]) == 0
+        ):
+            results = self.collection.query(
+                query_embeddings=[query_embedding],
+                n_results=n_results
+            )
+
+        # ---------------------------------------------------------
+        # PROCESS RESULTS
+        # ---------------------------------------------------------
         retrieved_chunks = []
-        seen_ids = set()
 
-        # ---------------------------------------------------------
-        # TARGETED SEARCH
-        # ---------------------------------------------------------
-        for source in detected_sources:
+        if results and results.get("documents"):
 
-            results = self._query_source(
-                query_embedding=query_embedding,
-                source=source,
-                n_results=n_results
-            )
+            for i in range(len(results["documents"][0])):
 
-            self._process_results(
-                results=results,
-                retrieved_chunks=retrieved_chunks,
-                seen_ids=seen_ids
-            )
+                distance = results["distances"][0][i]
 
-        # ---------------------------------------------------------
-        # GLOBAL FALLBACK
-        # ---------------------------------------------------------
-        if not retrieved_chunks:
+                match_score = self._calculate_match_score(
+                    distance
+                )
 
-            results = self._query_all(
-                query_embedding=query_embedding,
-                n_results=n_results
-            )
+                print(
+                    f"Retrieved: "
+                    f"{results['metadatas'][0][i].get('scenario', 'Unknown')} "
+                    f"| Distance: {distance:.4f} "
+                    f"| Match: {match_score}%"
+                )
 
-            self._process_results(
-                results=results,
-                retrieved_chunks=retrieved_chunks,
-                seen_ids=seen_ids
-            )
+                # Discard chunks below relevance threshold
+                if match_score < threshold:
+                    continue
 
-        # ---------------------------------------------------------
-        # SORT BY BEST MATCH
-        # ---------------------------------------------------------
-        retrieved_chunks.sort(
-            key=lambda x: x["match_score"],
-            reverse=True
-        )
+                metadata = results["metadatas"][0][i]
 
-        # ---------------------------------------------------------
-        # APPLY THRESHOLD
-        # ---------------------------------------------------------
-        filtered_chunks = [
-            chunk
-            for chunk in retrieved_chunks
-            if chunk["match_score"] >= threshold
-        ]
+                chunk = {
+                    "id": results["ids"][0][i],
+                    "content": results["documents"][0][i],
+                    "source": metadata.get(
+                        "source",
+                        "Unknown"
+                    ),
+                    "source_type": metadata.get(
+                        "source_type",
+                        "Knowledge Base"
+                    ),
+                    "category": metadata.get(
+                        "category",
+                        "General"
+                    ),
+                    "scenario": metadata.get(
+                        "scenario",
+                        "Standard Resolution"
+                    ),
+                    "distance": round(
+                        distance,
+                        4
+                    ),
+                    "match_score": match_score
+                }
 
-        # Limit final context to the requested number.
-        return filtered_chunks[:n_results]
+                retrieved_chunks.append(chunk)
+
+        return retrieved_chunks
 
 
-# =============================================================
-# GLOBAL RETRIEVER INSTANCE
-# =============================================================
+# ---------------------------------------------------------
+# GLOBAL SINGLETON
+# ---------------------------------------------------------
 
 retriever = KnowledgeRetriever()
 
@@ -410,9 +442,9 @@ def retrieve_context(
     )
 
 
-# =============================================================
-# DIRECT TESTING
-# =============================================================
+# ---------------------------------------------------------
+# DIRECT TEST MODE
+# ---------------------------------------------------------
 
 if __name__ == "__main__":
 
@@ -427,36 +459,29 @@ if __name__ == "__main__":
         if test_query.lower() in ["exit", "quit"]:
             break
 
-        detected = retriever.detect_sources(test_query)
-
-        if detected:
-            print("\nDetected knowledge sources:")
-            for source in detected:
-                print(f" - {source}")
-        else:
-            print("\nNo specific domain detected. Using global search.")
-
         results = retrieve_context(
             test_query,
             n_results=3
         )
 
         print(
-            f"\nRetrieved {len(results)} chunks above threshold:\n"
+            f"\nRetrieved {len(results)} "
+            f"chunks above threshold:\n"
         )
 
-        for idx, result in enumerate(results, start=1):
+        for idx, res in enumerate(
+            results,
+            start=1
+        ):
 
             print(
                 f"[{idx}] "
-                f"{result['source']} | "
-                f"{result['scenario']} | "
-                f"Match: {result['match_score']}%"
+                f"{res['source']} | "
+                f"{res['scenario']} | "
+                f"Match: {res['match_score']}%"
             )
 
             print(
                 f"Content: "
-                f"{result['content'][:200]}..."
+                f"{res['content'][:250]}..."
             )
-
-            print()
