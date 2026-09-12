@@ -85,7 +85,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 ```ini
 GEMINI_API_KEY=your_gemini_api_key_here
-GEMINI_MODEL=gemini-3.5-flash
+GEMINI_MODEL=gemini-3.6-flash
 RESOLVEAI_API_URL=http://127.0.0.1:8000
 ```
 

@@ -110,7 +110,7 @@ Generate a clear and practical SAP SuccessFactors LMS support response.
 """
 
     try:
-        model_name = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+        model_name = os.getenv("GEMINI_MODEL", "gemini-3.6-flash")
         client = get_gemini_client()
 
         response = client.models.generate_content(
