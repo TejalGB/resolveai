@@ -216,7 +216,7 @@ for message in st.session_state.messages:
 
         if message["role"] == "assistant":
             # 1-Click Ticket Copier
-            with st.expander("📋 Copy Resolution for ServiceNow / Jira Ticket"):
+            with st.expander("📋 Copy Resolution for ServiceNow Ticket"):
                 st.code(message["content"], language="markdown")
 
             # Verified Source Badges
