@@ -12,7 +12,7 @@ ResolveAI empowers support teams to rapidly investigate, diagnose, and resolve c
 * **Intelligent Scenario Retrieval:** Custom semantic chunking preserving troubleshooting sections (`Decision Flow`, `Common Causes`, `Troubleshooting Steps`).
 * **Calibrated Relevance Matching:** Rejects out-of-scope inquiries and returns calibrated similarity confidence scores for every source.
 * **Deterministic SHA-256 Chunk Fingerprints:** Enables incremental updates without rebuilding the entire database from scratch.
-* **Support Engineer UI:** Built-in 1-click copy for ticketing systems (ServiceNow / Jira), quick-action troubleshooting queries, and verified source provenance.
+* **Support Engineer UI:** Built-in 1-click copy for ticketing systems (ServiceNow), quick-action troubleshooting queries, and verified source provenance.
 * **Decoupled Client-Server Design:** High-throughput FastAPI REST backend paired with an intuitive Streamlit frontend.
 
 ---
