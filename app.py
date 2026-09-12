@@ -7,10 +7,7 @@ import requests
 # CONFIGURATION
 # ============================================================
 
-API_URL = os.getenv(
-    "RESOLVEAI_API_URL",
-    "http://127.0.0.1:8000"
-)
+API_URL = os.getenv("RESOLVEAI_API_URL", "http://127.0.0.1:8000")
 
 
 # ============================================================
@@ -18,7 +15,7 @@ API_URL = os.getenv(
 # ============================================================
 
 st.set_page_config(
-    page_title="ResolveAI",
+    page_title="ResolveAI — SAP LMS Support Assistant",
     page_icon="🤖",
     layout="wide",
     initial_sidebar_state="expanded"
@@ -26,37 +23,47 @@ st.set_page_config(
 
 
 # ============================================================
-# CUSTOM STYLING
+# CLEAN, MODERN STYLING
 # ============================================================
 
 st.markdown(
     """
     <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+    }
 
     .main-title {
-        font-size: 40px;
+        font-size: 34px;
         font-weight: 700;
-        margin-bottom: 0px;
+        margin-bottom: 2px;
     }
 
     .subtitle {
-        font-size: 16px;
-        color: #888;
+        font-size: 15px;
+        color: #71717A;
         margin-bottom: 25px;
     }
 
-    .source-card {
-        padding: 10px;
-        border-radius: 8px;
-        margin-bottom: 8px;
+    .match-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #2563EB;
+        color: white;
     }
 
-    .status-box {
-        padding: 8px 12px;
-        border-radius: 8px;
-        font-size: 14px;
+    .source-box {
+        background-color: rgba(128, 128, 128, 0.05);
+        border-left: 3px solid #2563EB;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 10px;
     }
-
     </style>
     """,
     unsafe_allow_html=True
@@ -78,53 +85,29 @@ if "messages" not in st.session_state:
 prompt_to_submit = None
 
 with st.sidebar:
-
-    st.header("🤖 ResolveAI")
-
-    st.write(
-        "AI-powered troubleshooting assistant for "
-        "SAP SuccessFactors Learning."
-    )
+    st.markdown("### 🤖 **ResolveAI**")
+    st.caption("Troubleshooting assistant for **SAP SuccessFactors Learning**")
 
     st.divider()
 
+    st.markdown("##### 💬 **Common Inquiries**")
+    st.caption("Click any question to ask immediately:")
 
-    # --------------------------------------------------------
-    # QUICK PROMPTS
-    # --------------------------------------------------------
-
-    st.subheader("💡 Quick Troubleshooting")
-
-    st.caption(
-        "Select a common SAP SuccessFactors Learning issue:"
-    )
-
-    sample_prompts = [
+    sample_questions = [
         "Course assigned again after completion",
-        "SCORM content not launching",
-        "User missing from LMS after joining",
-        "Cannot access MyLearning",
-        "Course assigned unexpectedly"
+        "Online content is not launching",
+        "New employee is missing from LMS",
+        "Learner cannot access MyLearning",
+        "Course was assigned unexpectedly"
     ]
 
-    for prompt in sample_prompts:
-
-        if st.button(
-            f"👉 {prompt}",
-            use_container_width=True
-        ):
-            prompt_to_submit = prompt
+    for q in sample_questions:
+        if st.button(f"👉 {q}", use_container_width=True):
+            prompt_to_submit = q
 
     st.divider()
 
-    # --------------------------------------------------------
-    # CLEAR CHAT
-    # --------------------------------------------------------
-
-    if st.button(
-        "🗑 Clear Conversation",
-        use_container_width=True
-    ):
+    if st.button("🗑 Clear Conversation", use_container_width=True):
         st.session_state.messages = []
         st.rerun()
 
@@ -133,230 +116,158 @@ with st.sidebar:
 # MAIN HEADER
 # ============================================================
 
+st.markdown('<div class="main-title">ResolveAI 🤖</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="main-title">ResolveAI 🤖</div>',
-    unsafe_allow_html=True
-)
-
-st.markdown(
-    '<div class="subtitle">'
-    'Your SAP SuccessFactors Learning troubleshooting assistant'
-    '</div>',
+    '<div class="subtitle">Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System</div>',
     unsafe_allow_html=True
 )
 
 
 # ============================================================
-# WELCOME MESSAGE
+# WELCOME AREA (NATURAL ENGLISH QUESTIONS)
 # ============================================================
 
 if not st.session_state.messages:
+    st.markdown("##### 💡 **How can I help you today?**")
+    st.caption("Choose one of the common issues below, or describe your problem in the chat bar:")
 
-    st.info(
-        "👋 Describe an SAP SuccessFactors Learning issue "
-        "or select a troubleshooting scenario from the sidebar."
-    )
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if st.button(
+            "📌 **A user finished a course, but it was assigned to them again.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "Course assigned again after completion"
+
+        if st.button(
+            "📌 **Learners report that online course content is not launching.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "SCORM content not launching"
+
+    with col2:
+        if st.button(
+            "📌 **A new hire has joined, but their account cannot be found in LMS.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "User missing from LMS after joining"
+
+        if st.button(
+            "📌 **A user received a course assignment that they shouldn't have.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "Course assigned unexpectedly"
+
+    st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ============================================================
-# DISPLAY CHAT HISTORY
+# CHAT TIMELINE
 # ============================================================
 
 for message in st.session_state.messages:
-
     with st.chat_message(message["role"]):
-
         st.markdown(message["content"])
 
-        # ----------------------------------------------------
-        # ASSISTANT-ONLY INFORMATION
-        # ----------------------------------------------------
-
         if message["role"] == "assistant":
+            # 1-Click Ticket Copier
+            with st.expander("📋 Copy Resolution for ServiceNow / Jira Ticket"):
+                st.code(message["content"], language="markdown")
 
-            # Copy solution
-            with st.expander(
-                "📋 Copy Solution for ServiceNow / Jira"
-            ):
-                st.code(
-                    message["content"],
-                    language="markdown"
-                )
-
-            # Sources
+            # Verified Source Badges
             sources = message.get("sources", [])
-
             if sources:
-
-                with st.expander(
-                    "📚 Verified Knowledge Sources"
-                ):
-
-                    for source in sources:
-
+                with st.expander(f"📚 Verified Knowledge Sources ({len(sources)} playbooks cited)"):
+                    for src in sources:
                         st.markdown(
                             f"""
-                            **{source['source']}**
-
-                            Scenario: *{source['scenario']}*  
-                            Category: `{source['category']}`  
-                            Match: **{source['match_score']}%**
-                            """
+                            <div class="source-box">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <b>📖 {src['source']}</b>
+                                    <span class="match-badge">{src['match_score']}% Match</span>
+                                </div>
+                                <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
+                                    Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>
+                                </div>
+                            </div>
+                            """,
+                            unsafe_allow_html=True
                         )
 
-                        st.divider()
-
 
 # ============================================================
-# CHAT INPUT
+# CHAT INPUT & EXECUTION
 # ============================================================
 
-chat_input = st.chat_input(
-    "Describe your SAP SuccessFactors LMS issue..."
-)
-
+chat_input = st.chat_input("Describe your SAP LMS issue (e.g., 'User completed course but assigned again')...")
 question = prompt_to_submit or chat_input
 
-
-# ============================================================
-# PROCESS QUESTION
-# ============================================================
-
 if question:
-
-    # --------------------------------------------------------
-    # STORE USER MESSAGE
-    # --------------------------------------------------------
-
-    st.session_state.messages.append(
-        {
-            "role": "user",
-            "content": question,
-            "sources": []
-        }
-    )
+    # 1. Store & display user message
+    st.session_state.messages.append({
+        "role": "user",
+        "content": question,
+        "sources": []
+    })
 
     with st.chat_message("user"):
         st.markdown(question)
 
-    # --------------------------------------------------------
-    # GENERATE ASSISTANT RESPONSE
-    # --------------------------------------------------------
-
+    # 2. Call backend & display assistant response
     with st.chat_message("assistant"):
-
-        with st.spinner(
-            "ResolveAI is analyzing verified playbooks..."
-        ):
-
+        with st.spinner("Analyzing verified playbooks..."):
             try:
-
                 response = requests.post(
                     f"{API_URL.rstrip('/')}/ask",
-                    json={
-                        "question": question
-                    },
+                    json={"question": question},
                     timeout=120
                 )
-
                 response.raise_for_status()
-
                 data = response.json()
 
-                answer = data.get(
-                    "answer",
-                    "No answer was returned."
-                )
+                answer = data.get("answer", "No answer returned.")
+                sources = data.get("sources", [])
 
-                sources = data.get(
-                    "sources",
-                    []
-                )
-
-                # ------------------------------------------------
-                # ANSWER
-                # ------------------------------------------------
-
+                # Render response
                 st.markdown(answer)
 
-                # ------------------------------------------------
-                # COPY SOLUTION
-                # ------------------------------------------------
+                # 1-Click Ticket Copier
+                with st.expander("📋 Copy Resolution for ServiceNow Ticket"):
+                    st.code(answer, language="markdown")
 
-                with st.expander(
-                    "📋 Copy Solution for ServiceNow / Jira"
-                ):
-
-                    st.code(
-                        answer,
-                        language="markdown"
-                    )
-
-                # ------------------------------------------------
-                # SOURCES
-                # ------------------------------------------------
-
+                # Render verified knowledge sources
                 if sources:
-
-                    with st.expander(
-                        "📚 Verified Knowledge Sources"
-                    ):
-
-                        for source in sources:
-
+                    with st.expander(f"📚 Verified Knowledge Sources ({len(sources)} playbooks cited)"):
+                        for src in sources:
                             st.markdown(
                                 f"""
-                                **{source['source']}**
-
-                                Scenario: *{source['scenario']}*  
-                                Category: `{source['category']}`  
-                                Match: **{source['match_score']}%**
-                                """
+                                <div class="source-box">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <b>📖 {src['source']}</b>
+                                        <span class="match-badge">{src['match_score']}% Match</span>
+                                    </div>
+                                    <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
+                                        Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>
+                                    </div>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
                             )
 
-                            st.divider()
-
-                # ------------------------------------------------
-                # STORE ASSISTANT RESPONSE
-                # ------------------------------------------------
-
-                st.session_state.messages.append(
-                    {
-                        "role": "assistant",
-                        "content": answer,
-                        "sources": sources
-                    }
-                )
-
-            # ----------------------------------------------------
-            # ERROR HANDLING
-            # ----------------------------------------------------
+                # Store response
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": answer,
+                    "sources": sources
+                })
 
             except requests.exceptions.ConnectionError:
-
                 st.error(
-                    "⚠️ Unable to connect to the ResolveAI backend."
+                    f"⚠️ Unable to reach the ResolveAI backend at `{API_URL}`. "
+                    "Please make sure the FastAPI server is running (`uvicorn src.api.main:app --port 8000`)."
                 )
-
-                st.caption(
-                    f"Backend URL: {API_URL}"
-                )
-
             except requests.exceptions.Timeout:
-
-                st.error(
-                    "⚠️ The request took too long to complete. "
-                    "Please try again."
-                )
-
-            except requests.exceptions.HTTPError as error:
-
-                st.error(
-                    f"⚠️ Backend returned an HTTP error: {error}"
-                )
-
-            except Exception as error:
-
-                st.error(
-                    f"⚠️ An unexpected error occurred: {error}"
-                )
+                st.error("⚠️ The request timed out. Please try again.")
+            except Exception as e:
+                st.error(f"⚠️ An unexpected error occurred: {e}")
