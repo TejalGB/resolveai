@@ -1,3 +1,7 @@
+"""
+ResolveAI — Interactive Support Assistant for SAP SuccessFactors Learning.
+Provides real-time troubleshooting, source citations, and ticket resolutions.
+"""
 import os
 import streamlit as st
 import requests

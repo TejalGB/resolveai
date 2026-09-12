@@ -59,13 +59,11 @@ ResolveAI features 13 deep-domain expert playbooks and official SAP KBAs across 
 
 | Layer | Technology |
 | :--- | :--- |
-| **LLM Inference** | Google Gemini (`gemini-3.5-flash` / `gemini-3.6-flash`) |
-| **LLM SDK** | `google-genai` |
-| **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` (384 dims) |
-| **Vector Store** | `ChromaDB` (Persistent) |
-| **API Backend** | `FastAPI`, `Uvicorn`, `Pydantic v2` |
+| **LLM Model** | Google Gemini (`gemini-3.6-flash`) |
+| **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` |
+| **Vector Database** | `ChromaDB` |
+| **API Backend** | `FastAPI`, `Uvicorn`, `Pydantic` |
 | **Frontend UI** | `Streamlit` |
-| **Configuration** | `pydantic-settings` |
 
 ---
 
