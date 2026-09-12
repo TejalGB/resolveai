@@ -72,13 +72,13 @@ ResolveAI features 13 deep-domain expert playbooks and official SAP KBAs across 
 
 ## 🎯 Key Capabilities Demonstrated
 
-* **End-to-End RAG Architecture:** Designed and built a complete Retrieval-Augmented Generation pipeline connecting domain documents to an LLM.
+* **End-to-End RAG Development:** Built a complete Retrieval-Augmented Generation pipeline connecting domain documents to Google Gemini 3.6 Flash.
 * **Vector Search & Embeddings:** Implemented semantic search using ChromaDB and SentenceTransformers (`all-MiniLM-L6-v2`) with custom similarity scoring.
-* **Data Ingestion & Chunking:** Created an automated pipeline to clean, deduplicate, and chunk technical documents into structured knowledge vectors.
-* **Prompt Engineering & Grounding:** Engineered prompts with strict guardrails to prevent hallucinations and enforce factual, step-by-step troubleshooting.
-* **REST API Development:** Built asynchronous backend endpoints using FastAPI and Pydantic for clean data validation and structured responses.
-* **Full-Stack AI Prototyping:** Developed an interactive Streamlit user interface featuring source attribution, match confidence, and 1-click ticket copying.
-* **Performance & Optimization:** Implemented SHA-256 fingerprinting for incremental data updates, preventing expensive database rebuilds.
+* **Data Processing & Chunking:** Created an automated pipeline to clean, chunk, and index technical markdown documents into a vector database.
+* **Prompt Engineering & Grounding:** Designed structured prompts with strict guardrails to produce factual, step-by-step troubleshooting steps.
+* **REST API Development:** Built FastAPI endpoints using Pydantic to validate incoming tickets and return structured responses.
+* **Full-Stack AI Application:** Developed an interactive Streamlit interface featuring source citations, match percentages, and 1-click ticket export.
+* **Incremental Ingestion:** Implemented SHA-256 hashing to index only new or modified documents, saving processing time and compute resources.
 
 ---
 
