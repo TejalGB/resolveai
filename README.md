@@ -1,5 +1,7 @@
 # ResolveAI 🤖
 
+> 🚀 **Live Demo:** [https://resolveai-lms.streamlit.app](https://resolveai-lms.streamlit.app)
+
 An enterprise-grade, LLM-powered Retrieval-Augmented Generation (RAG) troubleshooting assistant specifically engineered for **SAP SuccessFactors Learning Management System (LMS)** support operations.
 
 ResolveAI empowers support teams to rapidly investigate, diagnose, and resolve complex LMS issues by grounding responses in verified resolution playbooks and official SAP Knowledge Base Articles (KBAs).
@@ -12,7 +14,8 @@ ResolveAI empowers support teams to rapidly investigate, diagnose, and resolve c
 * **Intelligent Scenario Retrieval:** Custom semantic chunking preserving troubleshooting sections (`Decision Flow`, `Common Causes`, `Troubleshooting Steps`).
 * **Calibrated Relevance Matching:** Rejects out-of-scope inquiries and returns calibrated similarity confidence scores for every source.
 * **Deterministic SHA-256 Chunk Fingerprints:** Enables incremental updates without rebuilding the entire database from scratch.
-* **Support Engineer UI:** Built-in 1-click copy for ticketing systems (ServiceNow), quick-action troubleshooting queries, and verified source provenance.
+* **ServiceNow Incident Resolution:** Generates structured troubleshooting steps and 1-click copyable ServiceNow ticket resolutions.
+* **Support Engineer UI:** Intuitive interface with quick-action common inquiries, 1-click ticket copy, and verified source provenance badges.
 * **Decoupled Client-Server Design:** High-throughput FastAPI REST backend paired with an intuitive Streamlit frontend.
 
 ---
@@ -34,10 +37,10 @@ Vector Similarity Search & Filtering (ChromaDB Persistent Store)
 Enriched Context Assembly + Citations Metadata
         │
         ▼
-Grounded Generation (Google Gemini 3.5 / 3.6 Flash via google-genai SDK)
+Grounded Generation (Google Gemini 3.6 Flash via google-genai SDK)
         │
         ▼
-Structured Output (Root Causes, Step-by-Step Resolution, Ticket-Ready Markdown)
+ServiceNow Incident Resolution (Incident Analysis, Admin Checklist, Work Notes)
 ```
 
 ---
