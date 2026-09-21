@@ -63,9 +63,17 @@ Step-by-step investigation checklist for the support engineer in SAP SuccessFact
 * Concrete areas to inspect (user records, tabs, settings, timestamps, or background jobs).
 * Clear IF-THEN branching logic (e.g., "If Event-Based retraining..." vs. "If Calendar-Based retraining...").
 
-### 📋 ServiceNow Ticket Documentation
-* **Internal Work Notes:** Concise technical summary of the findings and audit trail to log in the ServiceNow activity stream.
-* **Customer Resolution (Additional Comments):** Professional, user-friendly communication ready to send to the user/manager resolving the ticket.
+### 📋 ServiceNow Closure Notes
+Failure point/Cause Code: [Short technical description of the failure point based on context]
+Problem Description: [Description of the issue reported by the user]
+Impact: NA
+Workaround: NA
+Resolution steps taken/ Solution/ Fix/ Preventive action: [Detailed technical explanation of what was verified, why the issue occurred, and the resolution or preventive action taken per the context]
+Knowledge Object: NA
+Problem Ticket/Story: NA
+
+### ✉️ Customer Resolution (Additional Comments)
+[Professional, user-friendly communication ready to send to the learner/manager resolving the ticket]
 
 CONTEXT:
 {context}
