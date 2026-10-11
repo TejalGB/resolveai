@@ -250,19 +250,11 @@ class KnowledgeRetriever:
 
     def _calculate_match_score(self, distance: float) -> float:
         """
-        Convert Chroma distance into a 0-100 match score.
-
-        Current calibration:
-            similarity = 1 - (distance / 2)
-
-        The result is bounded between 0 and 100.
+        Convert Chroma cosine distance into a calibrated 0-100 match score.
+        For unit-normalized vectors with cosine metric:
+            cosine_similarity = 1.0 - cosine_distance
         """
-
-        similarity = max(
-            0.0,
-            1.0 - (distance / 2.0)
-        )
-
+        similarity = max(0.0, 1.0 - distance)
         return round(similarity * 100.0, 1)
 
     def retrieve(
@@ -294,8 +286,8 @@ class KnowledgeRetriever:
             print("\nNo specific knowledge source detected.")
             print("Searching across the complete knowledge base.")
 
-        # Generate query embedding
-        query_embedding = self.model.encode(query).tolist()
+        # Generate normalized query embedding matching normalized index
+        query_embedding = self.model.encode(query, normalize_embeddings=True).tolist()
 
         results = None
 

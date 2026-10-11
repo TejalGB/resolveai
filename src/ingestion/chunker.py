@@ -4,6 +4,7 @@ from pathlib import Path
 from collections import defaultdict
 
 from .loader import load_documents
+from src.config import settings
 
 
 # ============================================================
@@ -166,7 +167,33 @@ def chunk_expert_playbook(document):
         )
 
     # --------------------------------------------------------
-    # CHUNK 3: Common Causes + Resolution
+    # CHUNK 3: Common Scenarios & User Inquiries
+    # --------------------------------------------------------
+
+    scenarios_content = combine_sections(
+        content,
+        [
+            "Common Scenarios",
+            "Common User Question",
+            "Example Scenario"
+        ]
+    )
+
+    if scenarios_content:
+
+        chunks.append(
+            create_chunk(
+                document,
+                category,
+                incident,
+                problem_understanding,
+                "Common Scenarios and User Inquiries",
+                scenarios_content
+            )
+        )
+
+    # --------------------------------------------------------
+    # CHUNK 4: Common Causes + Resolution
     # --------------------------------------------------------
 
     resolution_content = combine_sections(
@@ -174,7 +201,9 @@ def chunk_expert_playbook(document):
         [
             "Common Causes",
             "Resolution Logic",
-            "Common Resolution"
+            "Common Resolution",
+            "Resolution",
+            "Expected System Behavior"
         ]
     )
 
@@ -465,14 +494,11 @@ def process_and_save_chunks():
 
     print(f"\nCreated {len(all_chunks)} chunks.")
 
-    output_dir = Path("data/processed")
-    output_dir.mkdir(parents=True, exist_ok=True)
-    output_file = output_dir / "chunks.json"
-
-    with open(output_file, "w", encoding="utf-8") as file:
+    settings.PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+    with open(settings.CHUNKS_FILE, "w", encoding="utf-8") as file:
         json.dump(all_chunks, file, indent=2, ensure_ascii=False)
 
-    print(f"Saved chunks to: {output_file}")
+    print(f"Saved chunks to: {settings.CHUNKS_FILE}")
 
     print("\nChunk distribution by document:\n")
     chunk_summary = defaultdict(list)

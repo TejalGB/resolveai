@@ -77,7 +77,8 @@ def run_pipeline(reindex: bool = False):
             pass
 
     collection = client.get_or_create_collection(
-        name=settings.CHROMA_COLLECTION_NAME
+        name=settings.CHROMA_COLLECTION_NAME,
+        metadata={"hnsw:space": "cosine"}
     )
 
     # Check which chunks are new vs existing (incremental upsert)
@@ -120,7 +121,8 @@ Content:
 """
         texts_to_embed.append(enriched_text)
 
-    embeddings = model.encode(texts_to_embed)
+    # Unit-normalized embeddings for exact cosine similarity
+    embeddings = model.encode(texts_to_embed, normalize_embeddings=True)
 
     ids = [chunk["id"] for chunk in chunks_to_embed]
     documents = [chunk["content"] for chunk in chunks_to_embed]
@@ -142,7 +144,25 @@ Content:
         embeddings=embeddings.tolist()
     )
 
-    # Attach embeddings to chunk list and save embedded_chunks.json
+    # Preserve existing embeddings during incremental runs
+    existing_embeddings_map = {}
+    if not reindex and settings.EMBEDDED_CHUNKS_FILE.exists():
+        try:
+            with open(settings.EMBEDDED_CHUNKS_FILE, "r", encoding="utf-8") as f:
+                prev_data = json.load(f)
+                existing_embeddings_map = {
+                    item["id"]: item["embedding"]
+                    for item in prev_data
+                    if "id" in item and "embedding" in item
+                }
+        except Exception:
+            pass
+
+    for chunk in all_chunks:
+        if chunk["id"] in existing_embeddings_map:
+            chunk["embedding"] = existing_embeddings_map[chunk["id"]]
+
+    # Attach new embeddings to chunk list and save embedded_chunks.json
     for chunk, emb in zip(chunks_to_embed, embeddings):
         chunk["embedding"] = emb.tolist()
 

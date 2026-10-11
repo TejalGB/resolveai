@@ -2,18 +2,26 @@ import chromadb
 from sentence_transformers import SentenceTransformer
 
 
-# Connect to our existing Chroma database
-client = chromadb.PersistentClient(path="data/chroma")
+from src.config import settings
+
+_client = None
+_collection = None
+_model = None
 
 
-# Get our existing collection
-collection = client.get_collection(
-    name="resolveai_knowledge"
-)
+def get_collection():
+    global _client, _collection
+    if _collection is None:
+        _client = chromadb.PersistentClient(path=str(settings.CHROMA_DIR))
+        _collection = _client.get_collection(name=settings.CHROMA_COLLECTION_NAME)
+    return _collection
 
 
-# Load the same embedding model
-model = SentenceTransformer("all-MiniLM-L6-v2")
+def get_model():
+    global _model
+    if _model is None:
+        _model = SentenceTransformer(settings.EMBEDDING_MODEL_NAME)
+    return _model
 
 
 def detect_source(query):
@@ -174,7 +182,9 @@ def retrieve_context(query, n_results=3):
     detected_source = detect_source(query)
 
     # Convert user question into embedding
-    query_embedding = model.encode(query).tolist()
+    query_embedding = get_model().encode(query, normalize_embeddings=True).tolist()
+
+    collection = get_collection()
 
     # Apply metadata filter if a source is detected
     if detected_source:

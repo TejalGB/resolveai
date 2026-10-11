@@ -111,8 +111,15 @@ st.markdown(
 # SESSION STATE
 # ============================================================
 
-if "messages" not in st.session_state:
-    st.session_state.messages = []
+if "conversations" not in st.session_state:
+    st.session_state.conversations = {"Session 1": []}
+
+if "active_session" not in st.session_state:
+    st.session_state.active_session = "Session 1"
+
+st.session_state.messages = st.session_state.conversations.get(
+    st.session_state.active_session, []
+)
 
 
 # ============================================================
@@ -144,16 +151,44 @@ with st.sidebar:
 
     st.divider()
 
+    st.markdown("##### 🗂️ **Session Manager**")
+    session_names = list(st.session_state.conversations.keys())
+
+    col_new, col_clear = st.columns(2)
+    with col_new:
+        if st.button("➕ New Chat", use_container_width=True):
+            new_session_name = f"Session {len(st.session_state.conversations) + 1}"
+            st.session_state.conversations[new_session_name] = []
+            st.session_state.active_session = new_session_name
+            st.session_state.messages = st.session_state.conversations[new_session_name]
+            st.rerun()
+
+    with col_clear:
+        if st.button("🗑 Clear Chat", use_container_width=True):
+            st.session_state.conversations[st.session_state.active_session] = []
+            st.session_state.messages = []
+            st.rerun()
+
+    if len(session_names) > 1:
+        current_index = session_names.index(st.session_state.active_session) if st.session_state.active_session in session_names else 0
+        selected_session = st.selectbox(
+            "Active Session:",
+            session_names,
+            index=current_index
+        )
+        if selected_session != st.session_state.active_session:
+            st.session_state.active_session = selected_session
+            st.session_state.messages = st.session_state.conversations[selected_session]
+            st.rerun()
+
+    st.divider()
+
     st.markdown("##### ⚙️ **Engine Status**")
     active_api = os.getenv("RESOLVEAI_API_URL", "").strip()
     if active_api:
         st.caption(f"Status: `Connected ({active_api})` 🟢")
     else:
         st.caption("Status: `Self-Contained RAG Pipeline` 🟢")
-
-    if st.button("🗑 Clear Conversation", use_container_width=True):
-        st.session_state.messages = []
-        st.rerun()
 
 
 # ============================================================
@@ -299,6 +334,7 @@ if question:
                     "content": answer,
                     "sources": sources
                 })
+                st.session_state.conversations[st.session_state.active_session] = st.session_state.messages
 
             except requests.exceptions.Timeout:
                 st.error("⚠️ The request timed out. Please try again.")

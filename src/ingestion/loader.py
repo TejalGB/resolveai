@@ -1,34 +1,11 @@
-from pathlib import Path
-
-
-EXPERT_PLAYBOOK_DIR = Path("data/raw/expert_playbooks")
-SAP_KBA_DIR = Path("data/raw/sap_kbas")
-
-
-# SAP KBAs that have been incorporated into the
-# corresponding Expert Resolution Playbooks.
-MERGED_KBAS = {
-    "assignment_profiles_sap.md",
-    "learning_assignment_sap.md",
-    "learning_history_completion_sap.md",
-    "login_authentication_sap.md",
-    "mylearning_access_sap.md",
-    "scorm_online_content_sap.md",
-    "user_connector_sap_knowledge.md",
-    "curriculum_retraining_sap.md",
-}
+from src.config import settings
 
 
 def load_documents():
     """
-    Load knowledge documents from the ResolveAI knowledge base.
-
-    Expert Resolution Playbooks are the primary troubleshooting
-    knowledge source.
-
-    SAP KBAs that have already been merged into the corresponding
-    Expert Resolution Playbooks are excluded from retrieval to
-    prevent duplicate knowledge.
+    Load knowledge documents from the ResolveAI knowledge base:
+    1. Expert Resolution Playbooks (troubleshooting checklists & resolution logic)
+    2. Official SAP KBAs (authoritative technical articles & background knowledge)
     """
 
     documents = []
@@ -36,13 +13,8 @@ def load_documents():
     # ---------------------------------------------------------
     # EXPERT RESOLUTION PLAYBOOKS
     # ---------------------------------------------------------
-
-    for file in EXPERT_PLAYBOOK_DIR.glob("*.md"):
-
-        content = file.read_text(
-            encoding="utf-8"
-        )
-
+    for file in sorted(settings.EXPERT_PLAYBOOK_DIR.glob("*.md")):
+        content = file.read_text(encoding="utf-8")
         documents.append({
             "source": file.name,
             "source_type": "Expert Resolution Playbook",
@@ -50,21 +22,10 @@ def load_documents():
         })
 
     # ---------------------------------------------------------
-    # SAP KBAs
+    # OFFICIAL SAP KBAs
     # ---------------------------------------------------------
-
-    excluded_kbas = []
-
-    for file in SAP_KBA_DIR.glob("*.md"):
-
-        if file.name in MERGED_KBAS:
-            excluded_kbas.append(file.name)
-            continue
-
-        content = file.read_text(
-            encoding="utf-8"
-        )
-
+    for file in sorted(settings.SAP_KBA_DIR.glob("*.md")):
+        content = file.read_text(encoding="utf-8")
         documents.append({
             "source": file.name,
             "source_type": "SAP Official Documentation / KBA",
@@ -74,26 +35,11 @@ def load_documents():
     # ---------------------------------------------------------
     # SUMMARY
     # ---------------------------------------------------------
-
-    print(
-        f"\nLoaded {len(documents)} knowledge documents:"
-    )
-
+    print(f"\nLoaded {len(documents)} knowledge documents:")
     for document in documents:
-        print(
-            f"- {document['source']} "
-            f"({document['source_type']})"
-        )
+        print(f" - {document['source']} ({document['source_type']})")
 
-    print(
-        f"\nTotal documents loaded: {len(documents)}"
-    )
-
-    print(
-        f"SAP KBAs excluded because they are merged: "
-        f"{len(excluded_kbas)}"
-    )
-
+    print(f"\nTotal documents loaded: {len(documents)}")
     return documents
 
 

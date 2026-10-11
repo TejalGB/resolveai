@@ -25,6 +25,16 @@
     "category": "Assignment Profiles and Learning Assignments",
     "incident": "A user reports that a learning item or curriculum was unexpectedly assigned, was not assigned when expected, or was assigned again after completion.",
     "problem_understanding": "Assignment Profiles in SAP SuccessFactors Learning automatically assign learning items and other learning objects to users based on defined user attributes and assignment criteria.\nAn assignment issue should therefore be investigated by determining:\n- What was assigned?\n- To whom was it assigned?\n- Why should it have been assigned?\n- Which Assignment Profile caused the assignment?\n- Whether the user currently meets the Assignment Profile criteria\n- Whether the assignment is manual, automatic, curriculum-based, or retraining-related\n---",
+    "scenario": "Common Scenarios and User Inquiries",
+    "content": "COMMON SCENARIOS:\n### 1. Course Was Not Assigned to the User\nA user expected to receive a course but cannot find it in their Learning Plan.\nPossible causes include:\n- User does not meet the Assignment Profile criteria.\n- User attributes do not match the expected criteria.\n- Assignment Profile has not been processed.\n- Learning item is not included in the Assignment Profile.\n- The Assignment Profile is inactive or not configured as expected.\n- The user was recently created or their attributes were recently changed and synchronization/assignment processing has not occurred yet.\n### 2. Course Was Assigned Unexpectedly\nA user receives a learning item that they believe they should not have.\nCheck:\n- Which Assignment Profile assigned the item.\n- Whether the user's attributes match the profile criteria.\n- Whether the user belongs to multiple Assignment Profiles.\n- Whether the item was also manually assigned.\n- Whether the item is part of a curriculum or other automatic assignment.\n### 3. Course Was Assigned Again After Completion\nA user reports:\n> \"I already completed this course. Why is it assigned again?\"\nPossible causes include:\n- Retraining configuration.\n- The course is part of a curriculum with retraining.\n- The user belongs to multiple Assignment Profiles containing the same item.\n- The course was manually assigned in addition to an Assignment Profile assignment.\n- The user was removed from and later re-added to an Assignment Profile.\n- User attributes changed, causing the user to enter an Assignment Profile again.\n- The completed item exists as a free-floating assignment while another assignment mechanism assigns it again.\nDo not assume that a repeated assignment is a system defect.\nFirst determine the source of the assignment.\n---",
+    "id": "1d9bd62514616637"
+  },
+  {
+    "source": "assignment_profiles.md",
+    "source_type": "Expert Resolution Playbook",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "A user reports that a learning item or curriculum was unexpectedly assigned, was not assigned when expected, or was assigned again after completion.",
+    "problem_understanding": "Assignment Profiles in SAP SuccessFactors Learning automatically assign learning items and other learning objects to users based on defined user attributes and assignment criteria.\nAn assignment issue should therefore be investigated by determining:\n- What was assigned?\n- To whom was it assigned?\n- Why should it have been assigned?\n- Which Assignment Profile caused the assignment?\n- Whether the user currently meets the Assignment Profile criteria\n- Whether the assignment is manual, automatic, curriculum-based, or retraining-related\n---",
     "scenario": "Common Causes and Resolution",
     "content": "COMMON RESOLUTION:\nIf a user was correctly assigned through an Assignment Profile, explain why the assignment occurred.\nIf the user was incorrectly included in the Assignment Profile population, review the user's relevant attributes and/or Assignment Profile criteria according to the organization's approved process.\nIf the learning item is repeatedly assigned, identify whether the cause is:\n- Multiple Assignment Profiles\n- Curriculum assignment\n- Retraining\n- Manual assignment\n- User attribute changes\nCorrect the underlying assignment mechanism rather than repeatedly removing the learning assignment.\n---",
     "id": "fc18b0396c6fa369"
@@ -75,6 +85,16 @@
     "category": "Instructor-Led Training and Class Enrollment",
     "incident": "A user reports that they cannot register for a class, cannot find an expected class, cannot enroll in a scheduled offering, or encounters an error while attempting to register.\nAdministrators may also report issues related to class configuration, enrollment, instructors, or scheduled offerings.\n---",
     "problem_understanding": "Instructor-Led Training (ILT) in SAP SuccessFactors Learning involves learning items, classes, scheduled offerings, enrollment rules, instructors, locations, and potentially costs or chargebacks.\nAn enrollment issue should therefore be investigated by identifying:\n- The learning item\n- The specific class/scheduled offering\n- The user's eligibility\n- Registration settings\n- Availability/capacity\n- Enrollment restrictions\n- Required approvals\n- Cost or chargeback configuration\n- Whether the issue affects one user or multiple users\n---",
+    "scenario": "Common Scenarios and User Inquiries",
+    "content": "COMMON SCENARIOS:\n### 1. User Cannot Register for a Class\nPossible causes include:\n- Self-registration is disabled.\n- The class is not available to the user.\n- The learning item is not available in the user's Library.\n- The class is full.\n- Registration dates have passed.\n- The user does not meet enrollment requirements.\n- An approval process is required.\n- A configuration issue prevents registration.\n### 2. User Cannot Find the Class\nCheck:\n- Learning item availability.\n- Library availability.\n- Class/scheduled offering status.\n- Registration period.\n- User access.\n- User eligibility.\nA class may exist in LMS but still not be available to a particular user.\n### 3. Self-Enrollment Is Not Available\nFor self-registration, verify:\n- The learning item is configured to allow self-registration.\n- The learning item is available to the user.\n- The relevant class is available.\n- The user has access to the required Library.\n- Any prerequisites or restrictions are satisfied.\n### 4. Class Registration Error\nIf the user receives an error during registration:\n- Capture the exact error message.\n- Identify the affected class.\n- Determine whether the issue affects one user or multiple users.\n- Check class configuration.\n- Check enrollment settings.\n- Check cost/chargeback configuration if applicable.\n### 5. Cost or Chargeback-Related Registration Issue\nSome instructor-led classes may have cost or chargeback information associated with them.\nIf registration is blocked because additional administrative configuration is required, check whether the relevant cost center, chargeback, or financial configuration is correctly maintained.\nDo not modify financial configuration without following the organization's approved process.\n### 6. User Wants to Register for Another Class/Cohort\nA user may be prevented from registering for another class of the same learning item.\nCheck whether the learning item has restrictions on multiple class registrations within a defined period.\n---",
+    "id": "79f30f57a322ed46"
+  },
+  {
+    "source": "class_enrollment_issues.md",
+    "source_type": "Expert Resolution Playbook",
+    "category": "Instructor-Led Training and Class Enrollment",
+    "incident": "A user reports that they cannot register for a class, cannot find an expected class, cannot enroll in a scheduled offering, or encounters an error while attempting to register.\nAdministrators may also report issues related to class configuration, enrollment, instructors, or scheduled offerings.\n---",
+    "problem_understanding": "Instructor-Led Training (ILT) in SAP SuccessFactors Learning involves learning items, classes, scheduled offerings, enrollment rules, instructors, locations, and potentially costs or chargebacks.\nAn enrollment issue should therefore be investigated by identifying:\n- The learning item\n- The specific class/scheduled offering\n- The user's eligibility\n- Registration settings\n- Availability/capacity\n- Enrollment restrictions\n- Required approvals\n- Cost or chargeback configuration\n- Whether the issue affects one user or multiple users\n---",
     "scenario": "Common Causes and Resolution",
     "content": "COMMON RESOLUTION:\nIf the user is not eligible or the class is unavailable, explain the applicable restriction and provide an alternative where appropriate.\nIf self-registration or class configuration is incorrect, update the configuration through the appropriate administration process.\nIf the issue is related to cost/chargeback configuration, follow the approved financial administration process.\nIf the issue persists despite correct configuration, collect the relevant details and escalate.\n---",
     "id": "c68917645da552a2"
@@ -118,6 +138,16 @@
     "scenario": "Decision Flow",
     "content": "User reports content issue\n→ Identify learning item\n→ Identify content object/type\n→ Determine whether content launches\n→ Reproduce issue if possible\nIf content does not launch:\n→ Check error\n→ Check content/configuration\n→ Check user/browser\n→ Investigate or escalate\nIf content launches but does not complete:\n→ Check completion requirements\n→ Check user actions\n→ Check content completion status\n→ Check item configuration\nIf completion exists in Learning History:\n→ Check assignment/curriculum/retraining behavior\nIf multiple users are affected:\n→ Treat as potential content/configuration issue\nIf only one user is affected:\n→ Investigate user/session/browser/environment\n---",
     "id": "b024073e33f2659f"
+  },
+  {
+    "source": "content_issues.md",
+    "source_type": "Expert Resolution Playbook",
+    "category": "Learning Content and Completion",
+    "incident": "A user reports that they cannot launch learning content, the content does not work correctly, or the system does not record completion after the user finishes the content.",
+    "problem_understanding": "Content-related issues can occur at different stages of the learning process:\n1. The user cannot launch the content.\n2. The content launches but displays an error.\n3. The content works but does not record completion.\n4. The content records completion incorrectly.\n5. The user completes the content but the learning item remains assigned.\nThe first step is therefore to identify whether the problem is related to launching, content behavior, completion tracking, or learning item configuration.\n---",
+    "scenario": "Common Scenarios and User Inquiries",
+    "content": "COMMON SCENARIOS:\n### 1. Content Does Not Launch\nThe user clicks the learning item but the content does not open.\nPossible causes include:\n- Incorrect content configuration.\n- Broken or unavailable content.\n- Incorrect content object configuration.\n- Browser/session issues.\n- Access or permission problems.\n- Content package configuration problems.\nFirst determine whether the issue affects only one user or multiple users.\n### 2. Content Displays an Error\nThe user launches the content but receives an error such as:\n- 404 error\n- 403 error\n- Session/logout issue\n- Content loading error\n- Blank page\nCapture the exact error message and determine whether the problem is specific to the user, browser, content object, or learning item.\n### 3. Content Does Not Mark the Learning Item Complete\nThe user completes the course but the learning item remains incomplete or assigned.\nPossible causes include:\n- Content did not send the expected completion status.\n- Completion requirements were not satisfied.\n- Item-level completion settings are incorrect.\n- User did not complete all required content.\n- Required survey or other completion activity was not completed.\n- Content requires the user to exit/close/submit the course for completion to be recorded.\n- SCORM/AICC communication is not working as expected.\n### 4. SCORM/AICC Completion Issues\nFor SCORM or AICC content, the LMS depends on the content package communicating status and completion information correctly.\nIf the content reports a status that does not match the expected LMS configuration, the learning item may not be marked complete.\nCheck:\n- Content type\n- Content object\n- Completion status sent by the content\n- Item completion settings\n- Expected completion status\n- Content package configuration\n### 5. Video Content Does Not Complete\nSome video content may not communicate completion in the same way as SCORM/AICC content.\nIf the user watches the video but the learning item remains incomplete, check how the content object and learning item are configured to determine completion.\n---",
+    "id": "d1e952caa518001c"
   },
   {
     "source": "content_issues.md",
@@ -215,9 +245,19 @@
     "category": "Curricula and Retraining",
     "incident": "A user reports that they have already completed a course, but the course is still assigned to them and they continue to receive notifications asking them to complete it.",
     "problem_understanding": "A completed learning item remaining assigned does not necessarily indicate an LMS defect.\nIf the learning item is part of a curriculum and retraining is configured, the system may assign the learning item again according to the configured retraining rules.\nThe user may therefore see the course as assigned and continue receiving notifications even though they completed a previous instance of the course.\nThe key distinction is:\n- Previous completion indicates that the learner completed an earlier learning requirement.\n- The current curriculum requirement determines whether the learner needs to complete the learning item again.\nTherefore, the analyst should investigate the curriculum and retraining configuration before considering the assignment incorrect.\n---",
+    "scenario": "Common Scenarios and User Inquiries",
+    "content": "COMMON USER QUESTION:\n> \"I already completed this course. Why is it still assigned to me and why am I still receiving notifications?\"\n### Recommended Investigation\nDo not immediately remove the assignment or treat the issue as a defect.\nFirst verify:\n1. Curriculum association\n2. Retraining configuration\n3. Retraining basis\n4. Basis/event date\n5. Retraining number\n6. Retraining period\n7. Required date\n8. Effective date, if applicable\n9. Previous completion rules, if applicable\n---\n\nEXAMPLE SCENARIO:\nA user completed a mandatory course but reports that the same course is still assigned and they continue receiving reminders.\nThe analyst checks the curriculum and finds that the course has a yearly retraining requirement.\nThe analyst then checks the applicable retraining basis and date, calculates the next retraining requirement, and verifies the required date.\nIf the current assignment corresponds to the configured retraining cycle, the assignment and notifications are considered expected behavior and the user can be informed accordingly.\n---",
+    "id": "42e0628eead83599"
+  },
+  {
+    "source": "curriculum_retraining.md",
+    "source_type": "Expert Resolution Playbook",
+    "category": "Curricula and Retraining",
+    "incident": "A user reports that they have already completed a course, but the course is still assigned to them and they continue to receive notifications asking them to complete it.",
+    "problem_understanding": "A completed learning item remaining assigned does not necessarily indicate an LMS defect.\nIf the learning item is part of a curriculum and retraining is configured, the system may assign the learning item again according to the configured retraining rules.\nThe user may therefore see the course as assigned and continue receiving notifications even though they completed a previous instance of the course.\nThe key distinction is:\n- Previous completion indicates that the learner completed an earlier learning requirement.\n- The current curriculum requirement determines whether the learner needs to complete the learning item again.\nTherefore, the analyst should investigate the curriculum and retraining configuration before considering the assignment incorrect.\n---",
     "scenario": "Common Causes and Resolution",
-    "content": "RESOLUTION LOGIC:\nUser completed course\n→ Course is still assigned / notifications continue\n→ Check whether course is part of a curriculum\n→ Determine initial vs. retraining requirement\n→ Check retraining configuration\n→ Identify event-based or calendar-based retraining\n→ Check applicable basis/event date\n→ Check retraining number and period\n→ Calculate next retraining requirement\n→ Check required date\n→ Check effective date if curriculum was recently changed\n→ Determine whether current assignment is expected\n---",
-    "id": "f48c49e01b261cd8"
+    "content": "RESOLUTION LOGIC:\nUser completed course\n→ Course is still assigned / notifications continue\n→ Check whether course is part of a curriculum\n→ Determine initial vs. retraining requirement\n→ Check retraining configuration\n→ Identify event-based or calendar-based retraining\n→ Check applicable basis/event date\n→ Check retraining number and period\n→ Calculate next retraining requirement\n→ Check required date\n→ Check effective date if curriculum was recently changed\n→ Determine whether current assignment is expected\n---\n\nRESOLUTION:\nIf the current assignment matches the configured retraining requirement, explain to the user that the assignment and notifications are expected because the learning item has a recurring retraining requirement.\nIf the assignment does not match the configured retraining rules, investigate the curriculum configuration and assignment further.\nIf the issue cannot be resolved through standard investigation, collect the relevant configuration, dates, user information, and learning item details and escalate to the appropriate support team.\n---\n\nEXPECTED SYSTEM BEHAVIOR:\nIf the learning item is part of a curriculum with a valid retraining requirement, the course may remain assigned or be assigned again when the next retraining requirement becomes applicable.\nThe learner may also continue receiving notifications associated with the current requirement.\nIn such cases, the behavior may be expected system behavior rather than a defect.\n---",
+    "id": "6be536b1a8c9be29"
   },
   {
     "source": "curriculum_retraining.md",
@@ -545,6 +585,16 @@
     "category": "Security Domain and Administrator Access",
     "incident": "An administrator reports that they cannot view, access, edit, or perform an action on a particular LMS entity such as a class, learning item, user, instructor record, or report.",
     "problem_understanding": "Administrator access in SAP SuccessFactors Learning is controlled through a combination of:\n- Security Domains\n- Security Domain Groups\n- Administrator Roles\n- Permissions\n- Entity and functional restrictions\nMajor LMS entities such as users, learning items, classes, curricula, and content objects can have an associated Security Domain.\nIf an administrator does not have access to the Security Domain associated with an entity, they may be unable to view or perform actions on that entity.\nTherefore, an administrator access issue should not automatically be treated as a system defect.\n---",
+    "scenario": "Common Scenarios and User Inquiries",
+    "content": "COMMON SCENARIOS:\n### 1. Administrator Cannot Access a Class\nAn administrator may report that they cannot view or access a particular class or scheduled offering.\nThe class may belong to a Security Domain that is not included in the administrator's permitted domains.\nFor instructor-led training, also consider whether the administrator has the appropriate role and permissions for accessing classes.\n### 2. Administrator Cannot View or Run Reports\nAn administrator may report that they cannot see or run a particular report.\nReport access can depend on:\n- Report availability/publication\n- Administrator permissions\n- Security Domain access\n- Run Report permission\nA report may therefore be visible to one administrator but unavailable to another.\n### 3. Administrator Cannot View a Learning Item\nAn administrator may be unable to access a particular learning item because the learning item belongs to a Security Domain outside the administrator's access.\n### 4. Administrator Cannot Access Other LMS Entities\nSimilar access issues may occur with:\n- Users\n- Curricula\n- Content\n- Classes\n- Learning items\n- Instructor-related records\n- Reports\n---",
+    "id": "be7162a88463e35a"
+  },
+  {
+    "source": "security_and_admin_access.md",
+    "source_type": "Expert Resolution Playbook",
+    "category": "Security Domain and Administrator Access",
+    "incident": "An administrator reports that they cannot view, access, edit, or perform an action on a particular LMS entity such as a class, learning item, user, instructor record, or report.",
+    "problem_understanding": "Administrator access in SAP SuccessFactors Learning is controlled through a combination of:\n- Security Domains\n- Security Domain Groups\n- Administrator Roles\n- Permissions\n- Entity and functional restrictions\nMajor LMS entities such as users, learning items, classes, curricula, and content objects can have an associated Security Domain.\nIf an administrator does not have access to the Security Domain associated with an entity, they may be unable to view or perform actions on that entity.\nTherefore, an administrator access issue should not automatically be treated as a system defect.\n---",
     "scenario": "Common Causes and Resolution",
     "content": "COMMON RESOLUTION:\nIf the administrator does not have access to the Security Domain associated with the required entity, the issue may be resolved by following the organization's approved security/role process to provide the appropriate access.\nIf the administrator has the correct Security Domain but lacks the required action, review the administrator's role and permissions.\nIf the issue involves a report, verify both the report's Security Domain access and the relevant Run Report permission.\n---",
     "id": "37f96a8960bcf158"
@@ -618,5 +668,945 @@
     "scenario": "Escalation and Evidence",
     "content": "EVIDENCE FOR ESCALATION:\nCollect:\n- User ID\n- Username\n- Source-system status\n- LMS status\n- Hire/profile creation date\n- Relevant source information\n- Expected synchronization date\n- Connector job or report\n- Whether the user was picked up\n- Connector processing result\n- User-specific error details\n- Expected behavior\n- Actual behavior\n---",
     "id": "52ec58af5743c481"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Profiles",
+    "content": "In SAP SuccessFactors Learning, Assignment Profiles are used to automatically assign learning based on employee or learner attributes.\n\nAssignment Profiles use a set of rules to identify users who match specific criteria. The matching users are grouped into an Assignment Profile pool, and learning entities can then be assigned to those users.\n\nAssignment Profiles can be used to assign entities such as:\n\n- Learning Items\n- Curricula\n- Programs\n- Libraries\n- Recommended learning entities\n- User roles\n\nFor example, an Assignment Profile can identify users based on attributes such as location, job code, organization, department, or other user attributes and assign the relevant learning automatically.\n\n---",
+    "id": "747d8dadc7b5d817"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Profile Rules",
+    "content": "Assignment Profile rules determine which users belong to an Assignment Profile.\n\nEach user is evaluated against the rules configured in the Assignment Profile.\n\nWhen the configured rules evaluate as true, the user becomes a member of the Assignment Profile pool.\n\nRules can evaluate user attributes such as:\n\n- Country or region\n- Job code\n- Organization\n- Department\n- Address-related attributes\n- Security domain\n- Custom user attributes\n- Other available learner attributes\n\nAssignment Profile rules can also contain groups of conditions.\n\nGroups can be used to create more complex rule logic.\n\nSAP recommends using Preview Users when creating or modifying Assignment Profile rules to verify which users are captured by the configured criteria.\n\n---",
+    "id": "41be179281aa4fac"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Attribute Changes and Assignment Behavior",
+    "content": "Assignment Profiles are dynamic.\n\nAs user attributes change, users may automatically enter or leave Assignment Profile membership when the Assignment Profile is processed.\n\nFor example:\n\n- A user changes location\n- A user changes job code\n- A user changes department\n- A user moves to another organization\n- A relevant custom attribute changes\n\nThese changes may cause the user to meet or no longer meet Assignment Profile criteria.\n\nAs a result, learning assignments may also change.\n\nWhen investigating an unexpected learning assignment, recent changes to user attributes should therefore be considered.\n\n---",
+    "id": "9cd1d347f8c53dd7"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Automatic Assignment Processing",
+    "content": "Assignment Profiles require processing to update user pools and learning assignments.\n\nThe Assignment Profile Execute Updates process evaluates Assignment Profile rules and adjusts:\n\n- Assignment Profile membership\n- User pools\n- Learning assignments\n\nAssignment Profiles can be scheduled to update automatically.\n\nThe Assignment Profile Execute Updates process is available through:\n\nSystem Administration\n→ Automatic Processes\n→ Assignment Profile Execute Updates\n\nWhen the process runs, it evaluates the configured Assignment Profiles and updates users and assignments accordingly.\n\nA change to an Assignment Profile may require the appropriate Execute Changes or update process before the new assignment behavior takes effect.\n\n---",
+    "id": "8622d375df2def3f"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Assigned Through Assignment Profiles",
+    "content": "Assignment Profiles can automatically assign learning to all users who match the configured rules.\n\nThe assignment process generally involves:\n\n1. Defining Assignment Profile criteria.\n2. Identifying users who match the criteria.\n3. Creating the Assignment Profile user pool.\n4. Associating learning entities with the Assignment Profile.\n5. Executing changes or allowing the scheduled Assignment Profile update process to run.\n6. Updating user learning assignments.\n\nIf a user matches the Assignment Profile criteria, the assignment may be expected.\n\n---",
+    "id": "2f44bede8ed226ec"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Checking Assignment Sources",
+    "content": "SAP SuccessFactors Learning provides methods for identifying Assignment Profiles associated with learning entities.\n\nFor a Learning Item:\n\nLearning Administration\n→ Learning Activities\n→ Items\n→ Open the relevant Learning Item\n→ Assignment Profiles\n\nThis can be used to identify Assignment Profiles that automatically assign the Learning Item.\n\nFor a Curriculum:\n\nLearning Administration\n→ Learning Activities\n→ Curricula\n→ Open the relevant Curriculum\n→ Assignment Profiles\n\nThis can be used to identify Assignment Profiles that automatically assign the Curriculum.\n\nWhen troubleshooting an unexpected assignment, administrators should identify the Assignment Profile associated with the learning entity before modifying the assignment.\n\n---",
+    "id": "7224c3aaf5d60e83"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Previewing Assignment Profile Users",
+    "content": "Assignment Profile rules should be validated before changes are executed.\n\nThe Preview Users functionality can be used to identify the users captured by the configured Assignment Profile rules.\n\nThis helps administrators verify:\n\n- Which users match the Assignment Profile\n- Whether the intended population is included\n- Whether unintended users are included\n- Whether user attributes are producing the expected result\n\nPreviewing users is particularly important when Assignment Profile rules are changed.\n\n---",
+    "id": "c3f4188a8d66d887"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Multiple Learning Assignment Methods",
+    "content": "Although Assignment Profiles are commonly used for automatic learning assignments, learning can also be assigned through other methods.\n\nPossible assignment methods include:\n\n- Assignment Profiles\n- Curriculum assignments\n- Learning job codes\n- Administrator direct assignment\n- Bulk assignment\n- Self-assignment\n- Manager or peer assignment\n- Learning recommendations\n- Other configured learning processes\n\nTherefore, the presence of a learning assignment does not automatically mean that it was created by an Assignment Profile.\n\nThe assignment source should be identified before making configuration changes.\n\n---",
+    "id": "4b5de28e9336e546"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Profile Status and Changes",
+    "content": "Assignment Profiles can actively affect large numbers of users and learning assignments.\n\nChanges to Assignment Profile rules or associated learning entities can therefore have a broad impact.\n\nBefore executing Assignment Profile changes:\n\n- Review the configured rules\n- Preview affected users\n- Verify the learning entities associated with the profile\n- Confirm the intended business requirement\n- Verify that unintended users are not included\n\nAssignment Profile changes should follow the organization's approved configuration and change management process.\n\n---",
+    "id": "3da67c08821765e0"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "Unexpected learning assignment reported\n→ Identify the Learning Item, Curriculum, or Program\n→ Identify the affected user\n→ Check the learning entity for associated Assignment Profiles\n→ Review Assignment Profile rules\n→ Compare user attributes with the configured criteria\n→ Check whether the user belongs to the Assignment Profile pool\n→ Review recent user attribute changes\n→ Check whether Assignment Profile updates were processed\n→ Check for multiple Assignment Profiles\n→ Check for alternative assignment methods\nIf Assignment Profile criteria match:\n→ Assignment may be expected\nIf Assignment Profile criteria do not match:\n→ Investigate user data, rule configuration, or processing behavior\nIf another assignment method is identified:\n→ Investigate the applicable assignment source\nBefore modifying or removing an assignment:\n→ Identify the underlying assignment mechanism\n→ Follow the approved configuration process\n---",
+    "id": "bbae43be47df790e"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Assignment Profiles are based on user attributes and configured rules.\n- User attribute changes can affect Assignment Profile membership.\n- Assignment Profiles can automatically add or remove users from assignment pools when processed.\n- Assignment Profile Execute Updates controls the automatic update of pools and assignments.\n- Preview Users should be used to validate Assignment Profile rules.\n- A learning assignment may originate from mechanisms other than Assignment Profiles.\n- Multiple Assignment Profiles may potentially affect the same user or learning entity.\n- Assignment sources should be identified before manually removing learning assignments.\n- Changes to Assignment Profiles can affect a large user population.\n- Assignment Profile modifications should follow approved configuration and change management procedures.\n---",
+    "id": "75f9f963ffd0a127"
+  },
+  {
+    "source": "assignment_profiles_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Assignment Profiles and Learning Assignments",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating unexpected learning assignments, review:\n- Learning Item or Curriculum ID\n- Affected user\n- Assignment Profile associated with the learning entity\n- Assignment Profile rules\n- User attributes used in the rules\n- Recent changes to user information\n- Assignment Profile user pool\n- Preview Users results\n- Assignment Profile processing status\n- Assignment Profile Execute Updates process\n- Other Assignment Profiles that may assign the same learning\n- Alternative assignment methods\n- Curriculum or job code assignment behavior\n---",
+    "id": "fc6b7bacfac14ecb"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Curricula and Learning Qualification",
+    "content": "In SAP SuccessFactors Learning, curricula are used to organize learning items into structured qualification requirements.\n\nA curriculum can contain learning items that users must complete to achieve or maintain qualification.\n\nRetraining can be configured within curricula when users are required to periodically complete the same learning again.\n\nFor example, a user may be required to complete a course every year to maintain qualification.\n\nRetraining is configured at the curriculum content level and determines how future learning requirements are calculated.\n\n---",
+    "id": "50edd2d70de15bb2"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Retraining Behavior",
+    "content": "When retraining is configured for a learning item in a curriculum, the learning item can remain assigned to the user even after completion.\n\nThe system recalculates the next required date according to the retraining configuration.\n\nFrom the learner's perspective, the learning item may appear to remain permanently assigned.\n\nFor example:\n\nA user completes a course with annual retraining.\n\nInstead of disappearing permanently from the user's assignments, the course remains associated with the curriculum and the next required date is calculated for the next retraining period.\n\nTherefore, a completed course appearing again or remaining assigned does not automatically indicate an incorrect assignment.\n\n---",
+    "id": "78b634e26432e0ba"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Initial Training and Retraining",
+    "content": "Curriculum content can have separate configurations for:\n\n- Initial training\n- Retraining\n\nThe initial training configuration determines the first learning requirement.\n\nThe retraining configuration determines future recurring requirements after the initial assignment.\n\nThese should be investigated separately.\n\nA learning item may have:\n\n- Initial training without retraining\n- Retraining requirements after initial completion\n- Different initial and retraining periods\n\nIf retraining is not configured, the assignment may behave like a normal learning assignment and may no longer remain active after completion.\n\n---",
+    "id": "a9e2710d16199212"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Retraining Number and Period",
+    "content": "SAP SuccessFactors Learning uses the Retraining Number together with the Retraining Period to determine the frequency of retraining.\n\nFor example:\n\n- 365 Days\n- 12 Months\n- 1 Year\n\nThese values determine the cadence at which users are required to complete the learning again.\n\nThe available time units can include:\n\n- Days\n- Weeks\n- Quarters\n- Years\n\nThe configured number and period should always be reviewed when investigating recurring learning assignments.\n\n---",
+    "id": "a3b2e4a636af9ec1"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Event-Based Retraining",
+    "content": "Event-based retraining calculates the next training period based on an event.\n\nFor initial assignments, the event can be the date when the curriculum or learning item is assigned.\n\nFor retraining, the relevant event is generally the user's completion of the learning item.\n\nFor example:\n\nIf retraining is configured as Event-based with a period of 365 days, the user's completion event is used to calculate the next retraining requirement.\n\nDifferent users may therefore have different required dates depending on when they completed the learning.\n\nWhen investigating unexpected required dates, the relevant completion or assignment event should be checked.\n\n---",
+    "id": "72c1220e0d47d62e"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Calendar-Based Retraining",
+    "content": "Calendar-based retraining uses a fixed calendar structure to determine training periods and required dates.\n\nAll users can therefore follow the same defined training period.\n\nA Basis Date is used when Calendar is selected as the retraining basis.\n\nThe Basis Date establishes the calendar periods used to calculate required dates.\n\nDepending on when users receive the assignment, users may have different amounts of time available before the next common required date.\n\nWhen investigating calendar-based retraining, verify:\n\n- Retraining basis\n- Basis Date\n- Retraining number\n- Retraining period\n- Applicable calendar period\n\n---",
+    "id": "26f2773495343a82"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Required Date Calculation",
+    "content": "The Required Date represents the next date by which the user must complete the learning requirement.\n\nSAP SuccessFactors Learning calculates required dates using the curriculum configuration.\n\nRelevant configuration can include:\n\n- Initial Number\n- Initial Period\n- Initial Basis\n- Retraining Number\n- Retraining Period\n- Retraining Basis\n- Required Date Basis\n- Basis Date\n\nThe Required Date should be compared with:\n\n- Assignment date\n- Previous completion date\n- Current completion status\n- Retraining configuration\n\nThis helps determine whether a recurring assignment is expected.\n\n---",
+    "id": "890b339aaf29ce9a"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Required Date Basis",
+    "content": "The Required Date Basis determines the starting point used for required date calculations.\n\nDepending on the configuration, the system may use:\n\n- Assignment Date\n- Hire Date\n\nWhen Assignment Date is used, calculations are based on when the curriculum was assigned to the user.\n\nWhen Hire Date is used, calculations are based on the user's hire date.\n\nChanges to a user's hire date can affect required date calculations when Hire Date is configured as the Required Date Basis.\n\n---",
+    "id": "51fe3a24ad20c624"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Previous Completions",
+    "content": "When a curriculum is assigned, SAP SuccessFactors Learning can evaluate the user's Learning History for previous completions.\n\nA previous completion may affect:\n\n- Current completion status\n- Curriculum requirements\n- Next retraining required date\n\nThe system can also be configured to ignore previous completions older than a specified period.\n\nThis prevents very old completion records from incorrectly affecting current curriculum requirements.\n\nWhen investigating a curriculum issue involving historical completions, check:\n\n- Previous completion date\n- Learning History\n- Ignore Previous Completions configuration\n- Retraining configuration\n\nDo not assume that every historical completion automatically satisfies the current curriculum requirement.\n\n---",
+    "id": "3891a9a8312c1acd"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Curriculum Content Changes and Effective Dates",
+    "content": "Changes to curriculum content can affect users depending on the effective date of the change.\n\nFor example, when a new learning item is added to a curriculum:\n\n- A future effective date may delay when the new requirement affects users.\n- A past or current effective date may cause the requirement to affect users immediately.\n\nEffective dates should therefore be reviewed when users report unexpected new assignments or changes to curriculum completion status.\n\n---",
+    "id": "ea55c0d340153da2"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Reassignments and Curriculum Assignments",
+    "content": "SAP SuccessFactors Learning treats learning items assigned through a curriculum as part of the curriculum assignment structure.\n\nWhen retraining is configured, repeated requirements can be treated as part of the same curriculum assignment.\n\nRemoving an individual learning item may not always be the correct resolution when the item is required through a curriculum.\n\nThe underlying curriculum assignment should be investigated before manually removing learning assignments.\n\nDepending on the situation, the issue may require investigation of:\n\n- The curriculum assignment\n- Curriculum content\n- Retraining configuration\n- Assignment source\n\n---",
+    "id": "3bfc3ced514e64ab"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User reports that a completed course remains assigned or appears again\n→ Identify the Learning Item and Curriculum\n→ Verify whether the item is part of a curriculum\n→ Check whether retraining is configured\n→ Determine whether the current requirement is Initial Training or Retraining\n→ Check Retraining Number and Period\n→ Identify whether the Retraining Basis is Event or Calendar\nIf Event:\n→ Check the relevant assignment or completion event date\nIf Calendar:\n→ Check the Basis Date and applicable calendar period\n→ Review the Required Date\n→ Compare the Required Date with the completion date and retraining configuration\n→ Check previous completion records where relevant\n→ Review Ignore Previous Completions configuration if historical completions are involved\n→ Check for recent curriculum content changes and effective dates\nIf the configuration explains the assignment:\n→ The assignment is expected\nIf the assignment does not match the configuration:\n→ Investigate curriculum configuration or assignment behavior further\nBefore manually removing the learning item:\n→ Confirm whether the requirement is generated by the curriculum\n---",
+    "id": "c3928452a80114ad"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Retraining requires users to periodically complete learning to maintain qualification.\n- A completed learning item may remain assigned when retraining is configured.\n- Initial training and retraining can have separate configurations.\n- Retraining Number and Period determine the retraining cadence.\n- Event-based retraining uses relevant events such as completion dates.\n- Calendar-based retraining uses defined calendar periods and a Basis Date.\n- Required dates are calculated according to curriculum configuration.\n- Previous completions can affect current curriculum status and retraining calculations.\n- Historical completions may be ignored depending on configuration.\n- Curriculum content changes can affect users based on effective dates.\n- Do not manually remove a recurring assignment before identifying the curriculum and retraining configuration.\n- A course appearing again after completion may be expected system behavior.\n---",
+    "id": "b219ed35ebecff2c"
+  },
+  {
+    "source": "curriculum_retraining_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Curricula and Retraining",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating curriculum and retraining issues, review:\n- Curriculum ID\n- Learning Item ID\n- Affected user\n- Current assignment status\n- Completion status\n- Learning History\n- Previous completion date\n- Initial training configuration\n- Retraining Number\n- Retraining Period\n- Retraining Basis\n- Event or Calendar configuration\n- Basis Date\n- Required Date\n- Required Date Basis\n- Assignment Date\n- Hire Date where applicable\n- Ignore Previous Completions configuration\n- Curriculum effective dates\n- Recent curriculum changes\n---",
+    "id": "de56d3098d5737fa"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Assignments",
+    "content": "Learning can be assigned to users through different mechanisms in SAP SuccessFactors Learning.\n\nAn assignment may originate from:\n\n- Assignment Profiles\n- Curricula\n- Programs\n- Administrator assignment\n- User self-assignment\n- Automated business processes\n- Retraining requirements\n\nWhen a user reports that learning is missing, unavailable, or behaving unexpectedly, first identify whether the learning was actually assigned and determine the source of the assignment.\n\nAssignment generation and assignment visibility should be investigated separately.\n\n---",
+    "id": "85f9837ec07de173"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assigned Learning Not Visible",
+    "content": "A user may report that a course was assigned but is not visible in their learning assignments.\n\nWhen investigating this issue, verify:\n\n- User ID\n- Learning Item ID\n- Learning Item status\n- Whether the assignment exists\n- Assignment source\n- User status\n- Learning availability\n- Whether the issue affects one or multiple users\n\nIf the assignment exists but is not visible to the user, investigate assignment availability and learner-facing access.\n\nDo not assume that a missing course automatically means the assignment was never created.\n\n---",
+    "id": "ebce30227beb43df"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Item Availability",
+    "content": "A learning assignment may exist while the learning item itself is unavailable.\n\nCheck whether the learning item is:\n\n- Active\n- Available to the applicable user population\n- Correctly configured\n- Associated with the required content\n- Restricted by availability settings where applicable\n\nA user may have an assignment but still experience difficulty accessing the learning content.\n\nAssignment status and learning availability should therefore be checked separately.\n\n---",
+    "id": "05ba4cbbf537d87c"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Source",
+    "content": "Determine how the learning was assigned.\n\nPossible assignment sources include:\n\n- Assignment Profile\n- Curriculum\n- Program\n- Administrator\n- System-generated assignment\n- Self-assignment\n- Retraining requirement\n\nThe assignment source is important because different sources may control whether the assignment remains active.\n\nDo not remove or modify an assignment before identifying its source.\n\n---",
+    "id": "490e8c99d8af1d38"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Missing Learning Assignment",
+    "content": "If a user expects a course but cannot find it, determine whether the learning should actually be assigned.\n\nCheck:\n\n- Assignment Profile membership\n- Curriculum membership\n- User eligibility\n- Relevant user attributes\n- Learning assignment rules\n- Assignment processing status\n\nIf the user meets the expected assignment criteria but does not have the learning assigned, investigate whether the assignment process completed successfully.\n\n---",
+    "id": "85d505b963eb7e9b"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Status",
+    "content": "Review the current status of the learning assignment.\n\nDetermine whether the assignment is:\n\n- Active\n- Completed\n- Overdue\n- Removed\n- Reassigned\n- Replaced by another requirement\n\nThe status should be interpreted together with Learning History and curriculum requirements.\n\nFor example, a completion record may exist even when another learning requirement remains active.\n\n---",
+    "id": "60be912266304c47"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Required Dates",
+    "content": "Learning assignments may include required or due dates.\n\nWhen investigating date-related issues, verify:\n\n- Assignment date\n- Required date\n- Assignment source\n- Curriculum requirements where applicable\n- Retraining configuration where applicable\n\nIncorrect or unexpected dates should not be changed without first identifying the mechanism that generated them.\n\n---",
+    "id": "95f4d1e2bc6a2126"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "One User Versus Multiple Users",
+    "content": "Determine the scope of the issue.\n\nIf one user is affected, investigate:\n\n- User-specific assignment\n- User attributes\n- Assignment Profile membership\n- Individual learning record\n\nIf multiple users are affected, investigate:\n\n- Learning Item configuration\n- Assignment rules\n- Assignment Profile processing\n- Curriculum configuration\n- System-wide assignment behavior\n\nThe scope helps determine whether the issue is user-specific or configuration-related.\n\n---",
+    "id": "d5cdd69158bb26b9"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Assignment Versus Assignment Profile",
+    "content": "Learning assignment issues should be distinguished from Assignment Profile issues.\n\nAssignment Profiles determine whether learning is automatically assigned based on configured criteria.\n\nLearning Assignment troubleshooting focuses on whether:\n\n- The assignment was generated\n- The assignment exists\n- The assignment is visible\n- The learning item is available\n- The assignment status behaves as expected\n\nIf the underlying issue is why the user received the assignment, investigate Assignment Profiles or other assignment sources.\n\n---",
+    "id": "9eccf89b9fd9e2c4"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User reports learning assignment issue\n→ Identify the user\n→ Identify the learning item\n→ Determine whether the assignment exists\nIf NO:\n→ Determine whether the user should receive the learning\n→ Check Assignment Profiles, curriculum, program, or other assignment mechanisms\n→ Verify assignment processing\nIf YES:\n→ Check assignment status\n→ Check whether the learning is visible to the user\n→ Check Learning Item availability\n→ Determine whether the learning item is active and accessible\nIf assignment source is unclear:\n→ Review assignment information\n→ Identify whether Assignment Profile, curriculum, administrator, or another mechanism created the assignment\nIf the issue affects one user:\n→ Investigate user-specific data and assignment information\nIf multiple users are affected:\n→ Investigate learning configuration or assignment rules\n→ Correct through the approved process\n→ Verify the assignment and learner access\n---",
+    "id": "c8060928a7f5f3e3"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Always identify the source of a learning assignment.\n- Assignment generation and assignment visibility are separate issues.\n- An assignment may exist even if the learner cannot access the learning content.\n- Do not assume that a missing course means the assignment was never generated.\n- Check Learning Item status and availability.\n- Assignment Profiles should be investigated separately when the issue concerns why learning was assigned.\n- Curriculum and retraining requirements can affect assignment behavior.\n- Do not manually remove or recreate assignments without identifying the underlying cause.\n- Determine whether the issue affects one user or multiple users before investigating configuration.\n---",
+    "id": "7fb2e447db2a136c"
+  },
+  {
+    "source": "learning_assignment_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning Assignment and Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating learning assignment issues, collect:\n- User ID\n- Learning Item ID\n- Learning Item title\n- Assignment status\n- Assignment source\n- Assignment date\n- Required date\n- User attributes\n- Curriculum or Program association\n- Assignment Profile involvement\n- Learning Item status\n- Whether the issue affects one or multiple users\n---",
+    "id": "27ade4b5ab31e274"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning History",
+    "content": "Learning History stores records of learning activities that have been successfully completed or otherwise recorded for a user.\n\nA learning item may appear in Learning History after completion is successfully processed and recorded in SAP SuccessFactors Learning.\n\nWhen a user reports that a course was completed but is not visible in Learning History, the investigation should distinguish between:\n\n- Content completion\n- LMS completion status\n- Learning History record creation\n- Assignment status\n- Curriculum or retraining requirements\n\nCompletion inside online content does not always automatically confirm that the LMS has successfully recorded the completion.\n\n---",
+    "id": "1f5df02414153497"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Completion Status",
+    "content": "A learning activity can have different statuses depending on the learning process and configuration.\n\nWhen investigating a completion issue, determine:\n\n- Whether the user completed the required learning activity\n- Whether the content reported completion to LMS\n- Whether the LMS recorded the completion\n- Whether a Learning History record exists\n- Whether the assignment remains active for another reason\n\nA course appearing as incomplete does not always mean that the user failed to complete the content.\n\nThe issue may occur during communication between the learning content and LMS or during completion processing.\n\n---",
+    "id": "c874431838ebcf20"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Online Content Completion",
+    "content": "For online learning content, completion information may be communicated from the content package to SAP SuccessFactors Learning.\n\nThe learner may complete the content internally while the LMS does not receive or process the completion status correctly.\n\nWhen investigating online completion issues, check:\n\n- Whether the content itself shows completion\n- Whether all required activities were completed\n- Whether assessments or quizzes were passed where required\n- Whether the LMS received the completion status\n- Whether progress was saved\n- Whether a Learning History record was created\n\nIf the content shows completion but LMS remains incomplete, investigate content-to-LMS communication and completion processing.\n\n---",
+    "id": "139977530c725c16"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning History Record",
+    "content": "When a completion is successfully recorded, verify the relevant Learning History entry.\n\nCheck:\n\n- User\n- Learning Item\n- Completion status\n- Completion date\n- Completion type where applicable\n- Whether the correct learning item was recorded\n\nIf no Learning History record exists, determine whether the completion was successfully processed.\n\nIf a Learning History record exists but the assignment remains active, investigate assignment rules, curriculum requirements, or retraining configuration separately.\n\n---",
+    "id": "ff1943e665cc53f2"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Assignment Remaining After Completion",
+    "content": "A completed learning item may still appear as assigned for reasons unrelated to a missing completion record.\n\nPossible reasons may include:\n\n- Curriculum requirements\n- Retraining requirements\n- Recurring training\n- New assignment generation\n- Assignment Profile assignment\n- Multiple assignment mechanisms\n\nTherefore, the following should be checked separately:\n\n1. Was the completion successfully recorded?\n2. Does the completion appear in Learning History?\n3. Why does the assignment remain active?\n\nDo not assume that an active assignment automatically means the completion failed.\n\n---",
+    "id": "57756b9b967f7740"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Scope of the Issue",
+    "content": "Determine whether the issue affects:\n\n- One user\n- Multiple users\n- One learning item\n- Multiple learning items\n\nIf one user is affected, investigate:\n\n- User-specific learning records\n- Browser or session issues\n- Individual completion processing\n\nIf multiple users are affected for the same learning item, investigate:\n\n- Learning Item configuration\n- Online content configuration\n- Content package behavior\n- Completion processing\n\nThe scope of the issue helps determine whether the problem is user-specific or configuration-related.\n\n---",
+    "id": "27f6867d26bbd7a9"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Completion Date Issues",
+    "content": "When investigating an incorrect completion date, determine:\n\n- When the learning was actually completed\n- When the completion was recorded\n- Whether the completion was manually recorded\n- Whether the completion originated from online content\n- Whether historical completion information was imported or updated\n\nThe completion record should be reviewed before modifying any Learning History information.\n\nChanges to completion records should follow the approved support or administration process.\n\n---",
+    "id": "65a01e9e93af1479"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User reports course completed but status is incorrect\n→ Verify the learning activity was completed\n→ Check whether the content reports completion internally\n→ Check whether LMS received the completion status\n→ Check Learning History\n→ Does a completion record exist?\nIf NO:\n→ Investigate completion processing\n→ Check online content communication where applicable\n→ Check whether the issue affects other users\nIf YES:\n→ Verify completion details\n→ Check why the assignment remains active\n→ Investigate curriculum, retraining, or assignment rules separately\nIf completion is incorrect:\n→ Review the applicable learning record\n→ Correct according to the approved support process\n→ Verify the updated Learning History status\n---",
+    "id": "5498a9f38790f42b"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Completion inside learning content and LMS completion should be treated separately.\n- A completed course does not always immediately indicate that a Learning History record was successfully created.\n- An active assignment does not necessarily mean that completion failed.\n- Curriculum and retraining requirements may create additional learning requirements after completion.\n- Check Learning History before modifying assignments.\n- Determine whether the issue affects one user or multiple users.\n- Do not modify completion records without following the approved process.\n- Investigate the source of the completion issue before making configuration changes.\n---",
+    "id": "ccb62544133316ef"
+  },
+  {
+    "source": "learning_history_completion_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "Learning History and Completion Management",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "Investigate the following when Learning History or completion issues occur:\n- Learning Item ID\n- User ID\n- Completion status\n- Learning History record\n- Completion date\n- Online content status\n- Assessment or quiz completion\n- Content-to-LMS communication\n- Assignment status\n- Curriculum association\n- Retraining configuration\n- Whether the issue affects one or multiple users\n---",
+    "id": "b02a0c99b3a42e7d"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Authentication",
+    "content": "User authentication determines whether a user can successfully sign in to SAP SuccessFactors.\n\nAuthentication verifies the user's identity before allowing access to the system.\n\nDepending on the organization's configuration, authentication may involve:\n\n- Username and password authentication\n- Single Sign-On (SSO)\n- Identity provider authentication\n- SAP Identity Authentication Service\n- Corporate authentication systems\n\nWhen a user cannot log in, the issue may occur before access to SAP SuccessFactors Learning is established.\n\nThe authentication mechanism should therefore be identified before investigating Learning-specific configuration.\n\n---",
+    "id": "1e09f86bb0af9e9c"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Login Issues and User Access",
+    "content": "A login issue can have multiple possible causes.\n\nCommon investigation areas include:\n\n- Incorrect credentials\n- Authentication failure\n- Single Sign-On issues\n- Identity provider issues\n- User account status\n- User activation status\n- User synchronization issues\n- Missing or incorrect identity information\n\nA user who cannot log in should not automatically be treated as an LMS configuration issue.\n\nThe source of the authentication problem should first be identified.\n\n---",
+    "id": "d79441ba9acf2e54"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Single Sign-On",
+    "content": "Single Sign-On allows users to access SAP SuccessFactors using an organization's configured identity provider.\n\nWith SSO, authentication may occur through an external identity management or corporate authentication system.\n\nWhen SSO authentication fails, investigation may involve:\n\n- Identity provider availability\n- Authentication configuration\n- User identity information\n- SSO certificates or trust configuration\n- User account status in the identity system\n\nLearning administrators may not control all authentication components.\n\nIssues involving corporate identity providers or enterprise authentication systems may require investigation by the appropriate identity or security team.\n\n---",
+    "id": "963ca4357f5d9f6d"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Identity Information",
+    "content": "Authentication depends on correct user identity information.\n\nRelevant information may include:\n\n- Username\n- Email address\n- Employee identifier\n- Login identifier\n- Identity provider attributes\n\nIncorrect or mismatched identity information may prevent successful authentication.\n\nWhen user identity information is managed by an integrated source system, changes should generally be made through the appropriate source or identity-management process.\n\nDo not manually recreate user identity information without confirming the organization's approved process.\n\n---",
+    "id": "344d91270f3a7a86"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Status and Access",
+    "content": "User account status can affect access.\n\nWhen investigating login problems, verify whether the user is:\n\n- Active\n- Inactive\n- Recently hired\n- Recently reactivated\n- On Leave of Absence where applicable\n\nA user may be active in one system but unavailable or inactive in another system.\n\nTherefore, source-system status and SAP SuccessFactors status should be compared where relevant.\n\n---",
+    "id": "667918dc6897aa9d"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Authentication Versus Learning Access",
+    "content": "Authentication and Learning access should be treated as separate issues.\n\nA user may:\n\n- Successfully authenticate but be unable to access Learning\n- Be unable to authenticate before reaching Learning\n- Successfully access SuccessFactors but encounter a Learning-specific access issue\n\nThe troubleshooting path depends on where the failure occurs.\n\nIf the user cannot authenticate at all:\n\n→ Investigate login and authentication.\n\nIf the user successfully signs in but cannot access Learning:\n\n→ Investigate Learning access and authorization separately.\n\nThis distinction prevents unrelated troubleshooting steps from being mixed together.\n\n---",
+    "id": "26e4a99bc043706a"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Validation and Login Errors",
+    "content": "Users may encounter validation errors during login or access attempts.\n\nWhen investigating validation errors, collect:\n\n- Exact error message\n- Screenshot\n- Time of occurrence\n- User identifier\n- Login method\n- Whether the issue affects one or multiple users\n\nThe exact error should be reviewed before determining the cause.\n\nGeneric troubleshooting should not replace investigation of a specific authentication or validation error.\n\n---",
+    "id": "2bfaca8d32e88ba9"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Synchronization and Login",
+    "content": "User synchronization can affect user access when user identity or account information is transferred between systems.\n\nHowever, synchronization issues should be investigated separately from authentication issues.\n\nIf a user account is missing, inactive, or contains incorrect identity information due to synchronization:\n\n→ Investigate the user synchronization process.\n\nIf the user account exists and is correctly synchronized but authentication fails:\n\n→ Investigate the authentication mechanism.\n\nThis distinction helps prevent user synchronization troubleshooting from being incorrectly treated as a login issue.\n\n---",
+    "id": "1d848dd7560915f5"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Scope of the Login Issue",
+    "content": "Determine whether the problem affects:\n\n- One user\n- Multiple users\n- A specific population\n- All users\n\nIf one user is affected, possible causes may include:\n\n- User-specific identity information\n- Account status\n- Authentication configuration for the user\n\nIf multiple users are affected, possible causes may include:\n\n- Identity provider issues\n- Single Sign-On issues\n- Authentication service issues\n- System-wide configuration problems\n\nThe scope of the issue helps determine the appropriate investigation path.\n\n---",
+    "id": "80f58fab8cdfe684"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User reports login or authentication issue\n→ Determine whether the user can access SAP SuccessFactors\nIf NO:\n→ Identify the authentication method\n→ Check whether the issue involves credentials, SSO, or identity authentication\n→ Verify user identity information\n→ Verify user account status\n→ Determine whether the issue affects one or multiple users\nIf one user:\n→ Investigate user-specific account or identity information\nIf multiple users:\n→ Investigate shared authentication or identity provider components\n→ Collect the exact validation or error message\n→ Review recent authentication or identity changes\nIf user authentication is successful but Learning cannot be accessed:\n→ Investigate Learning access separately\nIf user synchronization is suspected:\n→ Investigate the User Connector or synchronization process separately\nIf the issue cannot be resolved through standard checks:\n→ Collect evidence and escalate to the appropriate identity, authentication, or technical support team\n---",
+    "id": "242d6b0098eb1abc"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Login and authentication issues should be distinguished from Learning access issues.\n- A user who cannot log in may have an authentication or identity-management issue rather than an LMS issue.\n- Single Sign-On authentication may involve systems outside SAP SuccessFactors Learning.\n- User identity information should be verified when authentication fails.\n- User account status can affect access.\n- The exact error or validation message should always be collected.\n- Determine whether the issue affects one user or multiple users.\n- User synchronization issues should be investigated separately from authentication issues.\n- Successful authentication does not automatically guarantee access to Learning.\n- Identity and authentication configuration changes should follow approved security and change management processes.\n---",
+    "id": "e9716fa64f7106f4"
+  },
+  {
+    "source": "login_authentication_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Authentication",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating login and authentication issues, collect:\n- User ID\n- Username\n- Email address where relevant\n- Exact error message\n- Screenshot\n- Login method\n- Whether SSO is used\n- Identity provider information where applicable\n- User account status\n- Whether the issue affects one or multiple users\n- Time when the issue started\n- Whether recent authentication changes occurred\n---",
+    "id": "73d1f7bc76b42300"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Access",
+    "content": "Access to SAP SuccessFactors Learning depends on multiple access and security components.\n\nA user may successfully authenticate into SAP SuccessFactors but still be unable to access specific Learning functionality.\n\nLearning access can depend on:\n\n- User account availability\n- Learning user persona\n- Role assignment\n- User permissions\n- Security configuration\n- Role restrictions\n- User synchronization\n- Access configuration in the SAP SuccessFactors environment\n\nTherefore, inability to access Learning should not automatically be treated as an authentication issue.\n\n---",
+    "id": "f342512f3d8377d3"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Personas",
+    "content": "SAP SuccessFactors Learning supports different user personas.\n\nThe primary personas include:\n\n- Learner\n- Instructor\n- Administrator\n\nThe Learner persona is used by employees who access learning activities, courses, online content, and other Learning functionality.\n\nInstructor and Administrator personas provide access to different Learning functions.\n\nA user may successfully log in to SAP SuccessFactors but have different available functionality depending on the assigned persona and permissions.\n\nWhen investigating access issues, determine which Learning functionality the user is expected to access.\n\n---",
+    "id": "e0873c61e9a2814e"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Role and Permissions",
+    "content": "Security roles control the actions and functionality available to users in SAP SuccessFactors Learning.\n\nA security role can include:\n\n- Permissions\n- Restrictions\n- Security domains\n- Access to specific Learning functionality\n\nUser roles determine what actions or areas of the Learning environment are available.\n\nIf a user cannot access expected Learning functionality, verify whether the appropriate user role and permissions are assigned.\n\nDo not modify security roles without following the approved access and change management process.\n\n---",
+    "id": "e040aa3aeda555b8"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Security Roles",
+    "content": "SAP SuccessFactors Learning uses security roles to control access to Learning functionality.\n\nSecurity roles can define:\n\n- What users can access\n- What actions users can perform\n- Which Learning features are available\n- Which data or entities can be accessed\n\nA user's available functionality may differ depending on the permissions assigned to the role.\n\nIncorrect or missing role assignments may affect Learning access.\n\n---",
+    "id": "ace29efdcca6ca61"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Access Versus Authentication",
+    "content": "Authentication and Learning access should be investigated separately.\n\nA user may experience different scenarios:\n\n- Unable to log in to SAP SuccessFactors\n- Successfully logged in but unable to access Learning\n- Able to access Learning but unable to access a specific feature\n- Able to access Learning but unable to view specific learning content\n\nIf the user cannot authenticate into SAP SuccessFactors:\n\n→ Investigate authentication or identity-related issues.\n\nIf the user can authenticate but cannot access Learning:\n\n→ Investigate Learning access, user role, permissions, and user account configuration.\n\nThis distinction prevents authentication issues from being incorrectly treated as Learning access issues.\n\n---",
+    "id": "1693755b781fc505"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Synchronization and Learning Access",
+    "content": "User access to SAP SuccessFactors Learning may depend on successful user synchronization.\n\nWhen users are integrated into Learning through User Connector processes, the user record and relevant role information may be created or updated through the integration process.\n\nIf the user does not exist in Learning or required user information is missing:\n\n→ Investigate the User Connector or synchronization process.\n\nIf the user exists and is active in Learning but cannot access expected functionality:\n\n→ Investigate role assignment and permissions.\n\nUser synchronization and Learning authorization should be treated as separate investigation areas.\n\n---",
+    "id": "c8bf4a49ad41b713"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Role Assignment",
+    "content": "User roles can be assigned through different approved processes depending on the system configuration.\n\nRole assignment may be managed through:\n\n- User configuration\n- User synchronization\n- Assignment Profiles\n- Approved administrative processes\n\nAssignment Profiles can be used to assign Learning security roles to groups of users based on configured criteria.\n\nChanges to user attributes may affect role assignment where automated role assignment is configured.\n\nWhen investigating access issues, verify whether the user has the expected role and whether recent user changes may have affected role assignment.\n\n---",
+    "id": "c5e0cb8d2d530c46"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Scope of the Access Issue",
+    "content": "Determine whether the issue affects:\n\n- One user\n- Multiple users\n- A specific user population\n- A specific region\n- All users\n\nIf one user is affected, investigate:\n\n- User account status\n- User role\n- User permissions\n- User synchronization\n- User-specific configuration\n\nIf multiple users are affected, investigate:\n\n- Shared role configuration\n- Permission changes\n- Security configuration\n- User population rules\n- System-wide access changes\n\nThe scope of the issue helps determine whether the problem is user-specific or configuration-related.\n\n---",
+    "id": "704f79d9223662a6"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User reports inability to access MyLearning or Learning functionality\n→ Confirm what Learning functionality the user is unable to access\n→ Determine whether the user can successfully authenticate into SAP SuccessFactors\nIf NO:\n→ Investigate authentication separately\nIf YES:\n→ Verify whether the user exists and is active in SAP SuccessFactors Learning\nIf user does not exist or information is incorrect:\n→ Investigate user synchronization\nIf user exists and is active:\n→ Check expected Learning access\n→ Verify user role and permissions\n→ Check whether role assignment is correct\n→ Check whether recent user or role changes occurred\n→ Determine whether the issue affects one or multiple users\nIf one user:\n→ Investigate user-specific role, permissions, and account configuration\nIf multiple users:\n→ Investigate shared security, role, or access configuration\nIf access configuration appears correct but the issue continues:\n→ Collect relevant evidence\n→ Escalate according to the approved support process\n---",
+    "id": "3cc0cc9aec3c5964"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- MyLearning access should be distinguished from authentication issues.\n- Successful login does not automatically guarantee access to all Learning functionality.\n- Learning access can depend on user roles and security permissions.\n- User synchronization issues should be investigated separately from authorization issues.\n- Security roles can control access to Learning features and functionality.\n- Role assignments may be affected by automated processes or Assignment Profiles.\n- Determine whether the issue affects one user or multiple users before identifying the cause.\n- Do not modify user roles or security permissions without following approved access management procedures.\n- Regional or organization-specific access rules should be maintained separately from general SAP Learning access knowledge.\n---",
+    "id": "190ab9c55bb37cdd"
+  },
+  {
+    "source": "mylearning_access_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Access and Learning Availability",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating MyLearning or Learning access issues, collect:\n- User ID\n- User status\n- User population or region where applicable\n- Expected Learning access\n- Actual access behavior\n- User role\n- Assigned permissions\n- Whether the user exists in Learning\n- Whether the user is active\n- Whether synchronization completed successfully\n- Exact error message\n- Screenshot where available\n- Whether the issue affects one or multiple users\n- Whether recent role or security changes occurred\n---",
+    "id": "9b81ee995f147360"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Online Content and Content Objects",
+    "content": "In SAP SuccessFactors Learning, online learning content is associated with Learning Items through Content Objects.\n\nA Content Object contains the information required for the system to deliver online learning content to users.\n\nOnline content may include:\n\n- SCORM content\n- AICC content\n- Online courses\n- Web-based learning content\n- Other supported online learning formats\n\nThe Learning Item and associated Content Object must be configured correctly for users to access the learning content.\n\nWhen troubleshooting online content issues, both the Learning Item configuration and Content Object configuration should be reviewed.\n\n---",
+    "id": "99e77c2d538dc56c"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "SCORM Content",
+    "content": "SCORM is a standard used for packaging and delivering online learning content.\n\nSCORM content packages communicate information between the learning content and the Learning Management System.\n\nThis communication can include:\n\n- Content launch information\n- Learner progress\n- Completion status\n- Success status\n- Score information\n- Session information\n\nA SCORM package must be correctly configured and compatible with the Learning Management System.\n\nIssues within the SCORM package itself can affect launch behavior, progress tracking, or completion updates.\n\n---",
+    "id": "2d7a3e0b2fa37288"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Learning Item and Content Object Association",
+    "content": "A Learning Item must be associated with the correct Content Object.\n\nWhen investigating content launch or completion issues, verify:\n\n- The correct Content Object is associated with the Learning Item\n- The Content Object is active\n- The correct content version is being used\n- The Content Object has not been incorrectly replaced\n- Recent content changes have been reviewed\n\nAn incorrect or inactive Content Object may prevent users from launching or completing online content correctly.\n\n---",
+    "id": "699a7d7c153b88a4"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Content Launch Behavior",
+    "content": "Online content can launch through a browser window or tab depending on the configured content behavior.\n\nWhen users report that content is not launching, determine whether:\n\n- Nothing happens when Launch is selected\n- A new window or tab opens\n- The content remains blank\n- An error message appears\n- The content closes unexpectedly\n- The content loads indefinitely\n\nThe exact launch behavior should be collected before determining the cause.\n\nContent launch problems may be related to:\n\n- Browser configuration\n- Pop-up restrictions\n- Session issues\n- Content Object configuration\n- Content package problems\n\n---",
+    "id": "76f4d655575b8b62"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Browser and Pop-Up Behavior",
+    "content": "Browser settings can affect online learning content.\n\nDepending on how the content launches, browser restrictions or pop-up blockers may prevent the learning content from opening correctly.\n\nWhen investigating a user-specific launch issue, check:\n\n- Browser compatibility\n- Pop-up restrictions\n- Browser cache\n- Browser cookies or session information\n- Browser extensions where applicable\n- Whether the issue occurs in another supported browser\n\nUsers may be asked to:\n\n- Clear browser cache\n- Start a new browser session\n- Allow pop-ups where required\n- Try another supported browser\n\nIf the issue occurs only for one user, browser or session behavior should be investigated before assuming that the content package is defective.\n\n---",
+    "id": "06b95763ce1507e8"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User-Specific vs Multiple User Issues",
+    "content": "The scope of the issue is important when troubleshooting online content.\n\nIf only one user experiences the issue, possible investigation areas include:\n\n- Browser cache\n- Session information\n- Browser configuration\n- User-specific learning records\n\nIf multiple users experience the same issue, possible investigation areas include:\n\n- Content Object configuration\n- Content package\n- Content version\n- Recent content changes\n- SCORM package communication\n\nTesting with another user can help determine whether the issue is user-specific or reproducible.\n\n---",
+    "id": "d0c17bc25d298896"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "SCORM Progress Tracking",
+    "content": "SCORM content can communicate learner progress back to SAP SuccessFactors Learning.\n\nProgress behavior may depend on:\n\n- SCORM package configuration\n- Content interactions\n- Session communication\n- Progress reporting logic\n\nA user may launch content successfully but still experience issues with progress being saved.\n\nWhen investigating progress issues, determine whether:\n\n- Progress is saved inside the content\n- Progress is visible after relaunching\n- Progress is recorded in Learning\n- The issue occurs consistently\n- Other users experience the same behavior\n\nA successful launch does not guarantee successful progress tracking.\n\n---",
+    "id": "e306cc012bd5cdde"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "SCORM Completion",
+    "content": "Completion in the online content and completion recorded in SAP SuccessFactors Learning should be treated as separate checks.\n\nThe content may display completion internally while the Learning Management System does not update the Learning Item status.\n\nPossible investigation areas include:\n\n- SCORM completion status communication\n- Content package configuration\n- Completion requirements\n- Learning Item completion status\n- Learning History\n\nDepending on the content design, users may need to complete specific activities before the content reports completion.\n\nThese activities may include:\n\n- Viewing required sections\n- Completing required interactions\n- Passing an assessment\n- Achieving a required score\n- Completing all required modules\n\nLaunching the content does not automatically mean the Learning Item should be marked complete.\n\n---",
+    "id": "e9eb888daacd4e1a"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "LMS Communication",
+    "content": "SCORM packages communicate status information back to the Learning Management System.\n\nWhen content shows completion internally but the Learning Item remains incomplete, determine whether:\n\n- The SCORM content reported completion successfully\n- The completion status was received by Learning\n- Progress information was saved\n- A completion record exists in Learning History\n\nIf communication between the content and Learning is unsuccessful, the user may complete the content without receiving the expected Learning completion status.\n\nThis may require investigation of the SCORM package and its communication behavior.\n\n---",
+    "id": "7cb6f1f9d4c57d73"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Content Version and Content Changes",
+    "content": "Recent changes to online learning content can cause newly occurring issues.\n\nWhen an issue begins after a content update, review:\n\n- New SCORM package uploads\n- Content Object changes\n- Content replacement\n- New content versions\n- Learning Item configuration changes\n\nCompare the timing of the issue with recent changes to determine whether the issue may be related to the updated content.\n\n---",
+    "id": "c1cc371ca2957b3a"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Testing Online Content",
+    "content": "Testing can help identify whether an issue is caused by the user environment, Learning configuration, or content package.\n\nWhere appropriate, test the Learning Item using:\n\n- Another user\n- A test user\n- A supported browser\n- A new browser session\n\nDuring testing, verify:\n\n- Content launches\n- Content loads correctly\n- Progress is saved\n- Completion is recorded\n- Learning History is updated\n\nA reproducible issue affecting multiple users may indicate a Content Object or content package issue.\n\n---",
+    "id": "38e76f5cf9d8efec"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "Online content issue reported\n→ Identify the Learning Item and Content Object\n→ Determine the issue type\nLaunch issue\n→ Check browser, pop-ups, session, and Content Object configuration\nLoading issue\n→ Check browser behavior and content package behavior\nProgress issue\n→ Check SCORM progress communication and user-specific behavior\nCompletion issue\n→ Check completion requirements and LMS communication\n→ Determine whether the issue affects one user or multiple users\nIf one user:\n→ Investigate browser, session, cache, and user-specific learning records\nIf multiple users:\n→ Investigate Content Object configuration and SCORM package behavior\n→ Check recent content changes or replacement\n→ Test the content independently\nIf content completes internally but Learning remains incomplete:\n→ Check completion communication and Learning History\nIf the issue is reproducible and cannot be resolved through standard checks:\n→ Collect evidence and escalate to the appropriate content or technical support team\n---",
+    "id": "bca92cdce5b6cbe7"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- Online content is delivered through Content Objects associated with Learning Items.\n- The correct Content Object and content version should always be verified.\n- Browser and pop-up restrictions can affect content launch behavior.\n- A successful content launch does not guarantee progress tracking or completion.\n- Internal content completion and LMS completion should be investigated separately.\n- SCORM packages communicate progress and completion information to the LMS.\n- User-specific issues should be distinguished from issues affecting multiple users.\n- Testing with another user can help identify reproducibility.\n- Recent content changes may explain newly occurring issues.\n- Reproducible issues affecting multiple users may require investigation of the SCORM package or content provider.\n- Learning History should be checked when users report completion but the Learning Item remains incomplete.\n---",
+    "id": "11bd659eed420c84"
+  },
+  {
+    "source": "scorm_online_content_sap.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "SCORM and Online Content",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "When investigating SCORM or online content issues, collect and review:\n- Learning Item ID\n- Learning Item title\n- Content Object ID\n- Content type\n- SCORM version if available\n- Affected user ID\n- Browser information\n- Error messages\n- Screenshots\n- Expected behavior\n- Actual behavior\n- Whether the issue affects one or multiple users\n- Recent content changes\n- Content version\n- Content launch behavior\n- Progress tracking behavior\n- Completion behavior\n- Learning History status\n---",
+    "id": "4c9575faf89e89e9"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Connector - SF",
+    "content": "User Connector - SF is used to synchronize user information between SAP SuccessFactors Platform and SAP SuccessFactors Learning.\n\nThe connector can create new user records and update existing user information in Learning.\n\nUser synchronization depends on multiple components including:\n\n- Source-system user data\n- Field mapping\n- Scheduled data feeds\n- Connector configuration\n- Connector execution\n- User-specific data validation\n\nA successful overall connector process does not always guarantee that every individual user record was processed successfully.\n\n---",
+    "id": "364cf9c2320c972b"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Scheduled Synchronization",
+    "content": "User data synchronization depends on scheduled jobs and connector execution.\n\nWhen investigating a user who is missing from Learning or whose information is outdated, first determine:\n\n- When the user was created or updated in the source system\n- When the next synchronization cycle was expected\n- Whether the scheduled export completed\n- Whether the User Connector - SF executed after the export\n- Whether the expected processing cycle has completed\n\nDo not immediately treat a missing user as a connector failure if the expected synchronization cycle has not yet occurred.\n\n---",
+    "id": "aca50582da325deb"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Data Processing",
+    "content": "User Connector - SF processes user information from the SuccessFactors Platform and maps the information into SAP SuccessFactors Learning.\n\nImportant user information may include:\n\n- User ID\n- User status\n- Email address\n- Manager information\n- Organizational information\n- Job-related attributes\n- Hire date\n\nIncorrect or missing source data may prevent successful processing of a user record.\n\n---",
+    "id": "317297ca0e4e5bb3"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "User Status Synchronization",
+    "content": "The user status in the source system and Learning should be compared during troubleshooting.\n\nA user may be:\n\n- Active in the source system but inactive in Learning\n- Inactive in the source system\n- Recently hired\n- Recently reactivated\n- Recently updated\n\nA status mismatch may indicate a synchronization issue or may require verification of the source data and connector processing.\n\n---",
+    "id": "3fff63c6f2418c3b"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Field Mapping",
+    "content": "User Connector - SF relies on field mappings between the SuccessFactors Platform and Learning.\n\nIncorrect mapping or invalid source values may result in user processing issues.\n\nWhen troubleshooting data synchronization problems, verify:\n\n- Required user fields\n- Source-system values\n- Field mapping configuration\n- Referenced values\n- Organizational data\n- User status information\n\nDo not modify standard connector mappings without following the approved configuration process.\n\n---",
+    "id": "d010c0076536a194"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Connector Troubleshooting",
+    "content": "When a user is not created or updated correctly in Learning:\n\n1. Verify the user information in the source system.\n2. Confirm that the expected synchronization cycle has occurred.\n3. Check whether the scheduled export completed.\n4. Check whether the User Connector - SF job executed.\n5. Review connector results or logs.\n6. Determine whether the affected user was picked up.\n7. Check for user-specific validation or processing errors.\n8. Correct invalid source information where required.\n9. Reprocess according to the approved support process.\n10. Verify the user record in Learning.\n\n---",
+    "id": "10e5fe332b1d3789"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Resolution Logic",
+    "content": "User synchronization issue reported\n→ Verify source-system user data\n→ Check whether the expected synchronization cycle occurred\n→ Verify scheduled export\n→ Verify User Connector - SF execution\n→ Review connector results\n→ Was the user picked up?\nIf NO:\n→ Investigate source data and synchronization selection\nIf YES:\n→ Check for user-specific validation errors\n→ Correct source information if required\n→ Reprocess according to approved procedures\n→ Verify user status and information in Learning\n---",
+    "id": "7adb705cf9a31b53"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Important Considerations",
+    "content": "- The source system should be treated as the system of record for integrated user data.\n- Do not assume that every missing user is caused by an LMS defect.\n- Check synchronization timing before escalating connector issues.\n- A successful connector run may still contain user-specific processing errors.\n- Compare source-system information with Learning information.\n- Do not manually recreate users without following the approved process.\n- Verify the result after synchronization or reprocessing.\n---",
+    "id": "26e6ae3ec41b4432"
+  },
+  {
+    "source": "user_connector_sap_knowledge.md",
+    "source_type": "SAP Official Documentation / KBA",
+    "category": "User Connector and User Synchronization",
+    "incident": "SAP SuccessFactors Learning",
+    "problem_understanding": "Official SAP documentation and knowledge base information.",
+    "scenario": "Common Technical Investigation Points",
+    "content": "Investigate the following when User Connector - SF issues occur:\n- Connector job failures\n- Scheduled job failures\n- Missing input data\n- Incorrect field mappings\n- Invalid source-system values\n- Missing required attributes\n- User-specific validation errors\n- Incorrect organizational references\n- User status mismatches\n- Processing delays\n---",
+    "id": "c530f4215c9f72e2"
   }
 ]
