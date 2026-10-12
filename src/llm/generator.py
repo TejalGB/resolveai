@@ -119,7 +119,7 @@ Generate a comprehensive, incident-oriented ServiceNow troubleshooting resolutio
 
     # Model cascade: try primary model, fall back to secondary model
     primary_model = os.getenv("GEMINI_MODEL", settings.GEMINI_MODEL)
-    models_to_try = [primary_model, "gemini-3.6-flash"]
+    models_to_try = [primary_model, "gemini-2.5-flash"]
     models_to_try = list(dict.fromkeys(models_to_try))
 
     client = genai.Client(api_key=api_key)

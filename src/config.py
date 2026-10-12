@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     """
     # Environment & Models
     GEMINI_API_KEY: str | None = None
-    GEMINI_MODEL: str = "gemini-2.5-flash"
+    GEMINI_MODEL: str = "gemini-3.6-flash"
     EMBEDDING_MODEL_NAME: str = "all-MiniLM-L6-v2"
 
     # Vector Store & Search

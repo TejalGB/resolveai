@@ -37,7 +37,7 @@ Vector Similarity Search & Filtering (ChromaDB Persistent Store)
 Enriched Context Assembly + Citations Metadata
         │
         ▼
-Grounded Generation (Google Gemini 2.5 Flash via google-genai SDK with model fallback)
+Grounded Generation (Google Gemini 3.6 Flash via google-genai SDK with model fallback)
         │
         ▼
 ServiceNow Incident Resolution (Incident Analysis, Admin Checklist, Work Notes)
@@ -47,7 +47,7 @@ ServiceNow Incident Resolution (Incident Analysis, Admin Checklist, Work Notes)
 
 ## 📚 Knowledge Base Coverage
 
-ResolveAI features 13 deep-domain expert playbooks and official SAP KBAs across core SAP SuccessFactors LMS modules:
+ResolveAI features 21 deep-domain knowledge documents (13 expert resolution playbooks and 8 official SAP KBAs, totaling 161 indexed chunks) across core SAP SuccessFactors LMS modules:
 
 * **Assignment Profiles & Rules:** Automatic assignments, criteria changes, multiple profiles conflict.
 * **Curriculum & Retraining:** Recurring training requirements, retraining intervals, completion handling.
@@ -62,7 +62,7 @@ ResolveAI features 13 deep-domain expert playbooks and official SAP KBAs across 
 
 | Layer | Technology |
 | :--- | :--- |
-| **LLM Model** | Google Gemini (`gemini-2.5-flash` with `gemini-3.6-flash` cascade) |
+| **LLM Model** | Google Gemini (`gemini-3.6-flash` with `gemini-2.5-flash` cascade) |
 | **Embeddings** | `sentence-transformers/all-MiniLM-L6-v2` |
 | **Vector Database** | `ChromaDB` |
 | **API Backend** | `FastAPI`, `Uvicorn`, `Pydantic` |
@@ -72,7 +72,7 @@ ResolveAI features 13 deep-domain expert playbooks and official SAP KBAs across 
 
 ## 🎯 Key Capabilities Demonstrated
 
-* **End-to-End RAG Development:** Built a complete Retrieval-Augmented Generation pipeline connecting domain documents to Google Gemini 2.5 Flash.
+* **End-to-End RAG Development:** Built a complete Retrieval-Augmented Generation pipeline connecting domain documents to Google Gemini 3.6 Flash.
 * **Vector Search & Embeddings:** Implemented semantic search using ChromaDB and SentenceTransformers (`all-MiniLM-L6-v2`) with custom similarity scoring.
 * **Data Processing & Chunking:** Created an automated pipeline to clean, chunk, and index technical markdown documents into a vector database.
 * **Prompt Engineering & Grounding:** Designed structured prompts with strict guardrails to produce factual, step-by-step troubleshooting steps.
