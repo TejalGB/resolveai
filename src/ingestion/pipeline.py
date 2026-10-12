@@ -90,10 +90,26 @@ def run_pipeline(reindex: bool = False):
         except Exception:
             pass
 
+    # Reconcile database IDs against current knowledge base to prune stale chunks
+    current_ids = set(c["id"] for c in all_chunks)
+    stale_ids = existing_ids - current_ids
+
+    if stale_ids and not reindex:
+        print(f"Reconciling vector store: deleting {len(stale_ids)} stale chunks no longer in knowledge base...")
+        collection.delete(ids=list(stale_ids))
+        print(f"Pruned {len(stale_ids)} obsolete chunk IDs from ChromaDB.")
+
     chunks_to_embed = [c for c in all_chunks if c["id"] not in existing_ids]
 
     if not chunks_to_embed:
         print("All chunks are already indexed. No new embeddings required.")
+        if stale_ids:
+            # Update embedded_chunks.json if stale records were pruned
+            with open(settings.EMBEDDED_CHUNKS_FILE, "r", encoding="utf-8") as f:
+                prev_data = json.load(f)
+            pruned_data = [item for item in prev_data if item.get("id") in current_ids]
+            with open(settings.EMBEDDED_CHUNKS_FILE, "w", encoding="utf-8") as f:
+                json.dump(pruned_data, f, indent=2, ensure_ascii=False)
         print(f"Total chunks in vector store: {collection.count()}")
         return
 

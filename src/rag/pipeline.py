@@ -54,10 +54,11 @@ def answer_question(question: str) -> dict:
         context=context
     )
 
-    # Build structured citations
+    # Build structured citations with provenance metadata
     sources = [
         {
             "source": chunk["source"],
+            "source_type": chunk.get("source_type", "Expert Resolution Playbook"),
             "scenario": chunk["scenario"],
             "category": chunk["category"],
             "match_score": chunk["match_score"]

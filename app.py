@@ -257,14 +257,19 @@ for message in st.session_state.messages:
             # Verified Source Badges
             sources = message.get("sources", [])
             if sources:
-                with st.expander(f"📚 Verified Knowledge Sources ({len(sources)} playbooks cited)"):
+                with st.expander(f"📚 Knowledge Sources ({len(sources)} sources cited)"):
                     for src in sources:
+                        is_kba = "SAP" in src.get("source_type", "") or src.get("source", "").endswith("_sap.md")
+                        source_icon = "📘" if is_kba else "📖"
+                        type_label = "Official SAP KBA" if is_kba else "Expert Playbook"
+                        badge_color = "#0284C7" if is_kba else "#2563EB"
+
                         st.markdown(
                             f"""
                             <div class="source-box">
                                 <div style="display:flex; justify-content:space-between; align-items:center;">
-                                    <b>📖 {src['source']}</b>
-                                    <span class="match-badge">{src['match_score']}% Match</span>
+                                    <b>{source_icon} {src['source']} <span style="font-size:11px; color:#9CA3AF; font-weight:normal;">({type_label})</span></b>
+                                    <span class="match-badge" style="background-color:{badge_color};">Semantic Match: {src['match_score']}%</span>
                                 </div>
                                 <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
                                     Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>
@@ -309,16 +314,21 @@ if question:
                 with st.expander("📋 Copy Resolution for ServiceNow Ticket"):
                     st.code(answer, language="markdown")
 
-                # Render verified knowledge sources
+                # Render knowledge sources with provenance metadata
                 if sources:
-                    with st.expander(f"📚 Verified Knowledge Sources ({len(sources)} playbooks cited)"):
+                    with st.expander(f"📚 Knowledge Sources ({len(sources)} sources cited)"):
                         for src in sources:
+                            is_kba = "SAP" in src.get("source_type", "") or src.get("source", "").endswith("_sap.md")
+                            source_icon = "📘" if is_kba else "📖"
+                            type_label = "Official SAP KBA" if is_kba else "Expert Playbook"
+                            badge_color = "#0284C7" if is_kba else "#2563EB"
+
                             st.markdown(
                                 f"""
                                 <div class="source-box">
                                     <div style="display:flex; justify-content:space-between; align-items:center;">
-                                        <b>📖 {src['source']}</b>
-                                        <span class="match-badge">{src['match_score']}% Match</span>
+                                        <b>{source_icon} {src['source']} <span style="font-size:11px; color:#9CA3AF; font-weight:normal;">({type_label})</span></b>
+                                        <span class="match-badge" style="background-color:{badge_color};">Semantic Match: {src['match_score']}%</span>
                                     </div>
                                     <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
                                         Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>

@@ -250,11 +250,14 @@ class KnowledgeRetriever:
 
     def _calculate_match_score(self, distance: float) -> float:
         """
-        Convert Chroma cosine distance into a calibrated 0-100 match score.
+        Convert Chroma cosine distance into a 0-100 semantic match score.
         For unit-normalized vectors with cosine metric:
             cosine_similarity = 1.0 - cosine_distance
+
+        Clamped strictly to [0.0, 100.0]. Represents vector geometric similarity,
+        not generative answer confidence.
         """
-        similarity = max(0.0, 1.0 - distance)
+        similarity = max(0.0, min(1.0, 1.0 - distance))
         return round(similarity * 100.0, 1)
 
     def retrieve(
