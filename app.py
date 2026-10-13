@@ -76,11 +76,11 @@ st.markdown(
     :root {
         --card-bg: #FFFFFF;
         --card-border: #E2E8F0;
-        --card-hover-border: #3B82F6;
+        --card-hover-border: #2563EB;
         --card-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
         --text-primary: #0F172A;
         --text-secondary: #64748B;
-        --hero-bg: linear-gradient(135deg, rgba(239, 246, 255, 0.95) 0%, rgba(219, 234, 254, 0.7) 100%);
+        --hero-bg: linear-gradient(135deg, rgba(239, 246, 255, 0.95) 0%, rgba(219, 234, 254, 0.75) 100%);
         --hero-border: #BFDBFE;
         --pill-bg: #FFFFFF;
         --pill-border: #DBEAFE;
@@ -99,7 +99,7 @@ st.markdown(
             --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
             --text-primary: #F8FAFC;
             --text-secondary: #94A3B8;
-            --hero-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%);
+            --hero-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
             --hero-border: #334155;
             --pill-bg: #0F172A;
             --pill-border: #334155;
@@ -119,7 +119,7 @@ st.markdown(
         --card-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
         --text-primary: #F8FAFC;
         --text-secondary: #94A3B8;
-        --hero-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.8) 100%);
+        --hero-bg: linear-gradient(135deg, rgba(30, 41, 59, 0.95) 0%, rgba(15, 23, 42, 0.85) 100%);
         --hero-border: #334155;
         --pill-bg: #0F172A;
         --pill-border: #334155;
@@ -129,54 +129,50 @@ st.markdown(
         --source-box-bg: rgba(255, 255, 255, 0.03);
     }
 
-    /* Top Bar */
+    /* Top Header Bar */
     .top-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding-bottom: 8px;
-        margin-bottom: 8px;
-    }
-    .user-avatar {
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
-        background: #2563EB;
-        color: white;
-        font-size: 12px;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 2px 4px rgba(37, 99, 235, 0.25);
+        padding-bottom: 12px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid var(--card-border);
     }
 
-    /* Compact Hero Banner */
+    /* High-Impact Hero Banner */
     .hero-banner {
         background: var(--hero-bg);
         border: 1px solid var(--hero-border);
-        border-radius: 12px;
-        padding: 16px 20px;
-        margin-bottom: 16px;
+        border-radius: 14px;
+        padding: 24px 28px;
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 20px;
+    }
+    .hero-content {
+        flex: 1;
     }
     .hero-badge {
-        font-size: 10px;
+        font-size: 11px;
         font-weight: 700;
-        letter-spacing: 0.8px;
+        letter-spacing: 1px;
         color: #2563EB;
-        margin-bottom: 4px;
+        margin-bottom: 6px;
     }
     .hero-title {
-        font-size: 26px;
-        font-weight: 700;
+        font-size: 30px;
+        font-weight: 800;
         color: var(--text-primary);
-        line-height: 1.1;
-        margin-bottom: 4px;
+        line-height: 1.15;
+        margin-bottom: 6px;
     }
     .hero-subtitle {
-        font-size: 13px;
+        font-size: 14px;
         color: var(--text-secondary);
-        margin-bottom: 12px;
+        margin-bottom: 16px;
+        line-height: 1.4;
     }
     .hero-pills {
         display: flex;
@@ -186,54 +182,69 @@ st.markdown(
     .hero-pill {
         display: inline-flex;
         align-items: center;
-        font-size: 11px;
+        font-size: 11.5px;
         font-weight: 500;
         color: var(--pill-text);
         background: var(--pill-bg);
         border: 1px solid var(--pill-border);
-        padding: 4px 10px;
+        padding: 5px 12px;
         border-radius: 20px;
+    }
+    .hero-visual {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
     /* Section Heading */
     .section-header {
-        font-size: 15px;
+        font-size: 16px;
         font-weight: 700;
         color: var(--text-primary);
-        margin-top: 10px;
         margin-bottom: 2px;
     }
     .section-caption {
-        font-size: 12px;
+        font-size: 13px;
         color: var(--text-secondary);
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 
-    /* Compact Issue Card Buttons */
+    /* Spacious Issue Cards Grid */
     .main .stButton > button {
         background-color: var(--card-bg) !important;
         border: 1px solid var(--card-border) !important;
-        border-radius: 10px !important;
-        padding: 10px 14px !important;
+        border-radius: 12px !important;
+        padding: 16px 20px !important;
         text-align: left !important;
-        min-height: 68px !important;
+        min-height: 88px !important;
         color: var(--text-primary) !important;
         box-shadow: var(--card-shadow) !important;
         transition: all 0.2s ease-in-out !important;
         display: flex !important;
         flex-direction: column !important;
+        align-items: flex-start !important;
         justify-content: center !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        overflow: visible !important;
+        margin-bottom: 12px !important;
     }
     .main .stButton > button:hover {
         border-color: var(--card-hover-border) !important;
         transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.12) !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
     }
+    .main .stButton > button div,
     .main .stButton > button p {
+        white-space: normal !important;
         text-align: left !important;
         margin: 0 !important;
-        font-size: 12.5px !important;
-        line-height: 1.35 !important;
+        width: 100% !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+        font-size: 13.5px !important;
+        line-height: 1.45 !important;
     }
 
     /* Sidebar Navigation Style */
@@ -245,26 +256,16 @@ st.markdown(
         border-radius: 0 8px 8px 0;
         font-weight: 600;
         font-size: 13px;
-        margin-bottom: 16px;
-    }
-    .sidebar-tip-card {
-        background: var(--card-bg);
-        border: 1px solid var(--card-border);
-        border-radius: 8px;
-        padding: 10px 12px;
-        font-size: 11px;
-        color: var(--text-secondary);
-        line-height: 1.4;
-        margin-top: 24px;
+        margin-bottom: 20px;
     }
 
     /* Chat Helper Text */
     .chat-helper-text {
-        font-size: 11px;
+        font-size: 11.5px;
         color: var(--text-secondary);
         text-align: center;
         margin-top: 4px;
-        margin-bottom: 12px;
+        margin-bottom: 16px;
     }
 
     /* Source Citation Boxes */
@@ -314,25 +315,25 @@ with st.sidebar:
     st.markdown(
         """
         <div style="display:flex; align-items:center; gap:8px; margin-bottom:4px;">
-            <span style="font-size:22px;">✨</span>
+            <span style="font-size:24px;">🤖</span>
             <span style="font-size:20px; font-weight:700;">ResolveAI</span>
         </div>
-        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:14px;">
+        <div style="font-size:12px; color:var(--text-secondary); margin-bottom:16px;">
             SAP SuccessFactors Learning Troubleshooting Assistant
         </div>
         <div class="sidebar-nav-item">
-            💬 Chat
+            Chat
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown("##### ⏱️ **Session**")
+    st.markdown("##### Session")
     session_names = list(st.session_state.conversations.keys())
 
     col_new, col_clear = st.columns(2)
     with col_new:
-        if st.button("➕ New Chat", use_container_width=True):
+        if st.button("+ New Chat", use_container_width=True):
             new_session_name = f"Session {len(st.session_state.conversations) + 1}"
             st.session_state.conversations[new_session_name] = []
             st.session_state.active_session = new_session_name
@@ -340,7 +341,7 @@ with st.sidebar:
             st.rerun()
 
     with col_clear:
-        if st.button("🗑 Clear Chat", use_container_width=True):
+        if st.button("Clear Chat", use_container_width=True):
             st.session_state.conversations[st.session_state.active_session] = []
             st.session_state.messages = []
             st.rerun()
@@ -357,41 +358,27 @@ with st.sidebar:
             st.session_state.messages = st.session_state.conversations[selected_session]
             st.rerun()
 
+    # Discrete engine status caption at the bottom of sidebar
     st.divider()
-
-    st.markdown("##### ⚙️ **Engine Status**")
     active_api = os.getenv("RESOLVEAI_API_URL", "").strip()
     if active_api:
-        st.caption(f"Status: `Connected ({active_api})` 🟢")
+        st.caption(f"● Connected ({active_api})")
     else:
-        st.caption("Status: `Self-Contained RAG Pipeline` 🟢")
-
-    st.markdown(
-        """
-        <div class="sidebar-tip-card">
-            💡 <b>Admin Guidance:</b> Enter specific symptoms, error codes, or APM job behaviors to get verified resolution steps and ServiceNow closure notes.
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
+        st.caption("● Self-Contained RAG Pipeline")
 
 
 # ============================================================
-# TOP HEADER BAR
+# TOP HEADER BAR (CLEAN, NO TB AVATAR)
 # ============================================================
 
 st.markdown(
     """
     <div class="top-header">
-        <div style="display:flex; align-items:center; gap:8px;">
-            <span style="font-size:18px;">✨</span>
-            <span style="font-weight:700; font-size:17px; color:var(--text-primary);">ResolveAI</span>
-            <span style="font-size:12px; color:var(--text-secondary); margin-left:8px; border-left:1px solid var(--card-border); padding-left:10px;">
+        <div style="font-weight:700; font-size:18px; color:var(--text-primary); display:flex; align-items:center; gap:8px;">
+            <span style="font-size:22px;">🤖</span> ResolveAI
+            <span style="font-weight:normal; font-size:13px; color:var(--text-secondary); border-left:1px solid var(--card-border); padding-left:10px; margin-left:4px;">
                 SAP SuccessFactors Learning Troubleshooting Assistant
             </span>
-        </div>
-        <div>
-            <div class="user-avatar" title="Tejal B">TB</div>
         </div>
     </div>
     """,
@@ -400,75 +387,90 @@ st.markdown(
 
 
 # ============================================================
-# COMPACT HERO BANNER & ISSUE CARDS (WHEN CHAT IS EMPTY)
+# HIGH-IMPACT HERO BANNER & 2-COLUMN ISSUE CARDS
 # ============================================================
 
 if not st.session_state.messages:
     st.markdown(
         """
         <div class="hero-banner">
-            <div class="hero-badge">WELCOME TO</div>
-            <div class="hero-title">Resolve<span style="color:#2563EB;">AI</span></div>
-            <div class="hero-subtitle">Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System</div>
-            <div class="hero-pills">
-                <span class="hero-pill">🔍 Knowledge-grounded responses</span>
-                <span class="hero-pill">🛡️ Structured troubleshooting & ServiceNow resolutions</span>
-                <span class="hero-pill">🗄️ Relevant SAP documentation with source citations</span>
+            <div class="hero-content">
+                <div class="hero-badge">WELCOME TO</div>
+                <div class="hero-title">Resolve<span style="color:#2563EB;">AI</span></div>
+                <div class="hero-subtitle">Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System</div>
+                <div class="hero-pills">
+                    <span class="hero-pill">Knowledge-grounded responses</span>
+                    <span class="hero-pill">Structured ServiceNow resolutions</span>
+                    <span class="hero-pill">Relevant SAP documentation citations</span>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <svg width="210" height="105" viewBox="0 0 210 105" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="5" y="5" width="200" height="95" rx="8" fill="var(--card-bg)" stroke="var(--card-border)" stroke-width="1.5"/>
+                    <circle cx="18" cy="16" r="3" fill="#EF4444"/>
+                    <circle cx="28" cy="16" r="3" fill="#F59E0B"/>
+                    <circle cx="38" cy="16" r="3" fill="#10B981"/>
+                    <line x1="5" y1="26" x2="205" y2="26" stroke="var(--card-border)" stroke-width="1"/>
+                    <circle cx="58" cy="62" r="22" fill="#2563EB"/>
+                    <text x="58" y="70" font-size="21" text-anchor="middle" fill="#FFFFFF">🤖</text>
+                    <rect x="96" y="44" width="96" height="36" rx="6" fill="#F8FAFC" stroke="#CBD5E1" stroke-width="1"/>
+                    <text x="144" y="58" font-size="10.5" font-weight="700" text-anchor="middle" fill="#003566" font-family="Inter, sans-serif">SAP</text>
+                    <text x="144" y="70" font-size="8.5" font-weight="500" text-anchor="middle" fill="#475569" font-family="Inter, sans-serif">SuccessFactors</text>
+                </svg>
             </div>
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown('<div class="section-header">✨ How can I help you today?</div>', unsafe_allow_html=True)
+    st.markdown('<div class="section-header">How can I help you today?</div>', unsafe_allow_html=True)
     st.markdown(
         '<div class="section-caption">Choose one of the common issues below, or describe your problem in the chat bar:</div>',
         unsafe_allow_html=True
     )
 
-    # Compact 3-Column x 2-Row Issue Grid
-    col1, col2, col3 = st.columns(3)
+    # Spacious 2-Column Issue Grid (3 Rows = 6 Cards)
+    col1, col2 = st.columns(2)
 
     with col1:
         if st.button(
-            "🎓 **Course assigned again**\n\nUser completed course but assigned again",
+            "**Course assigned again after completion**\n\nUser completed a course but it was assigned to them again.",
             key="card_retraining",
             use_container_width=True
         ):
             prompt_to_submit = "Course assigned again after completion"
 
         if st.button(
-            "📖 **Learner cannot access MyLearning**\n\nUser cannot see tile or access courses",
+            "**Learner cannot access MyLearning**\n\nUser is unable to access MyLearning or cannot see assigned courses.",
             key="card_mylearning",
             use_container_width=True
         ):
             prompt_to_submit = "Learner cannot access MyLearning"
 
+        if st.button(
+            "**New employee is missing from LMS**\n\nA new hire has joined, but their account cannot be found in LMS.",
+            key="card_user_connector",
+            use_container_width=True
+        ):
+            prompt_to_submit = "New employee is missing from LMS"
+
     with col2:
         if st.button(
-            "▶️ **Online content not launching**\n\nSCORM or online course launch failure",
+            "**Online content is not launching**\n\nLearners report that online course content is not launching.",
             key="card_scorm",
             use_container_width=True
         ):
             prompt_to_submit = "Online content is not launching"
 
         if st.button(
-            "📄 **Course assigned unexpectedly**\n\nUnexpected course assignment via profile",
+            "**Course was assigned unexpectedly**\n\nA user received a course assignment that they shouldn't have.",
             key="card_assignment",
             use_container_width=True
         ):
             prompt_to_submit = "Course was assigned unexpectedly"
 
-    with col3:
         if st.button(
-            "👤 **New employee missing from LMS**\n\nActive in HR but account missing in LMS",
-            key="card_user_connector",
-            use_container_width=True
-        ):
-            prompt_to_submit = "New employee is missing from LMS"
-
-        if st.button(
-            "⚙️ **Other SAP LMS issue**\n\nGeneral diagnostic checklist & admin guidance",
+            "**Other SAP LMS issue**\n\nDescribe your specific scenario or paste ServiceNow incident details.",
             key="card_other",
             use_container_width=True
         ):
@@ -587,4 +589,4 @@ if question:
             except Exception as e:
                 st.error(f"⚠️ An unexpected error occurred: {e}")
 
-st.markdown('<div class="chat-helper-text">✦ Be as specific as possible to get the most relevant troubleshooting guidance.</div>', unsafe_allow_html=True)
+st.markdown('<div class="chat-helper-text">Be as specific as possible to get the most relevant troubleshooting guidance.</div>', unsafe_allow_html=True)
