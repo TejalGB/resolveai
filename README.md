@@ -10,13 +10,13 @@ ResolveAI empowers support teams to rapidly investigate, diagnose, and resolve c
 
 ## 🌟 Key Features
 
-* **Grounded RAG Architecture:** Reduces unsupported responses through knowledge-grounded generation using curated resolution playbooks and official SAP documentation.
-* **Intelligent Scenario Retrieval:** Custom semantic chunking preserving troubleshooting sections (`Decision Flow`, `Common Causes`, `Troubleshooting Steps`).
-* **Relevance Filtering:** Rejects out-of-scope inquiries using semantic-match scores derived from vector distance.
-* **Deterministic SHA-256 Chunk Fingerprints:** Enables incremental updates without rebuilding the entire database from scratch.
-* **ServiceNow Incident Resolution:** Generates structured troubleshooting steps and 1-click copyable ServiceNow ticket resolutions.
-* **Support Engineer UI:** Intuitive interface with quick-action common inquiries, 1-click ticket copy, and verified source provenance badges.
-* **Decoupled Client-Server Design:** High-throughput FastAPI REST backend paired with an intuitive Streamlit frontend.
+- **Grounded RAG Architecture:** Reduces unsupported responses by grounding LLM-generated answers in curated troubleshooting playbooks and relevant SAP documentation.
+- **Intelligent Scenario Retrieval:** Uses structure-aware semantic chunking to preserve troubleshooting sections such as Decision Flow, Common Causes, and Troubleshooting Steps.
+- **Relevance Filtering:** Filters retrieved content using semantic-match scores derived from vector distance to help reduce irrelevant and out-of-scope responses.
+- **Deterministic SHA-256 Chunk Fingerprints:** Supports incremental knowledge-base updates and removes stale chunks without requiring a complete database rebuild for every change.
+- **ServiceNow-Oriented Incident Resolution:** Generates structured troubleshooting guidance and copy-ready resolution notes for support tickets.
+- **Support Engineer UI:** Provides quick-action incident prompts, conversation history, copyable resolutions, and retrieved-source details.
+- **Decoupled Client–Server Architecture:** Integrates a FastAPI REST backend with a Streamlit frontend, with support for standalone RAG execution.
 
 ---
 
