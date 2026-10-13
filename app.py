@@ -113,7 +113,7 @@ st.markdown(
 
     .block-container {
         max-width: 1400px;
-        padding-top: 1.6rem;
+        padding-top: 2.8rem;
         padding-bottom: 5rem;
     }
 
@@ -175,8 +175,9 @@ st.markdown(
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-bottom: 18px;
-        margin-bottom: 22px;
+        padding-top: 8px;
+        padding-bottom: 16px;
+        margin-bottom: 20px;
         border-bottom: 1px solid #EAEFF5;
     }
 
@@ -218,34 +219,34 @@ st.markdown(
     .welcome-panel {
         background: linear-gradient(120deg, #F1F6FF 0%, #F8FAFF 100%);
         border: 1px solid #DBEAFE;
-        border-radius: 18px;
-        padding: 28px 30px;
-        margin-bottom: 30px;
+        border-radius: 16px;
+        padding: 18px 22px;
+        margin-bottom: 20px;
     }
 
     .welcome-eyebrow {
         color: #2563EB;
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 800;
-        letter-spacing: 1.5px;
-        margin-bottom: 10px;
+        letter-spacing: 1.2px;
+        margin-bottom: 6px;
     }
 
     .welcome-title {
         color: #0F172A;
-        font-size: clamp(25px, 3vw, 34px);
+        font-size: clamp(22px, 2.5vw, 28px);
         line-height: 1.2;
         font-weight: 800;
-        letter-spacing: -1px;
-        margin: 0 0 10px 0;
+        letter-spacing: -0.8px;
+        margin: 0 0 8px 0;
     }
 
     .welcome-description {
         color: #52627A;
-        font-size: 14px;
-        line-height: 1.8;
+        font-size: 13.5px;
+        line-height: 1.6;
         max-width: 680px;
-        margin-bottom: 20px;
+        margin-bottom: 14px;
     }
 
     .feature-row {
@@ -282,48 +283,40 @@ st.markdown(
         margin-bottom: 18px;
     }
 
-    .issue-card {
-        box-sizing: border-box;
-        min-height: 130px;
-        height: 130px;
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 13px;
-        padding: 17px 17px;
-        margin-bottom: 8px;
-        transition: border-color 0.2s, background 0.2s;
-        overflow: hidden;
+    .issue-btn button {
+        box-sizing: border-box !important;
+        min-height: 112px !important;
+        height: 112px !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 13px !important;
+        padding: 14px 18px !important;
+        margin-bottom: 10px !important;
+        text-align: left !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        justify-content: flex-start !important;
+        transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s !important;
+        overflow: hidden !important;
+        white-space: normal !important;
     }
 
-    .issue-card:hover {
-        border-color: #93C5FD;
-        background: #FCFDFF;
+    .issue-btn button:hover {
+        border-color: #93C5FD !important;
+        background: #FCFDFF !important;
+        transform: translateY(-2px) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08) !important;
     }
 
-    .issue-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 30px;
-        height: 30px;
-        background: #EFF6FF;
-        border-radius: 9px;
-        font-size: 16px;
-        margin-bottom: 9px;
-    }
-
-    .issue-title {
-        color: #172033;
-        font-size: 13px;
-        font-weight: 700;
-        line-height: 1.4;
-        margin-bottom: 5px;
-    }
-
-    .issue-description {
-        color: #64748B;
-        font-size: 11.5px;
-        line-height: 1.55;
+    .issue-btn button div,
+    .issue-btn button p {
+        text-align: left !important;
+        white-space: normal !important;
+        word-wrap: break-word !important;
+        line-height: 1.45 !important;
+        margin: 0 !important;
+        width: 100% !important;
     }
 
     /* Buttons */
@@ -763,35 +756,23 @@ if not st.session_state.messages:
         },
     ]
 
-    # Two columns of separate, properly formatted cards.
+    # Two columns of clickable, compact cards.
     left_col, right_col = st.columns(2, gap="medium")
 
     for index, issue in enumerate(issues):
         target_col = left_col if index % 2 == 0 else right_col
 
         with target_col:
-            st.markdown(
-                f"""
-                <div class="issue-card">
-                    <div class="issue-icon">{issue["icon"]}</div>
-                    <div class="issue-title">
-                        {html.escape(issue["title"])}
-                    </div>
-                    <div class="issue-description">
-                        {html.escape(issue["description"])}
-                    </div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
+            st.markdown('<div class="issue-btn">', unsafe_allow_html=True)
+            card_text = f"{issue['icon']}  **{issue['title']}**\n\n{issue['description']}"
             if st.button(
-                "Explore issue →",
+                card_text,
                 key=f"issue_{issue['key']}",
                 use_container_width=True,
             ):
                 st.session_state.pending_question = issue["prompt"]
                 st.rerun()
+            st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================
