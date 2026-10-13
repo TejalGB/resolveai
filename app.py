@@ -283,40 +283,47 @@ st.markdown(
         margin-bottom: 18px;
     }
 
-    .issue-btn button {
-        box-sizing: border-box !important;
-        min-height: 112px !important;
-        height: 112px !important;
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 13px !important;
-        padding: 14px 18px !important;
-        margin-bottom: 10px !important;
-        text-align: left !important;
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-        justify-content: flex-start !important;
-        transition: border-color 0.2s, background 0.2s, transform 0.2s, box-shadow 0.2s !important;
-        overflow: hidden !important;
-        white-space: normal !important;
+    .issue-card {
+        box-sizing: border-box;
+        min-height: 112px;
+        background: #FFFFFF;
+        border: 1px solid #E2E8F0;
+        border-radius: 13px;
+        padding: 15px 16px;
+        margin-bottom: 6px;
+        transition: border-color 0.2s, background 0.2s;
+        overflow: hidden;
     }
 
-    .issue-btn button:hover {
-        border-color: #93C5FD !important;
-        background: #FCFDFF !important;
-        transform: translateY(-2px) !important;
-        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.08) !important;
+    .issue-card:hover {
+        border-color: #93C5FD;
+        background: #FCFDFF;
     }
 
-    .issue-btn button div,
-    .issue-btn button p {
-        text-align: left !important;
-        white-space: normal !important;
-        word-wrap: break-word !important;
-        line-height: 1.45 !important;
-        margin: 0 !important;
-        width: 100% !important;
+    .issue-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 28px;
+        height: 28px;
+        background: #EFF6FF;
+        border-radius: 8px;
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .issue-title {
+        color: #172033;
+        font-size: 13.5px;
+        font-weight: 700;
+        line-height: 1.4;
+        margin-bottom: 4px;
+    }
+
+    .issue-description {
+        color: #64748B;
+        font-size: 11.5px;
+        line-height: 1.5;
     }
 
     /* Buttons */
@@ -697,20 +704,9 @@ if not st.session_state.messages:
         unsafe_allow_html=True,
     )
 
-    st.markdown(
-        '<div class="section-title">What do you need help with?</div>',
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(
-        """
-        <div class="section-description">
-            Select a scenario to get started, or describe your issue below.
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
-
+    # ============================================================
+    # ISSUE CARDS — REPLACE THE OLD CARD SECTION
+    # ============================================================
     issues = [
         {
             "key": "retraining",
@@ -756,23 +752,34 @@ if not st.session_state.messages:
         },
     ]
 
-    # Two columns of clickable, compact cards.
+    st.markdown("## What do you need help with?")
+    st.caption("Select a scenario or describe your issue in the chat below.")
+
+    # Two columns of separate, properly formatted cards.
     left_col, right_col = st.columns(2, gap="medium")
 
     for index, issue in enumerate(issues):
         target_col = left_col if index % 2 == 0 else right_col
 
         with target_col:
-            st.markdown('<div class="issue-btn">', unsafe_allow_html=True)
-            card_text = f"{issue['icon']}  **{issue['title']}**\n\n{issue['description']}"
+            st.markdown(
+                f"""
+                <div class="issue-card">
+                    <div class="issue-icon">{issue["icon"]}</div>
+                    <div class="issue-title">{html.escape(issue["title"])}</div>
+                    <div class="issue-description">{html.escape(issue["description"])}</div>
+                </div>
+                """,
+                unsafe_allow_html=True,
+            )
+
             if st.button(
-                card_text,
+                "Explore issue →",
                 key=f"issue_{issue['key']}",
                 use_container_width=True,
             ):
                 st.session_state.pending_question = issue["prompt"]
                 st.rerun()
-            st.markdown("</div>", unsafe_allow_html=True)
 
 
 # ============================================================
