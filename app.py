@@ -1,60 +1,110 @@
 """
 ResolveAI — Interactive Support Assistant for SAP SuccessFactors Learning.
-Provides troubleshooting guidance, knowledge-source details, and ServiceNow-ready resolutions.
+Provides real-time troubleshooting, source citations, and ticket resolutions.
 """
-
 import os
-import html
 import streamlit as st
 import requests
 
-
-# ============================================================
-# CONFIGURATION
-# ============================================================
-
+# Synchronize Streamlit Community Cloud secrets to os.environ
 try:
-    for key, value in st.secrets.items():
-        if isinstance(value, str) and key not in os.environ:
-            os.environ[key] = value
+    for key, val in st.secrets.items():
+        if isinstance(val, str) and key not in os.environ:
+            os.environ[key] = val
 except Exception:
     pass
 
 
-st.set_page_config(
-    page_title="ResolveAI | SAP LMS Support",
-    page_icon="🤖",
-    layout="wide",
-    initial_sidebar_state="expanded",
-)
-
-
 # ============================================================
-# RAG / API CONNECTION
+# RESOLVEAI INFERENCE ENGINE (HYBRID / STANDALONE)
 # ============================================================
 
 def query_resolveai(question: str) -> dict:
-    """Use the configured API, or fall back to the local RAG pipeline."""
+    """
+    Query ResolveAI via configured REST API, or seamlessly execute
+    direct in-process RAG pipeline (ideal for Hugging Face Spaces & standalone operation).
+    """
     api_url = os.getenv("RESOLVEAI_API_URL", "").strip()
 
+    # Try external/local API if configured
     if api_url:
         try:
             response = requests.post(
                 f"{api_url.rstrip('/')}/ask",
                 json={"question": question},
-                timeout=120,
+                timeout=120
             )
             response.raise_for_status()
             return response.json()
         except requests.exceptions.ConnectionError:
+            # Fall back to direct in-process RAG execution if API is offline
             pass
-        except requests.exceptions.Timeout:
-            raise
-        except requests.exceptions.RequestException:
+        except Exception:
             pass
 
+    # Direct in-process execution (Hugging Face Spaces & standalone mode)
     from src.rag.pipeline import answer_question
     return answer_question(question)
+
+
+# ============================================================
+# PAGE CONFIGURATION
+# ============================================================
+
+st.set_page_config(
+    page_title="ResolveAI — SAP LMS Support Assistant",
+    page_icon="🤖",
+    layout="wide",
+    initial_sidebar_state="expanded"
+)
+
+
+# ============================================================
+# CLEAN, MODERN STYLING
+# ============================================================
+
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', sans-serif;
+    }
+
+    .main-title {
+        font-size: 34px;
+        font-weight: 700;
+        margin-bottom: 2px;
+    }
+
+    .subtitle {
+        font-size: 15px;
+        color: #71717A;
+        margin-bottom: 25px;
+    }
+
+    .match-badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #2563EB;
+        color: white;
+    }
+
+    .source-box {
+        background-color: rgba(128, 128, 128, 0.05);
+        border-left: 3px solid #2563EB;
+        border-radius: 6px;
+        padding: 12px;
+        margin-bottom: 10px;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 
 # ============================================================
@@ -67,774 +117,236 @@ if "conversations" not in st.session_state:
 if "active_session" not in st.session_state:
     st.session_state.active_session = "Session 1"
 
-if st.session_state.active_session not in st.session_state.conversations:
-    st.session_state.active_session = next(
-        iter(st.session_state.conversations)
-    )
-
-if "messages" not in st.session_state:
-    st.session_state.messages = st.session_state.conversations[
-        st.session_state.active_session
-    ]
-else:
-    st.session_state.messages = st.session_state.conversations[
-        st.session_state.active_session
-    ]
-
-
-# ============================================================
-# STYLING
-# ============================================================
-
-st.markdown(
-    """
-    <style>
-    @import url(
-        'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap'
-    );
-
-    :root {
-        --primary: #2563EB;
-        --primary-dark: #1D4ED8;
-        --text: #0F172A;
-        --muted: #64748B;
-        --border: #E2E8F0;
-        --surface: #FFFFFF;
-        --soft-blue: #F1F6FF;
-    }
-
-    html, body, [class*="css"] {
-        font-family: 'Inter', sans-serif;
-    }
-
-    .stApp {
-        background: #FFFFFF;
-    }
-
-    .block-container {
-        max-width: 1400px;
-        padding-top: 2.8rem;
-        padding-bottom: 5rem;
-    }
-
-    /* Sidebar */
-
-    section[data-testid="stSidebar"] {
-        background: #F8FAFC;
-        border-right: 1px solid #E8EDF4;
-    }
-
-    section[data-testid="stSidebar"] > div {
-        padding-top: 1.7rem;
-    }
-
-    .brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 5px;
-    }
-
-    .brand-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 12px;
-        background: #DBEAFE;
-        font-size: 22px;
-    }
-
-    .brand-name {
-        color: #0F172A;
-        font-size: 22px;
-        font-weight: 800;
-        letter-spacing: -0.7px;
-    }
-
-    .sidebar-description {
-        color: #64748B;
-        font-size: 12px;
-        line-height: 1.7;
-        margin: 8px 0 26px 0;
-    }
-
-    .sidebar-label {
-        color: #64748B;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        margin: 18px 0 10px 0;
-    }
-
-    /* Main header */
-
-    .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding-top: 8px;
-        padding-bottom: 16px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #EAEFF5;
-    }
-
-    .topbar-title {
-        color: #0F172A;
-        font-size: 15px;
-        font-weight: 700;
-    }
-
-    .topbar-subtitle {
-        color: #64748B;
-        font-size: 12px;
-        margin-top: 4px;
-    }
-
-    .status-pill {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        background: #F0FDF4;
-        color: #166534;
-        border: 1px solid #DCFCE7;
-        border-radius: 30px;
-        padding: 7px 11px;
-        font-size: 11px;
-        font-weight: 600;
-        white-space: nowrap;
-    }
-
-    .status-dot {
-        height: 7px;
-        width: 7px;
-        background: #22C55E;
-        border-radius: 50%;
-    }
-
-    /* Welcome section */
-
-    .welcome-panel {
-        background: linear-gradient(120deg, #F1F6FF 0%, #F8FAFF 100%);
-        border: 1px solid #DBEAFE;
-        border-radius: 16px;
-        padding: 18px 22px;
-        margin-bottom: 20px;
-    }
-
-    .welcome-eyebrow {
-        color: #2563EB;
-        font-size: 10.5px;
-        font-weight: 800;
-        letter-spacing: 1.2px;
-        margin-bottom: 6px;
-    }
-
-    .welcome-title {
-        color: #0F172A;
-        font-size: clamp(22px, 2.5vw, 28px);
-        line-height: 1.2;
-        font-weight: 800;
-        letter-spacing: -0.8px;
-        margin: 0 0 8px 0;
-    }
-
-    .welcome-description {
-        color: #52627A;
-        font-size: 13.5px;
-        line-height: 1.6;
-        max-width: 680px;
-        margin-bottom: 14px;
-    }
-
-    .feature-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-
-    .feature-tag {
-        display: inline-block;
-        background: #FFFFFF;
-        border: 1px solid #DCE7F8;
-        color: #31527D;
-        padding: 7px 11px;
-        border-radius: 8px;
-        font-size: 11px;
-        font-weight: 600;
-    }
-
-    /* Issue cards */
-
-    .section-title {
-        color: #0F172A;
-        font-size: 20px;
-        font-weight: 750;
-        letter-spacing: -0.4px;
-        margin-bottom: 5px;
-    }
-
-    .section-description {
-        color: #64748B;
-        font-size: 13px;
-        line-height: 1.7;
-        margin-bottom: 18px;
-    }
-
-    .issue-card {
-        box-sizing: border-box;
-        min-height: 112px;
-        background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 13px;
-        padding: 15px 16px;
-        margin-bottom: 6px;
-        transition: border-color 0.2s, background 0.2s;
-        overflow: hidden;
-    }
-
-    .issue-card:hover {
-        border-color: #93C5FD;
-        background: #FCFDFF;
-    }
-
-    .issue-icon {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        width: 28px;
-        height: 28px;
-        background: #EFF6FF;
-        border-radius: 8px;
-        font-size: 15px;
-        margin-bottom: 8px;
-    }
-
-    .issue-title {
-        color: #172033;
-        font-size: 13.5px;
-        font-weight: 700;
-        line-height: 1.4;
-        margin-bottom: 4px;
-    }
-
-    .issue-description {
-        color: #64748B;
-        font-size: 11.5px;
-        line-height: 1.5;
-    }
-
-    /* Buttons */
-
-    .stButton > button {
-        border-radius: 9px;
-        font-family: 'Inter', sans-serif;
-        font-size: 12px;
-        font-weight: 600;
-        transition: all 0.2s ease;
-    }
-
-    section[data-testid="stSidebar"] .stButton > button {
-        min-height: 39px;
-    }
-
-    .main .stButton > button {
-        min-height: 37px;
-        border: 1px solid #E2E8F0;
-        background: #FFFFFF;
-        color: #334155;
-    }
-
-    .main .stButton > button:hover {
-        border-color: #93C5FD;
-        color: #1D4ED8;
-        background: #F8FBFF;
-    }
-
-    /* Chat */
-
-    [data-testid="stChatMessage"] {
-        border: 1px solid #EDF1F6;
-        border-radius: 13px;
-        padding: 12px 16px;
-        margin-bottom: 14px;
-    }
-
-    [data-testid="stChatInput"] {
-        border-color: #D9E2EF;
-        border-radius: 13px;
-    }
-
-    .chat-helper {
-        text-align: center;
-        color: #94A3B8;
-        font-size: 11px;
-        margin-top: 10px;
-        margin-bottom: 14px;
-    }
-
-    /* Source details */
-
-    .source-box {
-        background: #F8FAFC;
-        border: 1px solid #E6EDF5;
-        border-left: 3px solid #60A5FA;
-        border-radius: 8px;
-        padding: 12px;
-        margin: 8px 0;
-        overflow-wrap: anywhere;
-    }
-
-    .source-name {
-        color: #1E293B;
-        font-size: 12px;
-        font-weight: 700;
-        margin-bottom: 7px;
-    }
-
-    .source-meta {
-        color: #64748B;
-        font-size: 11px;
-        line-height: 1.7;
-    }
-
-    .match-badge {
-        display: inline-block;
-        color: #1D4ED8;
-        background: #DBEAFE;
-        border-radius: 6px;
-        padding: 3px 7px;
-        font-size: 10px;
-        font-weight: 700;
-        margin-top: 3px;
-    }
-
-    @media (max-width: 768px) {
-        .welcome-panel {
-            padding: 22px 18px;
-        }
-
-        .issue-card {
-            min-height: 140px;
-            height: 140px;
-            padding: 13px;
-        }
-
-        .topbar {
-            align-items: flex-start;
-        }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
+st.session_state.messages = st.session_state.conversations.get(
+    st.session_state.active_session, []
 )
-
-
-# ============================================================
-# HELPER FUNCTIONS
-# ============================================================
-
-def render_sources(sources):
-    """Display retrieved knowledge-source metadata."""
-    if not sources:
-        return
-
-    with st.expander(f"📚 Retrieved Knowledge Sources ({len(sources)})"):
-        for src in sources:
-            source_name = str(src.get("source", "Knowledge source"))
-            source_type = str(src.get("source_type", ""))
-            scenario = str(src.get("scenario", "Not specified"))
-            category = str(src.get("category", "Not specified"))
-
-            is_kba = (
-                "SAP" in source_type.upper()
-                or source_name.lower().endswith("_sap.md")
-            )
-
-            source_label = "SAP KBA" if is_kba else "Expert Playbook"
-
-            try:
-                score = float(src.get("match_score", 0))
-                score_text = f"{score:g}%"
-            except (TypeError, ValueError):
-                score_text = "N/A"
-
-            st.markdown(
-                f"""
-                <div class="source-box">
-                    <div class="source-name">
-                        {"📘" if is_kba else "📖"}
-                        {html.escape(source_name)}
-                        <span style="font-weight:400;color:#64748B;">
-                            · {source_label}
-                        </span>
-                    </div>
-                    <div class="source-meta">
-                        <b>Scenario:</b> {html.escape(scenario)}<br>
-                        <b>Category:</b> {html.escape(category)}
-                    </div>
-                    <span class="match-badge">
-                        Semantic Match: {html.escape(score_text)}
-                    </span>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
-
-
-def render_assistant_message(message):
-    """Display an existing assistant message and its supporting sources."""
-    st.markdown(message.get("content", ""))
-
-    with st.expander("📋 ServiceNow Resolution"):
-        st.code(message.get("content", ""), language="markdown")
-
-    render_sources(message.get("sources", []))
-
-
-def submit_question(question):
-    """Run a question through ResolveAI and save the conversation."""
-    question = question.strip()
-    if not question:
-        return
-
-    messages = st.session_state.conversations[
-        st.session_state.active_session
-    ]
-
-    messages.append({
-        "role": "user",
-        "content": question,
-        "sources": [],
-    })
-
-    st.session_state.conversations[
-        st.session_state.active_session
-    ] = messages
-
-    try:
-        with st.spinner("Searching relevant knowledge and preparing a resolution..."):
-            data = query_resolveai(question)
-
-        answer = data.get("answer", "No answer was returned.")
-        sources = data.get("sources", [])
-
-        messages.append({
-            "role": "assistant",
-            "content": answer,
-            "sources": sources,
-        })
-
-        st.session_state.conversations[
-            st.session_state.active_session
-        ] = messages
-
-    except requests.exceptions.Timeout:
-        st.session_state.error_message = (
-            "The request timed out. Please try again."
-        )
-
-    except Exception as exc:
-        st.session_state.error_message = (
-            f"Unable to process the request: {exc}"
-        )
 
 
 # ============================================================
 # SIDEBAR
 # ============================================================
 
+prompt_to_submit = None
+
 with st.sidebar:
-    st.markdown(
-        """
-        <div class="brand">
-            <div class="brand-icon">🤖</div>
-            <div class="brand-name">ResolveAI</div>
-        </div>
-        <div class="sidebar-description">
-            SAP SuccessFactors Learning<br>
-            Intelligent Troubleshooting Assistant
-        </div>
-        <div class="sidebar-label">Workspace</div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("### 🤖 **ResolveAI**")
+    st.caption("Troubleshooting assistant for **SAP SuccessFactors Learning**")
 
-    st.markdown(
-        """
-        <div style="
-            padding: 10px 12px;
-            background: #EAF2FF;
-            color: #1D4ED8;
-            border-radius: 9px;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 22px;
-        ">
-            💬 &nbsp; Troubleshooting Chat
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.divider()
 
-    st.markdown(
-        '<div class="sidebar-label">Conversation</div>',
-        unsafe_allow_html=True,
-    )
+    st.markdown("##### 💬 **Common Inquiries**")
+    st.caption("Click any question to ask immediately:")
+
+    sample_questions = [
+        "Course assigned again after completion",
+        "Online content is not launching",
+        "New employee is missing from LMS",
+        "Learner cannot access MyLearning",
+        "Course was assigned unexpectedly"
+    ]
+
+    for q in sample_questions:
+        if st.button(f"👉 {q}", use_container_width=True):
+            prompt_to_submit = q
+
+    st.divider()
+
+    st.markdown("##### 🗂️ **Session Manager**")
+    session_names = list(st.session_state.conversations.keys())
 
     col_new, col_clear = st.columns(2)
-
     with col_new:
-        if st.button("＋ New Chat", use_container_width=True):
-            existing_numbers = []
-
-            for name in st.session_state.conversations:
-                if name.startswith("Session "):
-                    try:
-                        existing_numbers.append(int(name.split()[-1]))
-                    except ValueError:
-                        pass
-
-            next_number = max(existing_numbers, default=0) + 1
-            new_name = f"Session {next_number}"
-
-            st.session_state.conversations[new_name] = []
-            st.session_state.active_session = new_name
-            st.session_state.messages = (
-                st.session_state.conversations[new_name]
-            )
-
+        if st.button("➕ New Chat", use_container_width=True):
+            new_session_name = f"Session {len(st.session_state.conversations) + 1}"
+            st.session_state.conversations[new_session_name] = []
+            st.session_state.active_session = new_session_name
+            st.session_state.messages = st.session_state.conversations[new_session_name]
             st.rerun()
 
     with col_clear:
-        if st.button("Clear Chat", use_container_width=True):
-            st.session_state.conversations[
-                st.session_state.active_session
-            ] = []
-
+        if st.button("🗑 Clear Chat", use_container_width=True):
+            st.session_state.conversations[st.session_state.active_session] = []
             st.session_state.messages = []
             st.rerun()
 
-    session_names = list(st.session_state.conversations.keys())
-
     if len(session_names) > 1:
-        current_index = session_names.index(
-            st.session_state.active_session
-        )
-
+        current_index = session_names.index(st.session_state.active_session) if st.session_state.active_session in session_names else 0
         selected_session = st.selectbox(
-            "Switch conversation",
+            "Active Session:",
             session_names,
-            index=current_index,
+            index=current_index
         )
-
         if selected_session != st.session_state.active_session:
             st.session_state.active_session = selected_session
-            st.session_state.messages = (
-                st.session_state.conversations[selected_session]
-            )
+            st.session_state.messages = st.session_state.conversations[selected_session]
             st.rerun()
 
-    st.markdown("---")
+    st.divider()
 
-    api_configured = bool(
-        os.getenv("RESOLVEAI_API_URL", "").strip()
-    )
-
-    if api_configured:
-        st.caption("🔗 API configured")
+    st.markdown("##### ⚙️ **Engine Status**")
+    active_api = os.getenv("RESOLVEAI_API_URL", "").strip()
+    if active_api:
+        st.caption(f"Status: `Connected ({active_api})` 🟢")
     else:
-        st.caption("⚙️ Direct RAG pipeline")
-
-    st.caption("Knowledge-grounded support assistance")
+        st.caption("Status: `Self-Contained RAG Pipeline` 🟢")
 
 
 # ============================================================
 # MAIN HEADER
 # ============================================================
 
+st.markdown('<div class="main-title">ResolveAI 🤖</div>', unsafe_allow_html=True)
 st.markdown(
-    """
-    <div class="topbar">
-        <div>
-            <div class="topbar-title">
-                SAP SuccessFactors Learning Support
-            </div>
-            <div class="topbar-subtitle">
-                Troubleshoot incidents with relevant knowledge and structured resolutions.
-            </div>
-        </div>
-        <div class="status-pill">
-            <span class="status-dot"></span>
-            Support Assistant
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True,
+    '<div class="subtitle">Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System</div>',
+    unsafe_allow_html=True
 )
 
 
 # ============================================================
-# WELCOME SCREEN AND ISSUE CARDS
+# WELCOME AREA (NATURAL ENGLISH QUESTIONS)
 # ============================================================
 
 if not st.session_state.messages:
-    st.markdown(
-        """
-        <div class="welcome-panel">
-            <div class="welcome-eyebrow">YOUR SUPPORT WORKSPACE</div>
-            <div class="welcome-title">
-                Resolve issues.<br>
-                Get back to work.
-            </div>
-            <div class="welcome-description">
-                Describe your SAP SuccessFactors Learning issue and get
-                structured troubleshooting guidance based on relevant
-                knowledge sources.
-            </div>
-            <div class="feature-row">
-                <span class="feature-tag">Knowledge-grounded guidance</span>
-                <span class="feature-tag">ServiceNow-ready resolutions</span>
-                <span class="feature-tag">Source details</span>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown("##### 💡 **How can I help you today?**")
+    st.caption("Choose one of the common issues below, or describe your problem in the chat bar:")
 
-    # ============================================================
-    # ISSUE CARDS — REPLACE THE OLD CARD SECTION
-    # ============================================================
-    issues = [
-        {
-            "key": "retraining",
-            "icon": "🔁",
-            "title": "Course assigned again",
-            "description": "A completed course has been assigned to the learner again.",
-            "prompt": "Course assigned again after completion",
-        },
-        {
-            "key": "content",
-            "icon": "▶️",
-            "title": "Online content not launching",
-            "description": "Course content fails to open or launch for a learner.",
-            "prompt": "Online content is not launching",
-        },
-        {
-            "key": "mylearning",
-            "icon": "📚",
-            "title": "MyLearning access",
-            "description": "A learner cannot access MyLearning or view assigned courses.",
-            "prompt": "Learner cannot access MyLearning",
-        },
-        {
-            "key": "assignment",
-            "icon": "📋",
-            "title": "Unexpected course assignment",
-            "description": "A learner received a course assignment they did not expect.",
-            "prompt": "Course was assigned unexpectedly",
-        },
-        {
-            "key": "employee",
-            "icon": "👤",
-            "title": "New employee missing",
-            "description": "A new employee cannot be found in the LMS.",
-            "prompt": "New employee is missing from LMS",
-        },
-        {
-            "key": "other",
-            "icon": "🛠️",
-            "title": "Other LMS issue",
-            "description": "Get help investigating another SAP Learning issue.",
-            "prompt": "SAP SuccessFactors LMS troubleshooting checklist",
-        },
-    ]
+    col1, col2 = st.columns(2)
 
-    st.markdown("## What do you need help with?")
-    st.caption("Select a scenario or describe your issue in the chat below.")
+    with col1:
+        if st.button(
+            "📌 **A user finished a course, but it was assigned to them again.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "Course assigned again after completion"
 
-    # Two columns of separate, properly formatted cards.
-    left_col, right_col = st.columns(2, gap="medium")
+        if st.button(
+            "📌 **Learners report that online course content is not launching.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "SCORM content not launching"
 
-    for index, issue in enumerate(issues):
-        target_col = left_col if index % 2 == 0 else right_col
+    with col2:
+        if st.button(
+            "📌 **A new hire has joined, but their account cannot be found in LMS.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "User missing from LMS after joining"
 
-        with target_col:
-            st.markdown(
-                f"""
-                <div class="issue-card">
-                    <div class="issue-icon">{issue["icon"]}</div>
-                    <div class="issue-title">{html.escape(issue["title"])}</div>
-                    <div class="issue-description">{html.escape(issue["description"])}</div>
-                </div>
-                """,
-                unsafe_allow_html=True,
-            )
+        if st.button(
+            "📌 **A user received a course assignment that they shouldn't have.**",
+            use_container_width=True
+        ):
+            prompt_to_submit = "Course assigned unexpectedly"
 
-            if st.button(
-                "Explore issue →",
-                key=f"issue_{issue['key']}",
-                use_container_width=True,
-            ):
-                st.session_state.pending_question = issue["prompt"]
-                st.rerun()
+    st.markdown("<br>", unsafe_allow_html=True)
 
 
 # ============================================================
-# CHAT HISTORY
+# CHAT TIMELINE
 # ============================================================
 
-for message in st.session_state.conversations[
-    st.session_state.active_session
-]:
+for message in st.session_state.messages:
     with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
         if message["role"] == "assistant":
-            render_assistant_message(message)
-        else:
-            st.markdown(message.get("content", ""))
+            # 1-Click Ticket Copier
+            with st.expander("📋 Copy Resolution for ServiceNow Ticket"):
+                st.code(message["content"], language="markdown")
+
+            # Verified Source Badges
+            sources = message.get("sources", [])
+            if sources:
+                with st.expander(f"📚 Knowledge Sources ({len(sources)} sources cited)"):
+                    for src in sources:
+                        is_kba = "SAP" in src.get("source_type", "") or src.get("source", "").endswith("_sap.md")
+                        source_icon = "📘" if is_kba else "📖"
+                        type_label = "Official SAP KBA" if is_kba else "Expert Playbook"
+                        badge_color = "#0284C7" if is_kba else "#2563EB"
+
+                        st.markdown(
+                            f"""
+                            <div class="source-box">
+                                <div style="display:flex; justify-content:space-between; align-items:center;">
+                                    <b>{source_icon} {src['source']} <span style="font-size:11px; color:#9CA3AF; font-weight:normal;">({type_label})</span></b>
+                                    <span class="match-badge" style="background-color:{badge_color};">Semantic Match: {src['match_score']}%</span>
+                                </div>
+                                <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
+                                    Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>
+                                </div>
+                            </div>
+                            """,
+                            unsafe_allow_html=True
+                        )
 
 
 # ============================================================
-# CHAT INPUT AND EXECUTION
+# CHAT INPUT & EXECUTION
 # ============================================================
 
-if "pending_question" not in st.session_state:
-    st.session_state.pending_question = None
-
-if "error_message" not in st.session_state:
-    st.session_state.error_message = None
-
-chat_input = st.chat_input(
-    "Ask ResolveAI..."
-)
-
-question = (
-    st.session_state.pending_question
-    or chat_input
-)
+chat_input = st.chat_input("Describe your SAP LMS issue (e.g., 'User completed course but assigned again')...")
+question = prompt_to_submit or chat_input
 
 if question:
-    st.session_state.pending_question = None
+    # 1. Store & display user message
+    st.session_state.messages.append({
+        "role": "user",
+        "content": question,
+        "sources": []
+    })
 
-    submit_question(question)
+    with st.chat_message("user"):
+        st.markdown(question)
 
-    # Rerun so the submitted question and response appear in chat history.
-    st.rerun()
+    # 2. Call backend & display assistant response
+    with st.chat_message("assistant"):
+        with st.spinner("Analyzing verified playbooks..."):
+            try:
+                data = query_resolveai(question)
 
-if st.session_state.error_message:
-    st.error(st.session_state.error_message)
+                answer = data.get("answer", "No answer returned.")
+                sources = data.get("sources", [])
 
-    if st.button("Dismiss error"):
-        st.session_state.error_message = None
-        st.rerun()
+                # Render response
+                st.markdown(answer)
 
-st.markdown(
-    """
-    <div class="chat-helper">
-        Avoid sharing passwords or other sensitive information.
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
+                # 1-Click Ticket Copier
+                with st.expander("📋 Copy Resolution for ServiceNow Ticket"):
+                    st.code(answer, language="markdown")
+
+                # Render knowledge sources with provenance metadata
+                if sources:
+                    with st.expander(f"📚 Knowledge Sources ({len(sources)} sources cited)"):
+                        for src in sources:
+                            is_kba = "SAP" in src.get("source_type", "") or src.get("source", "").endswith("_sap.md")
+                            source_icon = "📘" if is_kba else "📖"
+                            type_label = "Official SAP KBA" if is_kba else "Expert Playbook"
+                            badge_color = "#0284C7" if is_kba else "#2563EB"
+
+                            st.markdown(
+                                f"""
+                                <div class="source-box">
+                                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                                        <b>{source_icon} {src['source']} <span style="font-size:11px; color:#9CA3AF; font-weight:normal;">({type_label})</span></b>
+                                        <span class="match-badge" style="background-color:{badge_color};">Semantic Match: {src['match_score']}%</span>
+                                    </div>
+                                    <div style="font-size:13px; color:#A1A1AA; margin-top:4px;">
+                                        Scenario: <i>{src['scenario']}</i> &nbsp;•&nbsp; Category: <code>{src['category']}</code>
+                                    </div>
+                                </div>
+                                """,
+                                unsafe_allow_html=True
+                            )
+
+                # Store response
+                st.session_state.messages.append({
+                    "role": "assistant",
+                    "content": answer,
+                    "sources": sources
+                })
+                st.session_state.conversations[st.session_state.active_session] = st.session_state.messages
+
+            except requests.exceptions.Timeout:
+                st.error("⚠️ The request timed out. Please try again.")
+            except Exception as e:
+                st.error(f"⚠️ An unexpected error occurred: {e}")
