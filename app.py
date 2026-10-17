@@ -79,47 +79,6 @@ st.markdown(
         max-width: 1200px !important;
     }
 
-    /* Main Top Header */
-    .top-header-bar {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-bottom: 14px;
-        margin-bottom: 20px;
-        border-bottom: 1px solid #F1F5F9;
-    }
-
-    .top-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 20px;
-        font-weight: 700;
-        color: #0F172A;
-    }
-
-    .top-brand-subtitle {
-        font-size: 13px;
-        color: #64748B;
-        font-weight: 400;
-        margin-left: 8px;
-        padding-left: 10px;
-        border-left: 1px solid #CBD5E1;
-    }
-
-    .theme-pill {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 50%;
-        width: 34px;
-        height: 34px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 15px;
-        color: #64748B;
-    }
-
     /* Welcome Banner */
     .welcome-card {
         background: linear-gradient(135deg, #F0F7FF 0%, #E8F2FE 100%);
@@ -233,11 +192,13 @@ st.markdown(
         margin: 0 !important;
     }
 
-    div[data-testid="stColumn"] div.stButton > button p:first-child {
+    div[data-testid="stColumn"] div.stButton > button strong {
+        display: block !important;
         font-size: 14.5px !important;
         font-weight: 700 !important;
         color: #0F172A !important;
         margin-bottom: 6px !important;
+        line-height: 1.35 !important;
     }
 
     /* Sidebar Clean Styling */
@@ -381,26 +342,6 @@ with st.sidebar:
 
 
 # ============================================================
-# MAIN HEADER
-# ============================================================
-
-st.markdown(
-    """
-    <div class="top-header-bar">
-        <div class="top-brand">
-            <span>🤖 ResolveAI</span>
-            <span class="top-brand-subtitle">SAP SuccessFactors Learning Troubleshooting Assistant</span>
-        </div>
-        <div class="top-actions">
-            <span class="theme-pill" title="Light theme active">☀️</span>
-        </div>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
-
-
-# ============================================================
 # WELCOME AREA & 6 ISSUE CARDS (3x2 GRID)
 # ============================================================
 
@@ -438,7 +379,7 @@ if not st.session_state.messages:
 
     with col1:
         if st.button(
-            "🎓 **Course assigned again after completion** ›\n\nUser completed a course but it was assigned to them again.",
+            "**🎓 Course assigned again after completion**\n\nUser completed a course but it was assigned to them again. ›",
             key="card_retraining",
             use_container_width=True
         ):
@@ -446,7 +387,7 @@ if not st.session_state.messages:
 
     with col2:
         if st.button(
-            "▶️ **Online content is not launching** ›\n\nLearners report that online course content is not launching.",
+            "**▶️ Online content is not launching**\n\nLearners report that online course content is not launching. ›",
             key="card_scorm",
             use_container_width=True
         ):
@@ -454,7 +395,7 @@ if not st.session_state.messages:
 
     with col3:
         if st.button(
-            "👤 **New employee is missing from LMS** ›\n\nA new hire has joined, but their account cannot be found in LMS.",
+            "**👤 New employee is missing from LMS**\n\nA new hire has joined, but their account cannot be found in LMS. ›",
             key="card_user_sync",
             use_container_width=True
         ):
@@ -465,7 +406,7 @@ if not st.session_state.messages:
 
     with col4:
         if st.button(
-            "📖 **Learner cannot access MyLearning** ›\n\nUser is unable to access MyLearning or cannot see assigned courses.",
+            "**📖 Learner cannot access MyLearning**\n\nUser is unable to access MyLearning or cannot see assigned courses. ›",
             key="card_access",
             use_container_width=True
         ):
@@ -473,7 +414,7 @@ if not st.session_state.messages:
 
     with col5:
         if st.button(
-            "📋 **Course was assigned unexpectedly** ›\n\nA user received a course assignment that they shouldn't have.",
+            "**📋 Course was assigned unexpectedly**\n\nA user received a course assignment that they shouldn't have. ›",
             key="card_unexpected",
             use_container_width=True
         ):
@@ -481,7 +422,7 @@ if not st.session_state.messages:
 
     with col6:
         if st.button(
-            "⚙️ **Other SAP LMS issue** ›\n\nDescribe your specific issue in the chat below.",
+            "**⚙️ Other SAP LMS issue**\n\nDescribe your specific issue in the chat below. ›",
             key="card_other",
             use_container_width=True
         ):
