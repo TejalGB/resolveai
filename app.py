@@ -189,10 +189,35 @@ if is_dark:
         color: #64748B !important;
     }
 
-    div[data-testid="stChatInput"] textarea {
+    /* Bottom chat container fix in Dark Mode - eliminate white bar */
+    [data-testid="stBottom"], [data-testid="stBottom"] > div {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+
+    div[data-testid="stChatInput"] {
         background-color: #1E293B !important;
-        color: #F8FAFC !important;
         border: 1px solid #334155 !important;
+        border-radius: 12px !important;
+    }
+
+    div[data-testid="stChatInput"] textarea {
+        background-color: transparent !important;
+        color: #F8FAFC !important;
+        border: none !important;
+    }
+
+    /* Sidebar action buttons in Dark Mode */
+    section[data-testid="stSidebar"] [data-testid="stButton"] button {
+        background-color: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #F8FAFC !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+        border-color: #60A5FA !important;
+        background-color: #243248 !important;
+        color: #FFFFFF !important;
     }
     """
 else:
@@ -300,6 +325,37 @@ else:
     .chat-caption {
         color: #94A3B8 !important;
     }
+
+    /* Bottom chat container fix in Light Mode */
+    [data-testid="stBottom"], [data-testid="stBottom"] > div {
+        background-color: transparent !important;
+        background: transparent !important;
+    }
+
+    div[data-testid="stChatInput"] {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        border-radius: 12px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    div[data-testid="stChatInput"] textarea {
+        background-color: transparent !important;
+        color: #0F172A !important;
+        border: none !important;
+    }
+
+    /* Sidebar action buttons in Light Mode */
+    section[data-testid="stSidebar"] [data-testid="stButton"] button {
+        background-color: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #0F172A !important;
+    }
+
+    section[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
+        border-color: #3B82F6 !important;
+        background-color: #F8FAFC !important;
+    }
     """
 
 st.markdown(
@@ -311,71 +367,72 @@ st.markdown(
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }}
 
-    /* Page container spacing - ensures welcome banner is never clipped by Streamlit toolbar */
+    /* Page container spacing - ensures welcome banner is never clipped and chat input never covers cards */
     .block-container {{
-        padding-top: 4.75rem !important;
-        padding-bottom: 3rem !important;
+        padding-top: 3.5rem !important;
+        padding-bottom: 7.5rem !important;
         max-width: 1200px !important;
     }}
 
     .welcome-card {{
-        border-radius: 16px;
-        padding: 24px 28px;
-        margin-bottom: 24px;
+        border-radius: 14px;
+        padding: 16px 22px;
+        margin-bottom: 14px;
         position: relative;
     }}
 
     .welcome-label {{
-        font-size: 11px;
+        font-size: 10.5px;
         font-weight: 700;
         letter-spacing: 1px;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
     }}
 
     .welcome-title {{
-        font-size: 28px;
+        font-size: 24px;
         font-weight: 800;
-        margin-bottom: 6px;
+        margin-bottom: 4px;
+        line-height: 1.2;
     }}
 
     .welcome-subtitle {{
-        font-size: 14px;
-        margin-bottom: 16px;
+        font-size: 13px;
+        margin-bottom: 12px;
         max-width: 680px;
     }}
 
     .feature-pills {{
         display: flex;
         flex-wrap: wrap;
-        gap: 8px;
-    }}
-
-    .feature-pill {{
-        padding: 5px 12px;
-        border-radius: 20px;
-        font-size: 12px;
-        font-weight: 500;
-        display: inline-flex;
-        align-items: center;
         gap: 6px;
     }}
 
+    .feature-pill {{
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11.5px;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+    }}
+
     .section-title {{
-        font-size: 18px;
+        font-size: 17px;
         font-weight: 700;
-        margin-bottom: 4px;
+        margin-bottom: 2px;
         display: flex;
         align-items: center;
         gap: 6px;
     }}
 
     .section-subtitle {{
-        font-size: 13px;
-        margin-bottom: 16px;
+        font-size: 12.5px;
+        margin-bottom: 10px;
     }}
 
-    /* 6 Issue Cards Styling: full card clickable without truncation */
-    div[data-testid="stColumn"] div.stButton > button {{
+    /* 6 Issue Cards Styling: applied only to main area columns, compact and non-overlapping */
+    section.main div[data-testid="stColumn"] div.stButton > button {{
         display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -384,34 +441,58 @@ st.markdown(
         white-space: normal !important;
         word-break: break-word !important;
         height: 100% !important;
-        min-height: 110px !important;
-        padding: 16px 18px !important;
-        border-radius: 14px !important;
+        min-height: 85px !important;
+        padding: 12px 14px !important;
+        border-radius: 12px !important;
         transition: all 0.2s ease-in-out !important;
         cursor: pointer !important;
     }}
 
-    div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {{
+    section.main div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {{
         width: 100% !important;
         text-align: left !important;
         white-space: normal !important;
     }}
 
-    div[data-testid="stColumn"] div.stButton > button strong {{
+    section.main div[data-testid="stColumn"] div.stButton > button strong {{
         display: block !important;
-        font-size: 14.5px !important;
+        font-size: 13.5px !important;
         font-weight: 700 !important;
-        margin-bottom: 6px !important;
-        line-height: 1.35 !important;
+        margin-bottom: 4px !important;
+        line-height: 1.3 !important;
     }}
 
-    div[data-testid="stColumn"] div.stButton > button p {{
+    section.main div[data-testid="stColumn"] div.stButton > button p {{
         white-space: normal !important;
         word-break: break-word !important;
         text-align: left !important;
-        line-height: 1.45 !important;
-        font-size: 12.5px !important;
+        line-height: 1.35 !important;
+        font-size: 12px !important;
         margin: 0 !important;
+    }}
+
+    /* Compact sidebar action buttons (User Provided) */
+    section[data-testid="stSidebar"] [data-testid="stButton"] button {{
+        min-height: 44px !important;
+        height: 44px !important;
+        padding: 8px 12px !important;
+        margin: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        font-size: 13.5px !important;
+        border-radius: 8px !important;
+    }}
+
+    /* Keep the two session actions compact */
+    section[data-testid="stSidebar"] [data-testid="stHorizontalBlock"] {{
+        align-items: flex-start !important;
+    }}
+
+    /* Prevent unnecessary vertical spacing around sidebar buttons */
+    section[data-testid="stSidebar"] [data-testid="stButton"] {{
+        margin-bottom: 6px !important;
     }}
 
     /* Sidebar Styling */
@@ -573,7 +654,7 @@ if not st.session_state.messages:
 
     with col1:
         if st.button(
-            "**🎓 Course assigned again after completion**\n\nUser completed a course but it was assigned to them again. ›",
+            "**🎓 Course assigned again after completion**\n\nUser completed a course but it was assigned to them again.",
             key="card_retraining",
             use_container_width=True
         ):
@@ -581,7 +662,7 @@ if not st.session_state.messages:
 
     with col2:
         if st.button(
-            "**▶️ Online content is not launching**\n\nLearners report that online course content is not launching. ›",
+            "**▶️ Online content is not launching**\n\nLearners report that online course content is not launching.",
             key="card_scorm",
             use_container_width=True
         ):
@@ -589,7 +670,7 @@ if not st.session_state.messages:
 
     with col3:
         if st.button(
-            "**👤 New employee is missing from LMS**\n\nA new hire has joined, but their account cannot be found in LMS. ›",
+            "**👤 New employee is missing from LMS**\n\nA new hire has joined, but their account cannot be found in LMS.",
             key="card_user_sync",
             use_container_width=True
         ):
@@ -600,7 +681,7 @@ if not st.session_state.messages:
 
     with col4:
         if st.button(
-            "**📖 Learner cannot access MyLearning**\n\nUser is unable to access MyLearning or cannot see assigned courses. ›",
+            "**📖 Learner cannot access MyLearning**\n\nUser is unable to access MyLearning or cannot see assigned courses.",
             key="card_access",
             use_container_width=True
         ):
@@ -608,7 +689,7 @@ if not st.session_state.messages:
 
     with col5:
         if st.button(
-            "**📋 Course was assigned unexpectedly**\n\nA user received a course assignment that they shouldn't have. ›",
+            "**📋 Course was assigned unexpectedly**\n\nA user received a course assignment that they shouldn't have.",
             key="card_unexpected",
             use_container_width=True
         ):
@@ -616,7 +697,7 @@ if not st.session_state.messages:
 
     with col6:
         if st.button(
-            "**⚙️ Other SAP LMS issue**\n\nDescribe your specific issue in the chat below. ›",
+            "**⚙️ Other SAP LMS issue**\n\nDescribe your specific issue in the chat below.",
             key="card_other",
             use_container_width=True
         ):
