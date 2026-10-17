@@ -133,25 +133,23 @@ if is_dark:
     }
 
     /* 6 Issue Cards in Dark Mode */
-    div[data-testid="stColumn"] div.stButton > button {
+    section.main div[data-testid="stColumn"] div.stButton > button {
         background: #1E293B !important;
         border: 1px solid #334155 !important;
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+        color: #F8FAFC !important;
     }
 
-    div[data-testid="stColumn"] div.stButton > button:hover {
+    section.main div[data-testid="stColumn"] div.stButton > button:hover {
         border-color: #60A5FA !important;
         background: #243248 !important;
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
         transform: translateY(-2px) !important;
+        color: #FFFFFF !important;
     }
 
-    div[data-testid="stColumn"] div.stButton > button strong {
+    section.main div[data-testid="stColumn"] div.stButton > button p {
         color: #F8FAFC !important;
-    }
-
-    div[data-testid="stColumn"] div.stButton > button p {
-        color: #94A3B8 !important;
     }
 
     /* Sidebar in Dark Mode */
@@ -189,16 +187,27 @@ if is_dark:
         color: #64748B !important;
     }
 
-    /* Bottom chat container fix in Dark Mode - eliminate white bar */
+    /* Bottom chat container fix in Dark Mode - elevated and visible */
     [data-testid="stBottom"], [data-testid="stBottom"] > div {
         background-color: transparent !important;
         background: transparent !important;
     }
 
+    [data-testid="stBottom"] {
+        padding-bottom: 22px !important;
+        padding-top: 8px !important;
+    }
+
     div[data-testid="stChatInput"] {
         background-color: #1E293B !important;
-        border: 1px solid #334155 !important;
-        border-radius: 12px !important;
+        border: 1.5px solid #475569 !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
+    }
+
+    div[data-testid="stChatInput"]:focus-within {
+        border-color: #60A5FA !important;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25), 0 4px 20px rgba(0, 0, 0, 0.5) !important;
     }
 
     div[data-testid="stChatInput"] textarea {
@@ -270,25 +279,23 @@ else:
     }
 
     /* 6 Issue Cards in Light Mode */
-    div[data-testid="stColumn"] div.stButton > button {
+    section.main div[data-testid="stColumn"] div.stButton > button {
         background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+        border: 1px solid #CBD5E1 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+        color: #0F172A !important;
     }
 
-    div[data-testid="stColumn"] div.stButton > button:hover {
+    section.main div[data-testid="stColumn"] div.stButton > button:hover {
         border-color: #3B82F6 !important;
         background: #F8FAFC !important;
         box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12) !important;
         transform: translateY(-2px) !important;
+        color: #1E40AF !important;
     }
 
-    div[data-testid="stColumn"] div.stButton > button strong {
+    section.main div[data-testid="stColumn"] div.stButton > button p {
         color: #0F172A !important;
-    }
-
-    div[data-testid="stColumn"] div.stButton > button p {
-        color: #64748B !important;
     }
 
     /* Sidebar in Light Mode */
@@ -326,17 +333,27 @@ else:
         color: #94A3B8 !important;
     }
 
-    /* Bottom chat container fix in Light Mode */
+    /* Bottom chat container fix in Light Mode - elevated and visible */
     [data-testid="stBottom"], [data-testid="stBottom"] > div {
         background-color: transparent !important;
         background: transparent !important;
     }
 
+    [data-testid="stBottom"] {
+        padding-bottom: 22px !important;
+        padding-top: 8px !important;
+    }
+
     div[data-testid="stChatInput"] {
         background-color: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        border-radius: 12px !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+        border: 1.5px solid #CBD5E1 !important;
+        border-radius: 14px !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+    }
+
+    div[data-testid="stChatInput"]:focus-within {
+        border-color: #3B82F6 !important;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.2), 0 4px 20px rgba(0, 0, 0, 0.1) !important;
     }
 
     div[data-testid="stChatInput"] textarea {
@@ -370,7 +387,7 @@ st.markdown(
     /* Page container spacing - ensures welcome banner is never clipped and chat input never covers cards */
     .block-container {{
         padding-top: 3.5rem !important;
-        padding-bottom: 7.5rem !important;
+        padding-bottom: 9rem !important;
         max-width: 1200px !important;
     }}
 
@@ -431,44 +448,39 @@ st.markdown(
         margin-bottom: 10px;
     }}
 
-    /* 6 Issue Cards Styling: applied only to main area columns, compact and non-overlapping */
+    /* 6 Issue Buttons: consistent height, font size, alignment, and hover feedback */
     section.main div[data-testid="stColumn"] div.stButton > button {{
         display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
+        flex-direction: row !important;
+        align-items: center !important;
         justify-content: flex-start !important;
         text-align: left !important;
-        white-space: normal !important;
-        word-break: break-word !important;
-        height: 100% !important;
-        min-height: 85px !important;
-        padding: 12px 14px !important;
-        border-radius: 12px !important;
+        height: 52px !important;
+        min-height: 52px !important;
+        max-height: 52px !important;
+        padding: 0 16px !important;
+        border-radius: 10px !important;
         transition: all 0.2s ease-in-out !important;
         cursor: pointer !important;
+        width: 100% !important;
     }}
 
     section.main div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {{
         width: 100% !important;
         text-align: left !important;
-        white-space: normal !important;
-    }}
-
-    section.main div[data-testid="stColumn"] div.stButton > button strong {{
-        display: block !important;
-        font-size: 13.5px !important;
-        font-weight: 700 !important;
-        margin-bottom: 4px !important;
-        line-height: 1.3 !important;
+        display: flex !important;
+        align-items: center !important;
     }}
 
     section.main div[data-testid="stColumn"] div.stButton > button p {{
-        white-space: normal !important;
-        word-break: break-word !important;
-        text-align: left !important;
-        line-height: 1.35 !important;
-        font-size: 12px !important;
+        font-size: 14px !important;
+        font-weight: 600 !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
         margin: 0 !important;
+        padding: 0 !important;
+        line-height: 1.3 !important;
     }}
 
     /* Compact sidebar action buttons (User Provided) */
@@ -654,7 +666,8 @@ if not st.session_state.messages:
 
     with col1:
         if st.button(
-            "**🎓 Course assigned again after completion**\n\nUser completed a course but it was assigned to them again.",
+            "🎓 Course assigned again",
+            help="User completed a course but it was assigned to them again.",
             key="card_retraining",
             use_container_width=True
         ):
@@ -662,7 +675,8 @@ if not st.session_state.messages:
 
     with col2:
         if st.button(
-            "**▶️ Online content is not launching**\n\nLearners report that online course content is not launching.",
+            "▶️ Content not launching",
+            help="Learners report that online course content is not launching.",
             key="card_scorm",
             use_container_width=True
         ):
@@ -670,7 +684,8 @@ if not st.session_state.messages:
 
     with col3:
         if st.button(
-            "**👤 New employee is missing from LMS**\n\nA new hire has joined, but their account cannot be found in LMS.",
+            "👤 New employee missing",
+            help="A new hire has joined, but their account cannot be found in LMS.",
             key="card_user_sync",
             use_container_width=True
         ):
@@ -681,7 +696,8 @@ if not st.session_state.messages:
 
     with col4:
         if st.button(
-            "**📖 Learner cannot access MyLearning**\n\nUser is unable to access MyLearning or cannot see assigned courses.",
+            "📖 MyLearning access",
+            help="User is unable to access MyLearning or cannot see assigned courses.",
             key="card_access",
             use_container_width=True
         ):
@@ -689,7 +705,8 @@ if not st.session_state.messages:
 
     with col5:
         if st.button(
-            "**📋 Course was assigned unexpectedly**\n\nA user received a course assignment that they shouldn't have.",
+            "📋 Unexpected assignment",
+            help="A user received a course assignment that they shouldn't have.",
             key="card_unexpected",
             use_container_width=True
         ):
@@ -697,13 +714,17 @@ if not st.session_state.messages:
 
     with col6:
         if st.button(
-            "**⚙️ Other SAP LMS issue**\n\nDescribe your specific issue in the chat below.",
+            "⚙️ Other LMS issue",
+            help="Describe your specific issue in the chat below.",
             key="card_other",
             use_container_width=True
         ):
             prompt_to_submit = "Other SAP LMS issue"
 
-    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown(
+        '<div class="chat-caption" style="margin-top:16px;">✦ Click any issue above, or describe your specific problem in the chat bar below.</div>',
+        unsafe_allow_html=True
+    )
 
 
 # ============================================================
@@ -749,14 +770,8 @@ for message in st.session_state.messages:
 # CHAT INPUT & EXECUTION
 # ============================================================
 
-chat_input = st.chat_input("Describe your SAP LMS issue (e.g., 'User completed course but assigned again')...")
+chat_input = st.chat_input("Ask ResolveAI or describe your LMS issue...")
 question = prompt_to_submit or chat_input
-
-if not st.session_state.messages:
-    st.markdown(
-        '<div class="chat-caption">✦ Be as specific as possible to get the most relevant troubleshooting guidance.</div>',
-        unsafe_allow_html=True
-    )
 
 if question:
     # 1. Store & display user message
