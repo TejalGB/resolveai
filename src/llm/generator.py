@@ -35,6 +35,15 @@ def direct_playbook_fallback(question: str, context: str) -> str:
     and closure notes directly from the retrieved knowledge base chunks and format
     them cleanly into the corporate ServiceNow closure template.
     """
+    # Clean raw source headers from context
+    clean_lines = []
+    for line in context.splitlines():
+        line_str = line.strip()
+        if line_str.startswith("SOURCE ") or "Match Confidence:" in line_str:
+            continue
+        clean_lines.append(line)
+    cleaned_context = "\n".join(clean_lines).strip()
+
     return f"""### 🎫 Incident Analysis
 * **Symptom:** {question}
 * **Resolution Mode:** Verified SAP SuccessFactors Knowledge Base (Direct Playbook Resolution)
@@ -42,7 +51,7 @@ def direct_playbook_fallback(question: str, context: str) -> str:
 ### 🔍 SAP LMS Admin Diagnostic Checklist
 Based on verified SAP SuccessFactors documentation for this incident:
 
-{context.strip()}
+{cleaned_context}
 
 ### 📋 ServiceNow Closure Notes
 Failure point/Cause Code: SAP SuccessFactors LMS Configuration / Administrative Verification
@@ -117,30 +126,26 @@ Generate a comprehensive, incident-oriented ServiceNow troubleshooting resolutio
         print("Notice: GEMINI_API_KEY is not available. Using Direct Playbook Fallback.")
         return direct_playbook_fallback(question, context)
 
-    # Model cascade: try primary model, fall back to secondary model
+    # Primary model (gemini-3.6-flash)
     primary_model = os.getenv("GEMINI_MODEL", settings.GEMINI_MODEL)
-    models_to_try = [primary_model, "gemini-2.5-flash"]
-    models_to_try = list(dict.fromkeys(models_to_try))
-
     client = genai.Client(api_key=api_key)
 
-    for model_name in models_to_try:
-        for attempt in range(2):
-            try:
-                response = client.models.generate_content(
-                    model=model_name,
-                    contents=prompt,
-                    config=types.GenerateContentConfig(
-                        automatic_function_calling=types.AutomaticFunctionCallingConfig(
-                            disable=True
-                        )
+    for attempt in range(3):
+        try:
+            response = client.models.generate_content(
+                model=primary_model,
+                contents=prompt,
+                config=types.GenerateContentConfig(
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(
+                        disable=True
                     )
                 )
-                if response and response.text:
-                    return response.text
-            except Exception as error:
-                print(f"Warning: Model '{model_name}' (attempt {attempt + 1}) encountered error: {error}")
-                time.sleep(1)
+            )
+            if response and response.text:
+                return response.text
+        except Exception as error:
+            print(f"Warning: Model '{primary_model}' (attempt {attempt + 1}) encountered error: {error}")
+            time.sleep(1.5 * (attempt + 1))
 
     # Direct Playbook Fallback if all external model attempts fail
     print("Notice: External AI service unreachable. Engaging Direct Playbook Fallback.")
