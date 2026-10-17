@@ -60,19 +60,144 @@ st.set_page_config(
 
 
 # ============================================================
-# CLEAN, MODERN ENTERPRISE STYLING
+# SESSION STATE & THEME MANAGEMENT
 # ============================================================
 
-st.markdown(
-    """
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+if "conversations" not in st.session_state:
+    st.session_state.conversations = {"Session 1": []}
 
-    html, body, [class*="css"] {
-        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+if "active_session" not in st.session_state:
+    st.session_state.active_session = "Session 1"
+
+if "theme_mode" not in st.session_state:
+    st.session_state.theme_mode = "light"
+
+st.session_state.messages = st.session_state.conversations.get(
+    st.session_state.active_session, []
+)
+
+is_dark = st.session_state.theme_mode == "dark"
+
+
+# ============================================================
+# ADAPTIVE ENTERPRISE STYLING (LIGHT & DARK THEMES)
+# ============================================================
+
+if is_dark:
+    theme_specific_css = """
+    /* Obsidian Dark Theme */
+    [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+        background-color: #0F172A !important;
+        color: #F8FAFC !important;
     }
 
-    /* Enforce Clean Light Mode permanently */
+    [data-testid="stSidebar"] {
+        background-color: #1E293B !important;
+        border-right: 1px solid #334155 !important;
+    }
+
+    [data-testid="stHeader"] {
+        background-color: rgba(15, 23, 42, 0.95) !important;
+    }
+
+    .welcome-card {
+        background: linear-gradient(135deg, rgba(30, 58, 138, 0.35) 0%, rgba(15, 23, 42, 0.85) 100%) !important;
+        border: 1px solid rgba(59, 130, 246, 0.35) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    .welcome-label {
+        color: #60A5FA !important;
+    }
+
+    .welcome-title {
+        color: #F8FAFC !important;
+    }
+
+    .welcome-subtitle {
+        color: #94A3B8 !important;
+    }
+
+    .feature-pill {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #93C5FD !important;
+    }
+
+    .section-title {
+        color: #F8FAFC !important;
+    }
+
+    .section-subtitle {
+        color: #94A3B8 !important;
+    }
+
+    /* 6 Issue Cards in Dark Mode */
+    div[data-testid="stColumn"] div.stButton > button {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button:hover {
+        border-color: #60A5FA !important;
+        background: #243248 !important;
+        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button strong {
+        color: #F8FAFC !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button p {
+        color: #94A3B8 !important;
+    }
+
+    /* Sidebar in Dark Mode */
+    .sidebar-brand {
+        color: #F8FAFC !important;
+    }
+
+    .sidebar-desc {
+        color: #94A3B8 !important;
+    }
+
+    .sidebar-nav-item {
+        background: rgba(37, 99, 235, 0.25) !important;
+        color: #60A5FA !important;
+        border-left: 3px solid #3B82F6 !important;
+    }
+
+    .sidebar-help-box {
+        background: #1E293B !important;
+        border: 1px solid #334155 !important;
+        color: #94A3B8 !important;
+    }
+
+    .source-box {
+        background-color: #1E293B !important;
+        border: 1px solid #334155 !important;
+        border-left: 3px solid #3B82F6 !important;
+    }
+
+    .source-box b {
+        color: #F8FAFC !important;
+    }
+
+    .chat-caption {
+        color: #64748B !important;
+    }
+
+    div[data-testid="stChatInput"] textarea {
+        background-color: #1E293B !important;
+        color: #F8FAFC !important;
+        border: 1px solid #334155 !important;
+    }
+    """
+else:
+    theme_specific_css = """
+    /* Crisp Light Theme */
     [data-testid="stAppViewContainer"], [data-testid="stMain"] {
         background-color: #FFFFFF !important;
         color: #0F172A !important;
@@ -87,56 +212,145 @@ st.markdown(
         background-color: rgba(255, 255, 255, 0.95) !important;
     }
 
+    .welcome-card {
+        background: linear-gradient(135deg, #F0F7FF 0%, #E8F2FE 100%) !important;
+        border: 1px solid #D6E4F6 !important;
+        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.04) !important;
+    }
+
+    .welcome-label {
+        color: #2563EB !important;
+    }
+
+    .welcome-title {
+        color: #0F172A !important;
+    }
+
+    .welcome-subtitle {
+        color: #475569 !important;
+    }
+
+    .feature-pill {
+        background: #FFFFFF !important;
+        border: 1px solid #DBEAFE !important;
+        color: #1E40AF !important;
+    }
+
+    .section-title {
+        color: #0F172A !important;
+    }
+
+    .section-subtitle {
+        color: #64748B !important;
+    }
+
+    /* 6 Issue Cards in Light Mode */
+    div[data-testid="stColumn"] div.stButton > button {
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button:hover {
+        border-color: #3B82F6 !important;
+        background: #F8FAFC !important;
+        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12) !important;
+        transform: translateY(-2px) !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button strong {
+        color: #0F172A !important;
+    }
+
+    div[data-testid="stColumn"] div.stButton > button p {
+        color: #64748B !important;
+    }
+
+    /* Sidebar in Light Mode */
+    .sidebar-brand {
+        color: #0F172A !important;
+    }
+
+    .sidebar-desc {
+        color: #64748B !important;
+    }
+
+    .sidebar-nav-item {
+        background: #EFF6FF !important;
+        color: #2563EB !important;
+        border-left: 3px solid #2563EB !important;
+    }
+
+    .sidebar-help-box {
+        background: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        color: #64748B !important;
+    }
+
+    .source-box {
+        background-color: #F8FAFC !important;
+        border: 1px solid #E2E8F0 !important;
+        border-left: 3px solid #2563EB !important;
+    }
+
+    .source-box b {
+        color: #0F172A !important;
+    }
+
+    .chat-caption {
+        color: #94A3B8 !important;
+    }
+    """
+
+st.markdown(
+    f"""
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    html, body, [class*="css"] {{
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }}
+
     /* Page container spacing - ensures welcome banner is never clipped by Streamlit toolbar */
-    .block-container {
+    .block-container {{
         padding-top: 4.75rem !important;
         padding-bottom: 3rem !important;
         max-width: 1200px !important;
-    }
+    }}
 
-    /* Welcome Banner */
-    .welcome-card {
-        background: linear-gradient(135deg, #F0F7FF 0%, #E8F2FE 100%);
-        border: 1px solid #D6E4F6;
+    .welcome-card {{
         border-radius: 16px;
         padding: 24px 28px;
         margin-bottom: 24px;
         position: relative;
-        box-shadow: 0 2px 8px rgba(37, 99, 235, 0.04);
-    }
+    }}
 
-    .welcome-label {
+    .welcome-label {{
         font-size: 11px;
         font-weight: 700;
         letter-spacing: 1px;
-        color: #2563EB;
         margin-bottom: 4px;
-    }
+    }}
 
-    .welcome-title {
+    .welcome-title {{
         font-size: 28px;
         font-weight: 800;
-        color: #0F172A;
         margin-bottom: 6px;
-    }
+    }}
 
-    .welcome-subtitle {
+    .welcome-subtitle {{
         font-size: 14px;
-        color: #475569;
         margin-bottom: 16px;
         max-width: 680px;
-    }
+    }}
 
-    .feature-pills {
+    .feature-pills {{
         display: flex;
         flex-wrap: wrap;
         gap: 8px;
-    }
+    }}
 
-    .feature-pill {
-        background: #FFFFFF;
-        border: 1px solid #DBEAFE;
-        color: #1E40AF;
+    .feature-pill {{
         padding: 5px 12px;
         border-radius: 20px;
         font-size: 12px;
@@ -144,28 +358,24 @@ st.markdown(
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
-    }
+    }}
 
-    /* Section Header */
-    .section-title {
+    .section-title {{
         font-size: 18px;
         font-weight: 700;
-        color: #0F172A;
         margin-bottom: 4px;
         display: flex;
         align-items: center;
         gap: 6px;
-    }
+    }}
 
-    .section-subtitle {
+    .section-subtitle {{
         font-size: 13px;
-        color: #64748B;
         margin-bottom: 16px;
-    }
+    }}
 
     /* 6 Issue Cards Styling: full card clickable without truncation */
-    div[data-testid="stColumn"] div.stButton > button {
+    div[data-testid="stColumn"] div.stButton > button {{
         display: flex !important;
         flex-direction: column !important;
         align-items: flex-start !important;
@@ -177,87 +387,67 @@ st.markdown(
         min-height: 110px !important;
         padding: 16px 18px !important;
         border-radius: 14px !important;
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04) !important;
         transition: all 0.2s ease-in-out !important;
         cursor: pointer !important;
-    }
+    }}
 
-    div[data-testid="stColumn"] div.stButton > button:hover {
-        border-color: #3B82F6 !important;
-        background: #F8FAFC !important;
-        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12) !important;
-        transform: translateY(-2px) !important;
-    }
-
-    div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {
+    div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {{
         width: 100% !important;
         text-align: left !important;
         white-space: normal !important;
-    }
+    }}
 
-    div[data-testid="stColumn"] div.stButton > button p {
+    div[data-testid="stColumn"] div.stButton > button strong {{
+        display: block !important;
+        font-size: 14.5px !important;
+        font-weight: 700 !important;
+        margin-bottom: 6px !important;
+        line-height: 1.35 !important;
+    }}
+
+    div[data-testid="stColumn"] div.stButton > button p {{
         white-space: normal !important;
         word-break: break-word !important;
         text-align: left !important;
         line-height: 1.45 !important;
         font-size: 12.5px !important;
-        color: #64748B !important;
         margin: 0 !important;
-    }
+    }}
 
-    div[data-testid="stColumn"] div.stButton > button strong {
-        display: block !important;
-        font-size: 14.5px !important;
-        font-weight: 700 !important;
-        color: #0F172A !important;
-        margin-bottom: 6px !important;
-        line-height: 1.35 !important;
-    }
-
-    /* Sidebar Clean Styling */
-    .sidebar-brand {
+    /* Sidebar Styling */
+    .sidebar-brand {{
         font-size: 20px;
         font-weight: 700;
-        color: #0F172A;
         display: flex;
         align-items: center;
         gap: 8px;
         margin-bottom: 2px;
-    }
+    }}
 
-    .sidebar-desc {
+    .sidebar-desc {{
         font-size: 12px;
-        color: #64748B;
         line-height: 1.4;
         margin-bottom: 18px;
-    }
+    }}
 
-    .sidebar-nav-item {
-        background: #EFF6FF;
-        color: #2563EB;
+    .sidebar-nav-item {{
         font-weight: 600;
         font-size: 14px;
         padding: 8px 14px;
         border-radius: 8px;
-        border-left: 3px solid #2563EB;
-        margin-bottom: 18px;
-    }
+        margin-bottom: 14px;
+    }}
 
-    .sidebar-help-box {
-        background: #F8FAFC;
-        border: 1px solid #E2E8F0;
+    .sidebar-help-box {{
         border-radius: 10px;
         padding: 12px 14px;
         font-size: 12px;
-        color: #64748B;
         line-height: 1.45;
         margin-top: 24px;
-    }
+    }}
 
     /* Knowledge Badges & Source Boxes */
-    .match-badge {
+    .match-badge {{
         display: inline-block;
         padding: 3px 10px;
         border-radius: 12px;
@@ -265,41 +455,24 @@ st.markdown(
         font-weight: 600;
         background-color: #2563EB;
         color: white;
-    }
+    }}
 
-    .source-box {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-left: 3px solid #2563EB;
+    .source-box {{
         border-radius: 8px;
         padding: 12px;
         margin-bottom: 10px;
-    }
+    }}
 
-    .chat-caption {
+    .chat-caption {{
         font-size: 12px;
-        color: #94A3B8;
         text-align: center;
         margin-top: 8px;
-    }
+    }}
+
+    {theme_specific_css}
     </style>
     """,
     unsafe_allow_html=True
-)
-
-
-# ============================================================
-# SESSION STATE
-# ============================================================
-
-if "conversations" not in st.session_state:
-    st.session_state.conversations = {"Session 1": []}
-
-if "active_session" not in st.session_state:
-    st.session_state.active_session = "Session 1"
-
-st.session_state.messages = st.session_state.conversations.get(
-    st.session_state.active_session, []
 )
 
 
@@ -314,6 +487,12 @@ with st.sidebar:
     st.markdown('<div class="sidebar-desc">SAP SuccessFactors Learning Troubleshooting Assistant</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="sidebar-nav-item">💬 Chat</div>', unsafe_allow_html=True)
+
+    # 1-Click Theme Switcher
+    theme_btn_text = "🌙 Dark Mode" if not is_dark else "☀️ Light Mode"
+    if st.button(theme_btn_text, use_container_width=True, key="theme_toggle"):
+        st.session_state.theme_mode = "dark" if not is_dark else "light"
+        st.rerun()
 
     st.markdown("##### 🗂️ **Session**")
     session_names = list(st.session_state.conversations.keys())
