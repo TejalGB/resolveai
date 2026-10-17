@@ -132,6 +132,42 @@ if is_dark:
         color: #94A3B8 !important;
     }
 
+    /* 6 Issue Cards in Dark Mode - Slate cards with visible border around */
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button,
+    div[data-testid="stColumn"] div.stButton > button,
+    div[data-testid="stColumn"] button[kind="secondary"] {
+        background-color: #1E293B !important;
+        background: #1E293B !important;
+        border: 1.5px solid #334155 !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover,
+    div[data-testid="stColumn"] div.stButton > button:hover,
+    div[data-testid="stColumn"] button[kind="secondary"]:hover {
+        border-color: #3B82F6 !important;
+        background-color: #243248 !important;
+        background: #243248 !important;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5) !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span:not([data-testid="stIconMaterial"]),
+    div[data-testid="stColumn"] div.stButton > button p,
+    div[data-testid="stColumn"] div.stButton > button div {
+        color: #F8FAFC !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover span {
+        color: #FFFFFF !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span[data-testid="stIconMaterial"],
+    div[data-testid="stColumn"] div.stButton > button span[data-testid="stIconMaterial"] {
+        color: #60A5FA !important;
+    }
+
     /* Sidebar in Dark Mode */
     .sidebar-brand {
         color: #F8FAFC !important;
@@ -167,7 +203,7 @@ if is_dark:
         color: #64748B !important;
     }
 
-    /* Bottom chat container fix in Dark Mode - elevated and visible */
+    /* Bottom chat container fix in Dark Mode - elevated and dark */
     [data-testid="stBottom"], [data-testid="stBottom"] > div {
         background-color: transparent !important;
         background: transparent !important;
@@ -178,8 +214,16 @@ if is_dark:
         padding-top: 8px !important;
     }
 
-    div[data-testid="stChatInput"] {
+    div[data-testid="stChatInput"],
+    div[data-testid="stChatInput"] > div,
+    div[data-testid="stChatInput"] [data-baseweb="base-input"],
+    div[data-testid="stChatInput"] [data-testid="stChatInputTextArea"] {
         background-color: #1E293B !important;
+        background: #1E293B !important;
+        border-color: #475569 !important;
+    }
+
+    div[data-testid="stChatInput"] {
         border: 1.5px solid #475569 !important;
         border-radius: 14px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.45) !important;
@@ -196,10 +240,19 @@ if is_dark:
         border: none !important;
     }
 
+    div[data-testid="stChatInput"] textarea::placeholder {
+        color: #94A3B8 !important;
+    }
+
+    div[data-testid="stChatInput"] button {
+        color: #60A5FA !important;
+    }
+
     /* Sidebar action buttons in Dark Mode */
     section[data-testid="stSidebar"] div[data-testid="stColumn"] div[data-testid="stButton"] > button,
     section[data-testid="stSidebar"] [data-testid="stButton"] button {
         background-color: #1E293B !important;
+        background: #1E293B !important;
         border: 1px solid #334155 !important;
         color: #F8FAFC !important;
     }
@@ -207,12 +260,11 @@ if is_dark:
     section[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
         border-color: #60A5FA !important;
         background-color: #243248 !important;
+        background: #243248 !important;
         color: #FFFFFF !important;
     }
 
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label,
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p,
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label span {
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] * {
         color: #F8FAFC !important;
         font-size: 13.5px !important;
         font-weight: 500 !important;
@@ -267,6 +319,42 @@ else:
         color: #64748B !important;
     }
 
+    /* 6 Issue Cards in Light Mode - White cards with subtle border around */
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button,
+    div[data-testid="stColumn"] div.stButton > button,
+    div[data-testid="stColumn"] button[kind="secondary"] {
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1.5px solid #CBD5E1 !important;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05) !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover,
+    div[data-testid="stColumn"] div.stButton > button:hover,
+    div[data-testid="stColumn"] button[kind="secondary"]:hover {
+        border-color: #2563EB !important;
+        background-color: #F8FAFC !important;
+        background: #F8FAFC !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span:not([data-testid="stIconMaterial"]),
+    div[data-testid="stColumn"] div.stButton > button p,
+    div[data-testid="stColumn"] div.stButton > button div {
+        color: #0F172A !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover span {
+        color: #1E40AF !important;
+    }
+
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span[data-testid="stIconMaterial"],
+    div[data-testid="stColumn"] div.stButton > button span[data-testid="stIconMaterial"] {
+        color: #2563EB !important;
+    }
+
     /* Sidebar in Light Mode */
     .sidebar-brand {
         color: #0F172A !important;
@@ -313,8 +401,16 @@ else:
         padding-top: 8px !important;
     }
 
-    div[data-testid="stChatInput"] {
+    div[data-testid="stChatInput"],
+    div[data-testid="stChatInput"] > div,
+    div[data-testid="stChatInput"] [data-baseweb="base-input"],
+    div[data-testid="stChatInput"] [data-testid="stChatInputTextArea"] {
         background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border-color: #CBD5E1 !important;
+    }
+
+    div[data-testid="stChatInput"] {
         border: 1.5px solid #CBD5E1 !important;
         border-radius: 14px !important;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
@@ -331,10 +427,19 @@ else:
         border: none !important;
     }
 
+    div[data-testid="stChatInput"] textarea::placeholder {
+        color: #64748B !important;
+    }
+
+    div[data-testid="stChatInput"] button {
+        color: #2563EB !important;
+    }
+
     /* Sidebar action buttons in Light Mode */
     section[data-testid="stSidebar"] div[data-testid="stColumn"] div[data-testid="stButton"] > button,
     section[data-testid="stSidebar"] [data-testid="stButton"] button {
         background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
         color: #0F172A !important;
     }
@@ -344,9 +449,7 @@ else:
         background-color: #F8FAFC !important;
     }
 
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label,
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p,
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label span {
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] * {
         color: #475569 !important;
         font-size: 13.5px !important;
         font-weight: 500 !important;
@@ -426,7 +529,7 @@ st.markdown(
         margin-bottom: 10px;
     }}
 
-    /* 6 Issue Buttons: White enterprise cards with subtle borders in BOTH themes */
+    /* 6 Issue Buttons: Dimensions, flex alignment, and typography */
     div[data-testid="stColumn"] div.stButton > button,
     div[data-testid="stColumn"] div[data-testid="stButton"] > button {{
         display: flex !important;
@@ -438,11 +541,7 @@ st.markdown(
         min-height: 52px !important;
         max-height: 52px !important;
         padding: 0 16px !important;
-        background-color: #FFFFFF !important;
-        background: #FFFFFF !important;
-        border: 1px solid #E2E8F0 !important;
         border-radius: 10px !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         transition: all 0.2s ease-in-out !important;
         cursor: pointer !important;
         width: 100% !important;
@@ -450,10 +549,6 @@ st.markdown(
 
     div[data-testid="stColumn"] div.stButton > button:hover,
     div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover {{
-        border-color: #2563EB !important;
-        background-color: #F8FAFC !important;
-        background: #F8FAFC !important;
-        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
         transform: translateY(-1px) !important;
     }}
 
@@ -477,27 +572,15 @@ st.markdown(
         margin: 0 !important;
         padding: 0 !important;
         line-height: 1.3 !important;
-        color: #0F172A !important;
     }}
 
-    div[data-testid="stColumn"] div.stButton > button:hover p,
-    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover p {{
-        color: #1E40AF !important;
-    }}
-
-    /* Lucide-style vector icons consistently in enterprise blue */
+    /* Lucide-style vector icons consistently in blue */
     div[data-testid="stColumn"] div.stButton > button span[data-testid="stIconMaterial"],
     div[data-testid="stColumn"] div[data-testid="stButton"] > button span[data-testid="stIconMaterial"] {{
-        color: #2563EB !important;
         font-size: 20px !important;
         margin-right: 8px !important;
         display: inline-flex !important;
         align-items: center !important;
-    }}
-
-    div[data-testid="stColumn"] div.stButton > button:hover span[data-testid="stIconMaterial"],
-    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover span[data-testid="stIconMaterial"] {{
-        color: #1D4ED8 !important;
     }}
 
     /* Sidebar sticky bottom layout - push toggle to the bottom end */
@@ -656,6 +739,12 @@ with st.sidebar:
             Get step-by-step troubleshooting guidance for SAP SuccessFactors Learning issues.
         </div>
         """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown('<div style="min-height: 160px; flex-grow: 1;"></div>', unsafe_allow_html=True)
+    st.markdown(
+        f'<div style="border-top: 1px solid {"#334155" if is_dark else "#E2E8F0"}; margin-bottom: 8px;"></div>',
         unsafe_allow_html=True
     )
 
