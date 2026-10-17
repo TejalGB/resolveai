@@ -132,26 +132,6 @@ if is_dark:
         color: #94A3B8 !important;
     }
 
-    /* 6 Issue Cards in Dark Mode */
-    section.main div[data-testid="stColumn"] div.stButton > button {
-        background: #1E293B !important;
-        border: 1px solid #334155 !important;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3) !important;
-        color: #F8FAFC !important;
-    }
-
-    section.main div[data-testid="stColumn"] div.stButton > button:hover {
-        border-color: #60A5FA !important;
-        background: #243248 !important;
-        box-shadow: 0 6px 18px rgba(0, 0, 0, 0.5) !important;
-        transform: translateY(-2px) !important;
-        color: #FFFFFF !important;
-    }
-
-    section.main div[data-testid="stColumn"] div.stButton > button p {
-        color: #F8FAFC !important;
-    }
-
     /* Sidebar in Dark Mode */
     .sidebar-brand {
         color: #F8FAFC !important;
@@ -217,6 +197,7 @@ if is_dark:
     }
 
     /* Sidebar action buttons in Dark Mode */
+    section[data-testid="stSidebar"] div[data-testid="stColumn"] div[data-testid="stButton"] > button,
     section[data-testid="stSidebar"] [data-testid="stButton"] button {
         background-color: #1E293B !important;
         border: 1px solid #334155 !important;
@@ -229,8 +210,10 @@ if is_dark:
         color: #FFFFFF !important;
     }
 
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p {
-        color: #94A3B8 !important;
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label,
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p,
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label span {
+        color: #F8FAFC !important;
         font-size: 13.5px !important;
         font-weight: 500 !important;
     }
@@ -282,26 +265,6 @@ else:
 
     .section-subtitle {
         color: #64748B !important;
-    }
-
-    /* 6 Issue Cards in Light Mode */
-    section.main div[data-testid="stColumn"] div.stButton > button {
-        background: #FFFFFF !important;
-        border: 1px solid #CBD5E1 !important;
-        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
-        color: #0F172A !important;
-    }
-
-    section.main div[data-testid="stColumn"] div.stButton > button:hover {
-        border-color: #3B82F6 !important;
-        background: #F8FAFC !important;
-        box-shadow: 0 6px 16px rgba(59, 130, 246, 0.12) !important;
-        transform: translateY(-2px) !important;
-        color: #1E40AF !important;
-    }
-
-    section.main div[data-testid="stColumn"] div.stButton > button p {
-        color: #0F172A !important;
     }
 
     /* Sidebar in Light Mode */
@@ -369,6 +332,7 @@ else:
     }
 
     /* Sidebar action buttons in Light Mode */
+    section[data-testid="stSidebar"] div[data-testid="stColumn"] div[data-testid="stButton"] > button,
     section[data-testid="stSidebar"] [data-testid="stButton"] button {
         background-color: #FFFFFF !important;
         border: 1px solid #E2E8F0 !important;
@@ -380,7 +344,9 @@ else:
         background-color: #F8FAFC !important;
     }
 
-    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p {
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label,
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p,
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label span {
         color: #475569 !important;
         font-size: 13.5px !important;
         font-weight: 500 !important;
@@ -460,8 +426,9 @@ st.markdown(
         margin-bottom: 10px;
     }}
 
-    /* 6 Issue Buttons: consistent height, font size, alignment, and hover feedback */
-    section.main div[data-testid="stColumn"] div.stButton > button {{
+    /* 6 Issue Buttons: White enterprise cards with subtle borders in BOTH themes */
+    div[data-testid="stColumn"] div.stButton > button,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button {{
         display: flex !important;
         flex-direction: row !important;
         align-items: center !important;
@@ -471,20 +438,37 @@ st.markdown(
         min-height: 52px !important;
         max-height: 52px !important;
         padding: 0 16px !important;
+        background-color: #FFFFFF !important;
+        background: #FFFFFF !important;
+        border: 1px solid #E2E8F0 !important;
         border-radius: 10px !important;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
         transition: all 0.2s ease-in-out !important;
         cursor: pointer !important;
         width: 100% !important;
     }}
 
-    section.main div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"] {{
+    div[data-testid="stColumn"] div.stButton > button:hover,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover {{
+        border-color: #2563EB !important;
+        background-color: #F8FAFC !important;
+        background: #F8FAFC !important;
+        box-shadow: 0 4px 14px rgba(37, 99, 235, 0.12) !important;
+        transform: translateY(-1px) !important;
+    }}
+
+    div[data-testid="stColumn"] div.stButton > button div[data-testid="stMarkdownContainer"],
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button div[data-testid="stMarkdownContainer"] {{
         width: 100% !important;
         text-align: left !important;
         display: flex !important;
         align-items: center !important;
     }}
 
-    section.main div[data-testid="stColumn"] div.stButton > button p {{
+    div[data-testid="stColumn"] div.stButton > button p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button p,
+    div[data-testid="stColumn"] div.stButton > button span:not([data-testid="stIconMaterial"]),
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span:not([data-testid="stIconMaterial"]) {{
         font-size: 14px !important;
         font-weight: 600 !important;
         white-space: nowrap !important;
@@ -493,9 +477,44 @@ st.markdown(
         margin: 0 !important;
         padding: 0 !important;
         line-height: 1.3 !important;
+        color: #0F172A !important;
     }}
 
-    /* Compact sidebar action buttons (User Provided) */
+    div[data-testid="stColumn"] div.stButton > button:hover p,
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover p {{
+        color: #1E40AF !important;
+    }}
+
+    /* Lucide-style vector icons consistently in enterprise blue */
+    div[data-testid="stColumn"] div.stButton > button span[data-testid="stIconMaterial"],
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button span[data-testid="stIconMaterial"] {{
+        color: #2563EB !important;
+        font-size: 20px !important;
+        margin-right: 8px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+    }}
+
+    div[data-testid="stColumn"] div.stButton > button:hover span[data-testid="stIconMaterial"],
+    div[data-testid="stColumn"] div[data-testid="stButton"] > button:hover span[data-testid="stIconMaterial"] {{
+        color: #1D4ED8 !important;
+    }}
+
+    /* Sidebar sticky bottom layout - push toggle to the bottom end */
+    section[data-testid="stSidebar"] [data-testid="stSidebarUserContent"] {{
+        display: flex !important;
+        flex-direction: column !important;
+        min-height: calc(100vh - 2.5rem) !important;
+    }}
+
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] {{
+        margin-top: auto !important;
+        padding-top: 18px !important;
+        padding-bottom: 14px !important;
+    }}
+
+    /* Compact sidebar action buttons */
+    section[data-testid="stSidebar"] div[data-testid="stColumn"] div[data-testid="stButton"] > button,
     section[data-testid="stSidebar"] [data-testid="stButton"] button {{
         min-height: 44px !important;
         height: 44px !important;
@@ -506,7 +525,14 @@ st.markdown(
         justify-content: center !important;
         white-space: nowrap !important;
         font-size: 13.5px !important;
+        font-weight: 600 !important;
         border-radius: 8px !important;
+    }}
+
+    section[data-testid="stSidebar"] span[data-testid="stIconMaterial"] {{
+        color: #2563EB !important;
+        font-size: 18px !important;
+        margin-right: 6px !important;
     }}
 
     /* Keep the two session actions compact */
@@ -588,17 +614,17 @@ st.markdown(
 prompt_to_submit = None
 
 with st.sidebar:
-    st.markdown('<div class="sidebar-brand">🤖 ResolveAI</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-brand"><span style="color:#2563EB; font-size:16px;">●</span> ResolveAI</div>', unsafe_allow_html=True)
     st.markdown('<div class="sidebar-desc">SAP SuccessFactors Learning Troubleshooting Assistant</div>', unsafe_allow_html=True)
 
-    st.markdown('<div class="sidebar-nav-item">💬 Chat</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-nav-item">Chat</div>', unsafe_allow_html=True)
 
-    st.markdown("##### 🗂️ **Session**")
+    st.markdown("##### **Session**")
     session_names = list(st.session_state.conversations.keys())
 
     col_new, col_clear = st.columns(2)
     with col_new:
-        if st.button("➕ New Chat", use_container_width=True):
+        if st.button("New Chat", icon=":material/add:", use_container_width=True):
             new_session_name = f"Session {len(st.session_state.conversations) + 1}"
             st.session_state.conversations[new_session_name] = []
             st.session_state.active_session = new_session_name
@@ -606,7 +632,7 @@ with st.sidebar:
             st.rerun()
 
     with col_clear:
-        if st.button("🗑️ Clear Chat", use_container_width=True):
+        if st.button("Clear Chat", icon=":material/delete_outline:", use_container_width=True):
             st.session_state.conversations[st.session_state.active_session] = []
             st.session_state.messages = []
             st.rerun()
@@ -626,19 +652,14 @@ with st.sidebar:
     st.markdown(
         """
         <div class="sidebar-help-box">
-            💡 <b>Admin Guidance</b><br>
+            <b>Admin Guidance</b><br>
             Get step-by-step troubleshooting guidance for SAP SuccessFactors Learning issues.
         </div>
         """,
         unsafe_allow_html=True
     )
 
-    st.markdown(
-        f'<div style="margin-top:20px; border-top:1px solid {"#334155" if is_dark else "#E2E8F0"}; padding-top:12px;"></div>',
-        unsafe_allow_html=True
-    )
-
-    dark_mode_enabled = st.toggle("🌙 Dark Mode", value=is_dark, key="theme_toggle_switch")
+    dark_mode_enabled = st.toggle("Dark Mode", value=is_dark, key="theme_toggle_switch")
     if dark_mode_enabled != is_dark:
         st.session_state.theme_mode = "dark" if dark_mode_enabled else "light"
         st.rerun()
@@ -659,9 +680,9 @@ if not st.session_state.messages:
                 Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System
             </div>
             <div class="feature-pills">
-                <span class="feature-pill">🔍 Knowledge-grounded responses</span>
-                <span class="feature-pill">🛡️ Structured troubleshooting and ServiceNow resolutions</span>
-                <span class="feature-pill">📚 Relevant SAP documentation with source citations</span>
+                <span class="feature-pill">Knowledge-grounded responses</span>
+                <span class="feature-pill">Structured troubleshooting & ServiceNow resolutions</span>
+                <span class="feature-pill">SAP documentation with source citations</span>
             </div>
         </div>
         """,
@@ -671,7 +692,7 @@ if not st.session_state.messages:
     # Section Heading
     st.markdown(
         """
-        <div class="section-title">✨ How can I help you today?</div>
+        <div class="section-title">How can I help you today?</div>
         <div class="section-subtitle">Choose one of the common issues below, or describe your problem in the chat bar:</div>
         """,
         unsafe_allow_html=True
@@ -682,7 +703,8 @@ if not st.session_state.messages:
 
     with col1:
         if st.button(
-            "🎓 Course assigned again",
+            "Course assigned again",
+            icon=":material/school:",
             help="User completed a course but it was assigned to them again.",
             key="card_retraining",
             use_container_width=True
@@ -691,7 +713,8 @@ if not st.session_state.messages:
 
     with col2:
         if st.button(
-            "▶️ Content not launching",
+            "Content not launching",
+            icon=":material/play_circle:",
             help="Learners report that online course content is not launching.",
             key="card_scorm",
             use_container_width=True
@@ -700,7 +723,8 @@ if not st.session_state.messages:
 
     with col3:
         if st.button(
-            "👤 New employee missing",
+            "New employee missing",
+            icon=":material/person_search:",
             help="A new hire has joined, but their account cannot be found in LMS.",
             key="card_user_sync",
             use_container_width=True
@@ -712,7 +736,8 @@ if not st.session_state.messages:
 
     with col4:
         if st.button(
-            "📖 MyLearning access",
+            "MyLearning access",
+            icon=":material/lock_open:",
             help="User is unable to access MyLearning or cannot see assigned courses.",
             key="card_access",
             use_container_width=True
@@ -721,7 +746,8 @@ if not st.session_state.messages:
 
     with col5:
         if st.button(
-            "📋 Unexpected assignment",
+            "Unexpected assignment",
+            icon=":material/assignment:",
             help="A user received a course assignment that they shouldn't have.",
             key="card_unexpected",
             use_container_width=True
@@ -730,7 +756,8 @@ if not st.session_state.messages:
 
     with col6:
         if st.button(
-            "⚙️ Other LMS issue",
+            "Other LMS issue",
+            icon=":material/help_outline:",
             help="Describe your specific issue in the chat below.",
             key="card_other",
             use_container_width=True
@@ -738,7 +765,7 @@ if not st.session_state.messages:
             prompt_to_submit = "Other SAP LMS issue"
 
     st.markdown(
-        '<div class="chat-caption" style="margin-top:16px;">✦ Click any issue above, or describe your specific problem in the chat bar below.</div>',
+        '<div class="chat-caption" style="margin-top:16px;">Click any issue above, or describe your specific problem in the chat bar below.</div>',
         unsafe_allow_html=True
     )
 
