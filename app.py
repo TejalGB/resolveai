@@ -658,32 +658,13 @@ st.markdown(
         margin-bottom: 8px !important;
     }}
 
-    .ai-brand-icon {{
-        width: 24px;
-        height: 24px;
-        background: linear-gradient(135deg, #2563EB 0%, #1D4ED8 100%);
-        border-radius: 6px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #FFFFFF;
-        box-shadow: 0 2px 6px rgba(37, 99, 235, 0.35);
-        flex-shrink: 0;
-    }}
-
     .sidebar-brand {{
         font-size: 20px;
         font-weight: 700;
         display: flex;
         align-items: center;
         gap: 8px;
-        margin-bottom: 2px;
-    }}
-
-    .sidebar-desc {{
-        font-size: 12px;
-        line-height: 1.4;
-        margin-bottom: 18px;
+        margin-bottom: 16px;
     }}
 
     .sidebar-nav-item {{
@@ -739,8 +720,7 @@ st.markdown(
 prompt_to_submit = None
 
 with st.sidebar:
-    st.markdown('<div class="sidebar-brand"><span class="ai-brand-icon"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L14.5 8.5L22 11L14.5 13.5L12 21L9.5 13.5L2 11L9.5 8.5L12 1Z"/></svg></span>ResolveAI</div>', unsafe_allow_html=True)
-    st.markdown('<div class="sidebar-desc">SAP SuccessFactors Learning Troubleshooting Assistant</div>', unsafe_allow_html=True)
+    st.markdown('<div class="sidebar-brand">🤖 ResolveAI</div>', unsafe_allow_html=True)
 
     st.markdown('<div class="sidebar-nav-item">Chat</div>', unsafe_allow_html=True)
 
@@ -806,7 +786,7 @@ if not st.session_state.messages:
         """
         <div class="welcome-card">
             <div class="welcome-label">WELCOME TO</div>
-            <div class="welcome-title"><span class="ai-brand-icon" style="width:28px; height:28px; border-radius:7px; vertical-align:middle; margin-right:9px;"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L14.5 8.5L22 11L14.5 13.5L12 21L9.5 13.5L2 11L9.5 8.5L12 1Z"/></svg></span>ResolveAI</div>
+            <div class="welcome-title">ResolveAI 🤖</div>
             <div class="welcome-subtitle">
                 Your AI troubleshooting assistant for SAP SuccessFactors Learning Management System
             </div>
