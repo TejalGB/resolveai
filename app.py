@@ -72,9 +72,24 @@ st.markdown(
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
-    /* Page container spacing - prevent top header clipping */
+    /* Enforce Clean Light Mode permanently */
+    [data-testid="stAppViewContainer"], [data-testid="stMain"] {
+        background-color: #FFFFFF !important;
+        color: #0F172A !important;
+    }
+
+    [data-testid="stSidebar"] {
+        background-color: #F8FAFC !important;
+        border-right: 1px solid #E2E8F0 !important;
+    }
+
+    [data-testid="stHeader"] {
+        background-color: rgba(255, 255, 255, 0.95) !important;
+    }
+
+    /* Page container spacing - ensures welcome banner is never clipped by Streamlit toolbar */
     .block-container {
-        padding-top: 2rem !important;
+        padding-top: 4.75rem !important;
         padding-bottom: 3rem !important;
         max-width: 1200px !important;
     }
