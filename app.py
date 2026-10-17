@@ -228,6 +228,12 @@ if is_dark:
         background-color: #243248 !important;
         color: #FFFFFF !important;
     }
+
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p {
+        color: #94A3B8 !important;
+        font-size: 13.5px !important;
+        font-weight: 500 !important;
+    }
     """
 else:
     theme_specific_css = """
@@ -372,6 +378,12 @@ else:
     section[data-testid="stSidebar"] [data-testid="stButton"] button:hover {
         border-color: #3B82F6 !important;
         background-color: #F8FAFC !important;
+    }
+
+    section[data-testid="stSidebar"] div[data-testid="stToggle"] label p {
+        color: #475569 !important;
+        font-size: 13.5px !important;
+        font-weight: 500 !important;
     }
     """
 
@@ -581,12 +593,6 @@ with st.sidebar:
 
     st.markdown('<div class="sidebar-nav-item">💬 Chat</div>', unsafe_allow_html=True)
 
-    # 1-Click Theme Switcher
-    theme_btn_text = "🌙 Dark Mode" if not is_dark else "☀️ Light Mode"
-    if st.button(theme_btn_text, use_container_width=True, key="theme_toggle"):
-        st.session_state.theme_mode = "dark" if not is_dark else "light"
-        st.rerun()
-
     st.markdown("##### 🗂️ **Session**")
     session_names = list(st.session_state.conversations.keys())
 
@@ -626,6 +632,16 @@ with st.sidebar:
         """,
         unsafe_allow_html=True
     )
+
+    st.markdown(
+        f'<div style="margin-top:20px; border-top:1px solid {"#334155" if is_dark else "#E2E8F0"}; padding-top:12px;"></div>',
+        unsafe_allow_html=True
+    )
+
+    dark_mode_enabled = st.toggle("🌙 Dark Mode", value=is_dark, key="theme_toggle_switch")
+    if dark_mode_enabled != is_dark:
+        st.session_state.theme_mode = "dark" if dark_mode_enabled else "light"
+        st.rerun()
 
 
 # ============================================================
@@ -770,7 +786,7 @@ for message in st.session_state.messages:
 # CHAT INPUT & EXECUTION
 # ============================================================
 
-chat_input = st.chat_input("Ask ResolveAI or describe your LMS issue...")
+chat_input = st.chat_input("Describe your LMS issue...")
 question = prompt_to_submit or chat_input
 
 if question:
